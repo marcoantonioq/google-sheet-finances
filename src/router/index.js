@@ -7,6 +7,11 @@ import Cheque from "../views/Cheque.vue";
 
 const routes = [
   {
+    path: "",
+    name: "Home",
+    component: Home,
+  },
+  {
     path: "/",
     name: "Home",
     component: Home,

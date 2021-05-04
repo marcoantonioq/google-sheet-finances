@@ -6,11 +6,11 @@ const DataValues = {
   },
   actions: {
     insertValueSpreadsheet({ commit }, value) {
-      console.log("Recebido em Vuex", commit, value);
-      return new Promise(() => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           value.date = Date.now();
           commit("addValue", value);
+          console.log("Resolve: ", resolve);
         }, 1000);
       });
     },

@@ -23,6 +23,6 @@ function showAlertar(mensagem){
 
 }
 
-function testeCode123(){
+function testeCode(){
   console.log("Ok...")
 }
