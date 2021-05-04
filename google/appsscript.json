@@ -1,9 +1,11 @@
 {
   "timeZone": "America/Sao_Paulo",
-  "dependencies": {
-  },
+  "dependencies": {},
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
-  "sheets": {
+  "sheets": {},
+  "webapp": {
+    "executeAs": "USER_DEPLOYING",
+    "access": "MYSELF"
   }
 }

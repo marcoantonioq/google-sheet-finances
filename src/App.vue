@@ -1,6 +1,10 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
+    <router-link to="/entrada">Entrada</router-link> |
+    <router-link to="/saida">Saída</router-link> |
+    <router-link to="/transferir">Transferir</router-link> |
+    <router-link to="/cheque">Cheque</router-link> |
     <router-link to="/about">About</router-link>
   </div>
   <router-view />
@@ -26,5 +30,9 @@
       color: #42b983;
     }
   }
+}
+
+pre {
+  text-align: left;
 }
 </style>

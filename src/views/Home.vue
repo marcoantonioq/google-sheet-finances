@@ -1,18 +1,36 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="home">Pagina home</div>
+  <div>
+    <p>
+      Store:
+      {{ count }} <br />
+      <a @click="decrement">Decrementar</a> <br />
+      <a @click="increment">Incremnetar</a>
+    </p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
   name: "Home",
-  components: {
-    HelloWorld,
+  components: {},
+  computed: {
+    count: {
+      set(v) {
+        this.$store.commit("setCount", v);
+      },
+      get() {
+        return this.$store.state.Count.count;
+      },
+    },
+  },
+  methods: {
+    increment() {
+      this.count++;
+    },
+    decrement() {
+      this.count--;
+    },
   },
 };
 </script>
