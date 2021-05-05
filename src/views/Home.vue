@@ -8,6 +8,7 @@
       <a @click="increment">Incremnetar</a>
     </p>
   </div>
+  v.1.0.1
 </template>
 
 <script>

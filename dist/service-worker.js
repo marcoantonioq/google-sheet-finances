@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e68d4208e33b2b1b1a4c23bb66c98c05.js"
+  "/precache-manifest.dfdbb98fdef5d9d7f8d1ec8979da174d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "google-sheet-finances"});
