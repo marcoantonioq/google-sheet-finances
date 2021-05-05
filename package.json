@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "gas": "webpack --config webpack.cli.js ",
-    "push": "git push --all -u ; cd google && npx clasp push",
+    "push": "git add . ; git commit -m 'New build' -a; git push --all -u ; cd google && npx clasp push",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build ; git add . ; git commit -m 'New build' -a",
+    "build": "vue-cli-service build --skip-plugins pwa",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -33,6 +33,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.0.0",
+    "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^5.3.1",
     "node-sass": "^4.12.0",
     "prettier": "^2.2.1",

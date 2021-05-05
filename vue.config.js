@@ -1,6 +1,6 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 module.exports = {
+  lintOnSave: true,
+  productionSourceMap: false,
   chainWebpack: (config) => {
     config.module
       .rule("images")
@@ -32,12 +32,13 @@ module.exports = {
     },
   },
   configureWebpack: {
-    entry: "index.js",
     output: {
-      path: "dist2/",
-      filename: "index_bundle.js",
+      filename: "js/[name].js",
+      chunkFilename: "js/[name].js",
     },
-    plugins: [new HtmlWebpackPlugin()],
+    optimization: {
+      splitChunks: false,
+    },
   },
   pwa: {
     name: "My Finances",
