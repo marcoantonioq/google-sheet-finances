@@ -2,9 +2,7 @@
   <div class="home">Pagina entrada</div>
   <div>
     Loading: {{ loading }}
-    <pre>
-        {{ values }} <br />
-      </pre>
+    {{ values }}
     <a @click="push">Add</a> <br />
     <a @click="remove">Remove</a>
   </div>

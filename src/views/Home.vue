@@ -1,14 +1,16 @@
 <template>
-  <div class="home">Pagina home</div>
-  <div>
-    <p>
-      Store:
-      {{ count }} <br />
-      <a @click="decrement">Decrementar</a> <br />
-      <a @click="increment">Incremnetar</a>
-    </p>
+  <div class="row">
+    <div class="home">Pagina home</div>
+    <div>
+      <p>
+        Store:
+        {{ count }} <br />
+        <a @click="decrement">Decrementar</a> <br />
+        <a @click="increment">Incremnetar</a>
+      </p>
+    </div>
   </div>
-  v.1.0.1
+  <div class="row">v.1.0.1</div>
 </template>
 
 <script>
