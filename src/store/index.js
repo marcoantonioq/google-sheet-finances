@@ -1,8 +1,10 @@
 import { createStore } from "vuex";
+import { Sheet } from "./googlesheet";
+import mock from "./db.mock";
 
 const DataValues = {
   state: {
-    values: [{ created: new Date(), name: "" }],
+    values: [],
   },
   actions: {
     insertValueSpreadsheet({ commit }, value) {
@@ -14,15 +16,19 @@ const DataValues = {
         }, 1000);
       });
     },
-    getValueSpreeadSheet({ commit }) {
-      //, state, dispatch
-      console.log("GetValues", commit);
+    getValueSpreadsheet({ commit }) {
+      Sheet.getValues()
+      commit("setValues", mock);
+      // commit()
     },
-    delValueSpreedSheet({ key }) {
+    delValueSpreadSheet({ key }) {
       console.log("Remover key:", key);
     },
   },
   mutations: {
+    setValues(state, payload) {
+      state.values = payload;
+    },
     addValue(state, payload) {
       state.values.push(payload);
     },

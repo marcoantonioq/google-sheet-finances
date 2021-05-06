@@ -5,6 +5,8 @@ import Saida from "../views/Saida.vue";
 import Transferir from "../views/Transferir.vue";
 import Cheque from "../views/Cheque.vue";
 
+import Form from "../components/Form.vue";
+
 const routes = [
   {
     path: "",
@@ -23,8 +25,15 @@ const routes = [
   },
   {
     path: "/saida",
-    name: "Saída",
     component: Saida,
+    name: "Saída",
+    children: [
+      {
+        name: "form",
+        path: "/form",
+        component: Form,
+      },
+    ],
   },
   {
     path: "/transferir",
@@ -41,6 +50,8 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  linkActiveClass: "active-route",
+  linkExactActiveClass: "active-route-exact",
 });
 
 export default router;

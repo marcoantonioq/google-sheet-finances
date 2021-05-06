@@ -27,49 +27,95 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    this.$store.dispatch("getValueSpreadsheet");
+  },
+};
+</script>
+
 <style lang="scss">
+:root {
+  --blue: #007bff;
+  --cyan: #17a2b8;
+  --danger: #dc3545;
+  --dark: #343a40;
+  --gray-dark: #343a40;
+  --gray-light: #f7f7f7;
+  --gray: #6c757d;
+  --green: #28a745;
+  --green-dark: #605c00;
+  --indigo: #6610f2;
+  --info: #17a2b8;
+  --light: #f8f9fa;
+  --main-color: #e30713;
+  --orange: #fd7e14;
+  --pink: #e83e8c;
+  --primary: #007bff;
+  --purple: #6f42c1;
+  --red-dark: #870000;
+  --red: #dc3545;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --teal: #20c997;
+  --warning: #ffc107;
+  --white: #fff;
+  --yellow: #ffc107;
+}
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
 html {
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-}
-body {
+  line-height: 1.5;
+  color: var(--dark);
   min-height: 100vh;
   min-width: 100vw;
+  letter-spacing: 0.02rem;
 }
+
 a {
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
+
 nav {
   display: flex;
   flex-direction: column;
-  background-color: #e30713;
+  background-color: var(--main-color);
   text-align: center;
   line-height: 10px;
+  user-select: none;
 
   a {
+    background-color: var(--main-color);
+    color: var(--light);
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    margin: 1.5rem 0;
-    padding: 0 0.2rem;
     font-weight: bold;
-    color: #ffffff;
-    background-color: #e30713;
-    justify-content: center;
-    margin-left: 5px;
     height: 78px;
+    justify-content: center;
+    margin: 1.5rem 0;
+    margin-left: 5px;
+    padding: 0 0.2rem;
+    text-decoration: none;
 
     i.material-icons {
       font-size: 2.7rem;
     }
 
-    &.router-link-exact-active {
-      color: #000;
-      background-color: #fff;
+    &.active-route-exact {
+      color: var(--dark);
+      background-color: var(--white);
       border-radius: 23px 0px 0px 23px;
     }
   }
@@ -91,7 +137,7 @@ nav {
   font-size: 2.5rem;
   margin-top: 20px;
   font-size: 2.5rem;
-  color: #fff;
+  color: var(--white);
   font-weight: 900;
   text-align: center;
 }
@@ -108,10 +154,53 @@ nav {
   position: relative;
   top: -35px;
   left: -20px;
-  background: #e30713;
+  background: var(--main-color);
   padding: 2px 6px;
   border-radius: 50%;
-  color: #fff;
+  color: var(--white);
   font-weight: 600;
+}
+
+.shadow {
+  box-shadow: 5px 5px 8px -3px rgba(58, 58, 58, 0.44);
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  border-radius: 0;
+  outline: none;
+  height: 3rem;
+  width: 100%;
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+}
+
+@media (max-width: 2600px) {
+  html {
+    font-size: 95%;
+  }
+  .content {
+    padding: 2rem 3rem;
+  }
+}
+
+@media (max-width: 1080px) {
+  html {
+    font-size: 93.75%;
+  }
+  .content {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: 80%;
+  }
+  .content {
+    padding: 0.8rem 0.5rem;
+  }
 }
 </style>

@@ -22,7 +22,3 @@ function showAlertar(mensagem){
   }
 
 }
-
-function testeCode(){
-  console.log("Ok...")
-}
