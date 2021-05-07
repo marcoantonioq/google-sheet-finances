@@ -1,10 +1,16 @@
 import { createStore } from "vuex";
 import { Sheet } from "./googlesheet";
-import mock from "./db.mock";
+// import mock from "./db.mock";
 
 const DataValues = {
   state: {
     values: [],
+  },
+  getters: {
+    // Campis calculados
+    countValues: (state) => {
+      return state.values.length;
+    },
   },
   actions: {
     async setValues(context, payload) {
@@ -23,12 +29,6 @@ const DataValues = {
       context.commit("updateFromTable");
     },
   },
-  getters: {
-    // Campis calculados
-    countValues: (state) => {
-      return state.values.length;
-    },
-  },
   mutations: {
     updateFromTable(state) {
       Sheet.onGetValues(null, (el) => {
@@ -36,10 +36,8 @@ const DataValues = {
         console.log("Status do banco: ", el.msg);
         state.values = el.data;
       });
+      // state.values = mock;
     },
-  },
-  mounted() {
-    console.log("DB mounted");
   },
 };
 

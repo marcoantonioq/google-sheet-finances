@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="value in values.slice(0, limit)" :key="value.ID">
+      <tr v-for="value in paginate(limit)" :key="value.ID">
         <td>
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
@@ -62,9 +62,12 @@ export default {
   },
   methods: {
     ...mapActions(["updateValues"]),
+    // ...mapMutations(["paginate"]),
     showValues() {
-      console.log(this.getValues());
       console.log(this.values);
+    },
+    paginate(lim_val) {
+      return this.values.slice(0, lim_val);
     },
   },
 };
