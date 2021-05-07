@@ -26,14 +26,17 @@ const DataValues = {
       context.values.splice(key, 1);
     },
     async updateValues(context) {
+      console.log("Função async para atualizar banco de dados chamada!");
       context.commit("updateFromTable");
     },
   },
   mutations: {
     updateFromTable(state) {
+      console.log("Função para atualizar banco de dados chamada!");
       Sheet.onGetValues(null, (el) => {
         console.log("Mensagem do banco: ", el.msg);
         console.log("Status do banco: ", el.msg);
+        console.log("Data do banco: ", el.data);
         state.values = el.data;
       });
       // state.values = mock;
