@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="value in values" :key="value.ID">
+      <tr v-for="value in values.slice(0, limit)" :key="value.ID">
         <td>
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
@@ -27,7 +27,7 @@
       </tr>
     </tbody>
   </table>
-  <h3>{{ countValues }}</h3>
+  <h3>{{limit}} de {{ countValues }}</h3>
 
   <ButtonLarge
     title="Criar"
@@ -48,6 +48,11 @@ export default {
   components: {
     ButtonLarge,
     Search,
+  },
+  data() {
+    return {
+      limit: 20,
+    };
   },
   computed: {
     ...mapState({

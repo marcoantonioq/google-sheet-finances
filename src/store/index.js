@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import { Sheet } from "./googlesheet";
-// import mock from "./db.mock";
+import mock from "./db.mock";
 
 const DataValues = {
   state: {
@@ -43,9 +43,11 @@ const DataValues = {
     getValueSpreadsheetToState(state) {
       // const { values } = state;
       Sheet.onGetValues(null, (el) => {
-        console.log("Valores retornados do banco: ", el);
-        state.values = el;
+        console.log("Mensagem do banco: ", el.msg);
+        console.log("Status do banco: ", el.status);
+        state.values = el.data;
       });
+      state.values = mock;
     },
     delValueSpreadSheet({ key }) {
       console.log("Remover key:", key);
