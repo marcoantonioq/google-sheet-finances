@@ -79,22 +79,17 @@
       document.addEventListener(
         "DOMContentLoaded",
         function () {
-          // Remove messagem google
-          //   document
-          //     .querySelectorAll("#warning")
-          //     .forEach((el) => (el.style.display = "none"));
-          // M.updateTextFields();
-          google.script.run
-            .withSuccessHandler((data) => {
-              console.log("Find Filter Jussara => ",data);
-            })
-            .withFailureHandler(console.log)
-            .find({
-              table: "Banco de Dados",
-              filter: {
-                "Escola": "Jussara",
-              },
-            });
+          // google.script.run
+          //   .withSuccessHandler((data) => {
+          //     console.log("Find Filter Jussara => ",data);
+          //   })
+          //   .withFailureHandler(console.log)
+          //   .find({
+          //     table: "Banco de Dados",
+          //     filter: {
+          //       "Escola": "Jussara",
+          //     },
+          //   });
 
           google.script.run
             .withSuccessHandler((data) => {

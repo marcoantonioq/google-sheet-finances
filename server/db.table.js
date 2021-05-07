@@ -1,18 +1,15 @@
-Date.prototype.getData = function(lang = "pt-BR") {
-    let [dd, mm, yyyy] = this.toLocaleDateString().split('/')
-    return (lang === 'en') ?
-    `${yyyy}-${mm}-${dd}` :
-    `${dd}/${mm}/${yyyy}`
+Date.prototype.getData = function (lang = "pt-BR") {
+  let [dd, mm, yyyy] = this.toLocaleDateString().split("/");
+  return lang === "en" ? `${yyyy}-${mm}-${dd}` : `${dd}/${mm}/${yyyy}`;
 };
 
-Date.prototype.getDataHora = function(lang = "pt-BR") {
-    return `${this.getData(lang)} ${this.toLocaleTimeString()}`
+Date.prototype.getDataHora = function (lang = "pt-BR") {
+  return `${this.getData(lang)} ${this.toLocaleTimeString()}`;
 };
 
-Date.prototype.addMeses = function(meses){
-    this.setMonth(this.getMonth() + meses)
+Date.prototype.addMeses = function (meses) {
+  this.setMonth(this.getMonth() + meses);
 };
-
 
 /**
  * Pega todos os valores de uma tabela
@@ -34,7 +31,6 @@ function getAllDataValues(table) {
  * return array De titulos
  */
 function getObjTable(table) {
-
   let spreadsheet = SpreadsheetApp.getActive();
   let DB = spreadsheet.getSheetByName(table);
 
@@ -48,32 +44,29 @@ function getObjTable(table) {
   return Object.fromEntries(entries);
 }
 
-
-
 /**
  * Find Values / Filter
  * return result {status: true, data: [], msg: ""}
  **/
 function find({ table, filter } = { table: "Banco de dados", filter: null }) {
-
-  var result = {status: true, data: [], msg: ""}
+  var result = { status: true, data: [], msg: "" };
 
   // Pegar todos valores da tabela
   const values = getAllDataValues(table);
 
   result.data = getJsonArrayFromData(values);
-  try{
+  try {
     // Filtra as informações
     if (filter) {
       result.data = result.data.filter((obj) => {
-        return Object.entries(filter)
-          .every(([col, val]) => obj[col] == val);
-      })
+        return Object.entries(filter).every(([col, val]) => obj[col] == val);
+      });
     }
-  } catch(e){
+  } catch (e) {
     result.status = false;
-    result.msg = "Erro ao filtrar informações: " + e
+    result.msg = "Erro ao filtrar informações: " + e;
   }
+  console.log(result.msg);
   return JSON.stringify(result);
 }
 
@@ -82,101 +75,90 @@ function find({ table, filter } = { table: "Banco de dados", filter: null }) {
  * return result {status: false, data: [], msg: ""}
  **/
 function select(table, id) {
-  
-  var result = {status: true, data: [], msg: ""}
+  var result = { status: true, data: [], msg: "" };
 
   if (table && id) {
-    result = JSON.parse(find({ table: table, filter: {"ID": id} }));
+    result = JSON.parse(find({ table: table, filter: { ID: id } }));
   } else {
     console.log(`Informe um ID da tabela: `, id);
-    result.msg = "Informe Tabela e ID válido!"
+    result.msg = "Informe Tabela e ID válido!";
     result.status = false;
   }
+  console.log(result.msg);
   return JSON.stringify(result);
 }
 
-let dataTemplate = [{"Criado Data/Hora":"2021-05-04T16:52:22.000Z","ATIVO":true,"Situação":"Paga","ES":"Saída","Escola":"Jussara","Titularidade":"José Bueno","Tipo":"Aluguel","Discriminação":"Restante do aluguel","Local do movimento":"Caixa da Escola","Valor":-7.5,"Forma de pagamento":"Dinheiro","Data/Vencimento":"2021-05-04T23:59:59.000Z","Parcelas":1,"Observações":"Foi depositado R$ 800,00 na conta da Jú e o restante tirado do caixa. | Parcela: 1/1","Pago em":"2021-05-04T16:53:56.000Z","Atualizado em":"2021-05-06T12:09:30.020Z","Outras Observações":"","Titular Cheque":"","Conta Cheque":"","Agência Cheque":"","Nº Cheque":"","":""},{"ID":14,"Criado Data/Hora":"2021-05-04T16:52:22.000Z","ATIVO":true,"Situação":"Paga","ES":"Saída","Escola":"Jussara","Titularidade":"José Bueno","Tipo":"Aluguel","Discriminação":"Restante do aluguel","Local do movimento":"Caixa da Escola","Valor":-7.5,"Forma de pagamento":"Dinheiro","Data/Vencimento":"2021-05-04T23:59:59.000Z","Parcelas":1,"Observações":"Foi depositado R$ 800,00 na conta da Jú e o restante tirado do caixa. | Parcela: 1/1","Pago em":"2021-05-04T16:53:56.000Z","Atualizado em":"2021-05-06T12:09:30.020Z","Outras Observações":"","Titular Cheque":"","Conta Cheque":"","Agência Cheque":"","Nº Cheque":"","":""},{"ID":23,"Criado Data/Hora":"2021-05-04T16:52:22.000Z","ATIVO":true,"Situação":"Paga","ES":"Saída","Escola":"Jussara","Titularidade":"José Bueno","Tipo":"Aluguel","Discriminação":"Restante do aluguel","Local do movimento":"Caixa da Escola","Valor":-7.5,"Forma de pagamento":"Dinheiro","Data/Vencimento":"2021-05-04T23:59:59.000Z","Parcelas":1,"Observações":"Foi depositado R$ 800,00 na conta da Jú e o restante tirado do caixa. | Parcela: 1/1","Pago em":"2021-05-04T16:53:56.000Z","Atualizado em":"2021-05-06T12:09:30.020Z","Outras Observações":"","Titular Cheque":"","Conta Cheque":"","Agência Cheque":"","Nº Cheque":"","":""},{"ID":32,"Criado Data/Hora":"2021-05-04T16:52:22.000Z","ATIVO":true,"Situação":"Paga","ES":"Saída","Escola":"Jussara","Titularidade":"José Bueno","Tipo":"Aluguel","Discriminação":"Restante do aluguel","Local do movimento":"Caixa da Escola","Valor":-7.5,"Forma de pagamento":"Dinheiro","Data/Vencimento":"2021-05-04T23:59:59.000Z","Parcelas":1,"Observações":"Foi depositado R$ 800,00 na conta da Jú e o restante tirado do caixa. | Parcela: 1/1","Pago em":"2021-05-04T16:53:56.000Z","Atualizado em":"2021-05-06T12:09:30.020Z","Outras Observações":"","Titular Cheque":"","Conta Cheque":"","Agência Cheque":"","Nº Cheque":""}]
 /**
  * Append Value
  * return result {status: true, updated:[], data: [], msg: ""} Onde updated são os valores atualizados
  **/
-function save({ data , table } = { data: dataTemplate, table: "Banco de dados" }) {
-  
-  var result = {status: true, updated: [], created: [], data: [], msg: ""}
-  
-  let spreadsheet = SpreadsheetApp.getActive();
-  let DB = spreadsheet.getSheetByName(table);
+function save({ data, table } = { data: false, table: "Banco de dados" }) {
+  var result = { status: true, updated: [], created: [], data: [], msg: "" };
 
-  // Cria um novo objeto vazio
-  let ObjTemplate = getObjTable(table);
+  if (data) {
+    let DB = SpreadsheetApp.getActive().getSheetByName(table);
 
-  console.log(ObjTemplate);
+    let IDs = DB.getRange(1, 1, DB.getMaxRows(), 1)
+      .getValues()
+      .map((id) => id[0]);
 
-  // Percorrer o array de objetos
-  data.forEach((el) => {
-    try {
-      // Novo objeto
-      let newObj = JSON.parse(JSON.stringify(ObjTemplate));
-
-      // Mescla os dados, para garantir a ordem dos dados
-      Object.assign(newObj, el);
-
-      // Data de Atualização
-      if(newObj.hasOwnProperty("Atualizado em")){
-        newObj["Atualizado em"] = new Date().getDataHora("en");
+    // Atualizar colunas
+    const updateValues = (obj) => {
+      if (obj.hasOwnProperty("Atualizado em")) {
+        obj["Atualizado em"] = new Date().getDataHora("en");
       }
+      return obj;
+    };
 
-      // Se tem ID deve atualizar
-      if (newObj.ID) {
-        // Retorna a "linha - 1" do ID encontrado
-        let row = DB.getRange(1, 1, DB.getMaxRows(), DB.getMaxColumns())
-          .getValues()
-          .findIndex((val) => val[0] == newObj.ID);
+    // Cria um novo objeto vazio
+    let obj_template = getObjTable(table);
+    let data_to_save = data.reduce(
+      (acc, obj) => {
+        let newObj = JSON.parse(JSON.stringify(obj_template));
+        Object.assign(newObj, obj);
 
-        // Se não encontrado
-        if (row == -1) {
-          // Append Element
-          let values_tmp = Object.values(newObj);
-
-          console.log("ID not found, append Element, ", values_tmp);
-
-          // Random number ID
-          values_tmp[0] = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2);
-          DB.appendRow(values_tmp);
-          result.created.push(values_tmp)
-
+        let is_without_database = newObj["ID"] && IDs.includes(newObj["ID"]);
+        if (is_without_database) {
+          // Update
+          acc.update.push(newObj);
         } else {
-          // Updated Element
-          let values_tmp = Object.values(newObj);
-
-          DB.getRange(row + 1, 1, 1, values_tmp.length).setValues([values_tmp]);
-          result.updated.push(values_tmp)
-
+          // Create
+          acc.create.push(newObj);
         }
-      } else {
+        return acc;
+      },
+      { create: [], update: [] }
+    );
 
-        if(newObj.hasOwnProperty("Criado em")){
-          newObj["Criado em"] = new Date().getDataHora("en");
-        } else {
-          result.msg = "Crie uma coluna 'Criado em' em sua tabela!"
-        }
+    const getRow = (num) => IDs.findIndex((id) => id == num) + 1;
+    // Console update
+    result.updated = data_to_save.update.map((obj) => {
+      obj = updateValues(obj);
+      let val = Object.values(obj);
+      DB.getRange(getRow(obj["ID"]), 1, 1, val.length).setValues([val]);
+      return val;
+    });
 
-        // converter para array
-        let values_tmp = Object.values(newObj);
-
-        // Random number ID
-        values_tmp[0] = (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2);
-        DB.appendRow(values_tmp);
-        result.created.push(values_tmp)
+    // Console create
+    result.created = data_to_save.create.map((obj) => {
+      if (obj.hasOwnProperty("Criado em")) {
+        obj["Criado em"] = new Date().getDataHora("en");
       }
-    } catch (e) {
-      console.log(e);
-      result.msg = `Erro ao atualizar as informações: ${e}`;
-      result.status = false;
-    }
-  });
-  console.log(result.msg)
-  return result
+      let dt = new Date().getTime().toString(36);
+      let rd = Math.random().toString(36).slice(2);
+      obj["ID"] = `${dt}${rd}`;
+
+      let val = Object.values(obj);
+      DB.appendRow(val);
+      return val;
+    });
+  } else {
+    result.status = false;
+    result.msg = "Nenhuma informação para salvar!";
+  }
+
+  console.log(result.msg);
+  return JSON.stringify(result);
 }
 
 /**
