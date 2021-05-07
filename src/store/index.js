@@ -34,9 +34,9 @@ const DataValues = {
     updateFromTable(state) {
       console.log("Função para atualizar banco de dados chamada!");
       Sheet.onGetValues(null, (el) => {
+        console.log("All data", JSON.parse(el))
         console.log("Mensagem do banco: ", el.msg);
-        console.log("Status do banco: ", el.msg);
-        console.log("Data do banco: ", el.data);
+        console.log("Status do banco: ", el.status);
         state.values = el.data;
       });
       // state.values = mock;
