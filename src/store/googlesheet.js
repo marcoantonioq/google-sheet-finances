@@ -36,13 +36,13 @@ function GoogleSheet() {
    * @param {function} call Função de retorno
    * @returns void
    */
-  instance.onGetValues = (params = null, call, fail = func) => {
+  instance.onGetValues = (filter = null, call, fail = func) => {
     try {
       // eslint-disable-next-line no-undef
       return google.script.run
         .withSuccessHandler(call)
         .withFailureHandler(fail)
-        .find(params);
+        .find({ table: "Banco de dados", filter: filter });
     } catch (e) {
       console.group("Erro ao buscar no Google");
       console.groupCollapsed("More...");
