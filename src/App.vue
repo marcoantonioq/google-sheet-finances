@@ -30,7 +30,7 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch("getValueSpreadsheet");
+    this.$store.commit("getValueSpreadsheetToState");
   },
 };
 </script>

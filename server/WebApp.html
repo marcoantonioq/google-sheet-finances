@@ -78,33 +78,9 @@
     <script>
       document.addEventListener(
         "DOMContentLoaded",
-        function () {
-          // google.script.run
-          //   .withSuccessHandler((data) => {
-          //     console.log("Find Filter Jussara => ",data);
-          //   })
-          //   .withFailureHandler(console.log)
-          //   .find({
-          //     table: "Banco de Dados",
-          //     filter: {
-          //       "Escola": "Jussara",
-          //     },
-          //   });
-
-          google.script.run
-            .withSuccessHandler((data) => {
-              console.log("Select ID: 2 => ",data);
-            })
-            .withFailureHandler(console.log)
-            .select("Banco de Dados",2);
-
-          google.script.run
-            .withSuccessHandler((data) => {
-              console.log("Select ID: 2 => ",data);
-            })
-            .withFailureHandler(console.log)
-            .save( );
-
+        () => {
+          // Click home
+          document.querySelector("nav a").click();
         },
         false
       );

@@ -1,12 +1,36 @@
 import { createStore } from "vuex";
 import { Sheet } from "./googlesheet";
-import mock from "./db.mock";
+// import mock from "./db.mock";
 
 const DataValues = {
   state: {
     values: [],
   },
   actions: {
+    async setValues(context, payload) {
+      const val = { payload };
+      context.values = val;
+    },
+    async addValue(context, payload) {
+      const val = { payload };
+      context.values.push(val);
+    },
+    async delValue(context, { key }) {
+      console.log("remover", context, key);
+      context.values.splice(key, 1);
+    },
+    async getValues(context) {
+      context.commit("getValueSpreadsheetToState");
+      return context.state.values;
+    },
+  },
+  getters: {
+    // Campis calculados
+    countValues: (state) => {
+      return state.values.length;
+    },
+  },
+  mutations: {
     insertValueSpreadsheet({ commit }, value) {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -16,43 +40,36 @@ const DataValues = {
         }, 1000);
       });
     },
-    getValueSpreadsheet({ commit }) {
-      Sheet.getValues()
-      commit("setValues", mock);
-      // commit()
+    getValueSpreadsheetToState(state) {
+      // const { values } = state;
+      Sheet.onGetValues(null, (el) => {
+        console.log("Valores retornados do banco: ", el);
+        state.values = el;
+      });
     },
     delValueSpreadSheet({ key }) {
       console.log("Remover key:", key);
     },
   },
-  mutations: {
-    setValues(state, payload) {
-      state.values = payload;
-    },
-    addValue(state, payload) {
-      state.values.push(payload);
-    },
-    delValue(state, { key }) {
-      console.log("remover", state, key);
-      state.values.splice(key, 1);
-    },
+  mounted() {
+    console.log("DB mounted");
   },
 };
 
 const Count = {
   state: {
-    count: 0,
+    notifications: 0,
   },
   mutations: {
-    setCount(state, value) {
-      state.count = value;
+    setNotification(state, value) {
+      state.notifications = value;
     },
   },
 };
 
 const store = createStore({
   modules: {
-    DB: DataValues,
+    tables: DataValues,
     Count: Count,
   },
 });

@@ -36,18 +36,18 @@ function GoogleSheet() {
    * @param {function} call Função de retorno
    * @returns void
    */
-  instance.getValues = (call, fail = func) => {
+  instance.onGetValues = (params = null, call, fail = func) => {
     try {
       // eslint-disable-next-line no-undef
       return google.script.run
         .withSuccessHandler(call)
         .withFailureHandler(fail)
-        .getInfoWebApp();
+        .find(params);
     } catch (e) {
-      console.group("Erro ao buscar no Google")
-      console.groupCollapsed("More...")
-      console.warn("Erro:", e)
-      console.groupEnd()
+      console.group("Erro ao buscar no Google");
+      console.groupCollapsed("More...");
+      console.warn("Erro:", e);
+      console.groupEnd();
     }
   };
 }

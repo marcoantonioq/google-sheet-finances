@@ -27,33 +27,42 @@
       </tr>
     </tbody>
   </table>
+  <h3>{{ countValues }}</h3>
 
   <ButtonLarge
     title="Criar"
     to="{ name: 'saida', params: { name: 'form' } }"
     icon="add"
   />
+
+  <a v-on:click="showValues">Mostrar no console</a>
 </template>
 
 <script>
 import ButtonLarge from "../components/ButtonLarge.vue";
 import Search from "../components/Search.vue";
+
+import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
+
 export default {
   components: {
     ButtonLarge,
     Search,
   },
   computed: {
-    values: {
-      set(v) {
-        this.$store.dispatch("insertValueSpreadsheet", v);
-      },
-      get() {
-        return this.$store.state.DB.values;
-      },
+    ...mapState({
+      values: (state) => state.tables.values,
+    }),
+    ...mapGetters(["countValues"]),
+  },
+  methods: {
+    ...mapActions(["getValues"]),
+    ...mapMutations(["insertValueSpreadsheet"]),
+    showValues() {
+      console.log(this.getValues());
+      console.log(this.values);
     },
   },
-  methods: {},
 };
 </script>
 

@@ -9,11 +9,6 @@ import Form from "../components/Form.vue";
 
 const routes = [
   {
-    path: "",
-    name: "Home",
-    component: Home,
-  },
-  {
     path: "/",
     name: "Home",
     component: Home,
@@ -27,13 +22,12 @@ const routes = [
     path: "/saida",
     component: Saida,
     name: "Saída",
-    children: [
-      {
-        name: "form",
-        path: "/form",
-        component: Form,
-      },
-    ],
+    children: [],
+  },
+  {
+    name: "form",
+    path: "/form",
+    component: Form,
   },
   {
     path: "/transferir",
