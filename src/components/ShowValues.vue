@@ -29,11 +29,7 @@
   </table>
   <h3>{{ limit > countValues ? countValues : limit }} de {{ countValues }}</h3>
 
-  <ButtonLarge
-    title="Criar"
-    to="{ name: 'saida', params: { name: 'form' } }"
-    icon="add"
-  />
+  <ButtonLarge title="Criar" to="/form" icon="add" />
 
   <a v-on:click="showValues">Mostrar no console</a>
 </template>

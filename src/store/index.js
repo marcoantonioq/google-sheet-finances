@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
-import { Sheet } from "./googlesheet";
-// import mock from "./db.mock";
+// import { Sheet } from "./googlesheet";
+import mock from "./db.mock";
 
 const DataValues = {
   state: {
@@ -32,14 +32,14 @@ const DataValues = {
   },
   mutations: {
     updateFromTable(state) {
-      console.log("Função para atualizar banco de dados chamada!");
-      Sheet.onGetValues(null, (el) => {
-        const { data, msg, status } = JSON.parse(el);
-        console.log("Mensagem do banco: ", msg);
-        console.log("Status do banco: ", status);
-        state.values = data;
-      });
-      // state.values = mock;
+      // console.log("Função para atualizar banco de dados chamada!");
+      // Sheet.onGetValues(null, (el) => {
+      //   const { data, msg, status } = JSON.parse(el);
+      //   console.log("Mensagem do banco: ", msg);
+      //   console.log("Status do banco: ", status);
+      //   state.values = data;
+      // });
+      state.values = mock;
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="element">
-    <router-link class="shadow" to="/saida/">
+    <router-link class="shadow" :to="to">
       {{ title }}
       <i class="material-icons"> {{ icon }} </i>
     </router-link>

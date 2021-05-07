@@ -94,6 +94,7 @@ nav {
   text-align: center;
   line-height: 10px;
   user-select: none;
+  height: 100vh;
 
   a {
     background-color: var(--main-color);
@@ -116,7 +117,7 @@ nav {
     &.active-route-exact {
       color: var(--dark);
       background-color: var(--white);
-      border-radius: 23px 0px 0px 23px;
+      border-radius: 19px 0px 0px 18px;
     }
   }
 }
@@ -165,24 +166,12 @@ nav {
   box-shadow: 5px 5px 8px -3px rgba(58, 58, 58, 0.44);
 }
 
-input {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid #9e9e9e;
-  border-radius: 0;
-  outline: none;
-  height: 3rem;
-  width: 100%;
-  font-size: 1rem;
-  margin: 0 0 8px 0;
-}
-
 @media (max-width: 2600px) {
   html {
     font-size: 95%;
   }
   .content {
-    padding: 2rem 3rem;
+    padding: 3rem 4rem;
   }
 }
 
@@ -191,7 +180,7 @@ input {
     font-size: 93.75%;
   }
   .content {
-    padding: 1rem 1.5rem;
+    padding: 1.5rem 2rem;
   }
 }
 
@@ -200,7 +189,7 @@ input {
     font-size: 80%;
   }
   .content {
-    padding: 0.8rem 0.5rem;
+    padding: 1rem 1.5rem;
   }
 }
 </style>
