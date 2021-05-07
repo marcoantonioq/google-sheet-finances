@@ -19,9 +19,8 @@ const DataValues = {
       console.log("remover", context, key);
       context.values.splice(key, 1);
     },
-    async getValues(context) {
-      context.commit("getValueSpreadsheetToState");
-      return context.state.values;
+    async updateValues(context) {
+      context.commit("updateFromTable");
     },
   },
   getters: {
@@ -31,26 +30,12 @@ const DataValues = {
     },
   },
   mutations: {
-    insertValueSpreadsheet({ commit }, value) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          value.date = Date.now();
-          commit("addValue", value);
-          console.log("Resolve: ", resolve);
-        }, 1000);
-      });
-    },
-    getValueSpreadsheetToState(state) {
-      // const { values } = state;
+    updateFromTable(state) {
       Sheet.onGetValues(null, (el) => {
         console.log("Mensagem do banco: ", el.msg);
-        console.log("Status do banco: ", el.status);
+        console.log("Status do banco: ", el.msg);
         state.values = el.data;
       });
-      state.values = mock;
-    },
-    delValueSpreadSheet({ key }) {
-      console.log("Remover key:", key);
     },
   },
   mounted() {

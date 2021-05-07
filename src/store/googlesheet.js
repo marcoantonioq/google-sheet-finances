@@ -27,7 +27,9 @@ function GoogleSheet() {
         .withFailureHandler(fail)
         .pushValueWebApp(value);
     } catch (e) {
-      console.log("Erro GooglePushValues");
+      console.groupCollapsed("Erro ao salvar no Google: More...");
+      console.warn("Erro:", e);
+      console.groupEnd();
     }
   };
 
@@ -44,8 +46,7 @@ function GoogleSheet() {
         .withFailureHandler(fail)
         .find({ table: "Banco de dados", filter: filter });
     } catch (e) {
-      console.group("Erro ao buscar no Google");
-      console.groupCollapsed("More...");
+      console.groupCollapsed("Erro ao buscar no Google: More...");
       console.warn("Erro:", e);
       console.groupEnd();
     }

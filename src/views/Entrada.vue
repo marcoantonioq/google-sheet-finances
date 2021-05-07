@@ -1,11 +1,6 @@
 <template>
   <div class="home">Pagina entrada</div>
-  <div>
-    Loading: {{ loading }}
-    {{ values }}
-    <a @click="push">Add</a> <br />
-    <a @click="remove">Remove</a>
-  </div>
+  <div>Loading: {{ loading }}</div>
 </template>
 
 <script>
@@ -17,27 +12,5 @@ export default {
     };
   },
   components: {},
-  computed: {
-    values: {
-      set(v) {
-        this.$store.dispatch("insertValueSpreadsheet", v);
-      },
-      get() {
-        return this.$store.state.DB.values;
-      },
-    },
-  },
-  methods: {
-    async push() {
-      let value = {
-        created: new Date(),
-        name: "Nome",
-      };
-      this.values = value;
-    },
-    async remove() {
-      this.$store.commit("delValue", { key: 0 });
-    },
-  },
 };
 </script>

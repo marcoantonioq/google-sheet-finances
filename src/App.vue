@@ -30,7 +30,7 @@
 <script>
 export default {
   mounted() {
-    this.$store.commit("getValueSpreadsheetToState");
+    this.$store.commit("updateFromTable");
   },
 };
 </script>

@@ -27,7 +27,7 @@
       </tr>
     </tbody>
   </table>
-  <h3>{{limit}} de {{ countValues }}</h3>
+  <h3>{{ limit > countValues ? countValues : limit }} de {{ countValues }}</h3>
 
   <ButtonLarge
     title="Criar"
@@ -42,7 +42,7 @@
 import ButtonLarge from "../components/ButtonLarge.vue";
 import Search from "../components/Search.vue";
 
-import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -61,8 +61,7 @@ export default {
     ...mapGetters(["countValues"]),
   },
   methods: {
-    ...mapActions(["getValues"]),
-    ...mapMutations(["insertValueSpreadsheet"]),
+    ...mapActions(["updateValues"]),
     showValues() {
       console.log(this.getValues());
       console.log(this.values);
