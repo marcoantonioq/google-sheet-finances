@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="log">FISK</div>
+    <div class="logo">FISK</div>
     <router-link to="/">
       <i class="material-icons">home</i>
       Home
@@ -102,6 +102,8 @@ nav {
   flex-direction: column;
   height: 100vh;
   box-shadow: none;
+  overflow: auto;
+  grid-area: nav;
 
   a {
     background-color: var(--main-color);
@@ -110,15 +112,18 @@ nav {
     display: flex;
     flex-direction: column;
     font-weight: bold;
-    height: 78px;
     justify-content: center;
     margin: 1.5rem 0;
     margin-left: 5px;
-    padding: 0 0.2rem;
+    padding: 0px;
     text-decoration: none;
+    min-height: 65px;
 
     i.material-icons {
       font-size: 2.7rem;
+      height: 44px;
+      position: relative;
+      top: -8px;
     }
 
     &.active-route-exact {
@@ -132,15 +137,17 @@ nav {
 #app {
   display: grid;
   grid-template-columns: 86px 1fr;
+  grid-template-areas: "nav content";
 }
 .content {
+  grid-area: content;
   padding: 0.5rem 1rem;
   overflow: auto;
 }
 
-.log {
+.logo {
   font-size: 2.5rem;
-  margin-top: 20px;
+  margin: 1.5rem auto;
   font-size: 2.5rem;
   color: var(--white);
   font-weight: 900;
@@ -194,6 +201,37 @@ nav {
   }
   .content {
     padding: 1rem 1.5rem;
+  }
+}
+//
+@media (max-width: 600px) {
+  #app {
+    display: grid;
+    // grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 70px;
+    grid-template-areas:
+      "content"
+      "nav";
+  }
+  nav {
+    flex-direction: row;
+    height: 70px;
+    align-self: stretch;
+
+    .logo {
+      display: none;
+    }
+    a {
+      height: auto;
+      width: 100%;
+      &.active-route-exact {
+        color: var(--dark);
+        background-color: var(--main-color);
+        border-radius: 0px 0px 0px 0px;
+        left: 0;
+      }
+    }
   }
 }
 

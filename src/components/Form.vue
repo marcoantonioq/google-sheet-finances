@@ -1,18 +1,6 @@
 <template>
   <form id="form" name="DB">
-    <div class="row">
-      <div class="col s12">
-        <div class="input-field inline col s12">
-          <input id="email_inline" type="email" class="validate" />
-          <label for="email_inline">Email</label>
-          <span class="helper-text" data-error="wrong" data-success="right">
-            Helper text
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 
+    
     <div class="input-field">
       <i class="material-icons prefix">keyboard_tab</i>
       <input
@@ -24,10 +12,8 @@
         required
         autocomplete="off"
       />
-      <label for="tipo"
-        >Tipo
-        <small>(Ex. mensalidades, água, aluguel, manutenção)</small></label
-      >
+      <label for="tipo">Tipo</label>
+      <small class="help"> {{ getHelp("tipo") }}</small>
     </div>
     <div class="input-field">
       <i class="material-icons prefix">description</i>
@@ -39,10 +25,8 @@
         required
         autocomplete="off"
       />
-      <label for="disc"
-        >Discriminação
-        <small>(O que se refere à entrada. Ex: 1° mensalidade)</small>
-      </label>
+      <label for="disc">Discriminação</label>
+      <small class="help"> {{ getHelp("disc") }}</small>
     </div>
 
     <div class="input-field">
@@ -56,6 +40,7 @@
         autocomplete="off"
       />
       <label for="local_movimento">Local de movimento</label>
+      <small class="help"> {{ getHelp("local_movimento") }}</small>
     </div>
 
     <div class="input-field">
@@ -73,6 +58,7 @@
       <label for="valor" data-error="Ex: 200,00"
         >Valor {{ this.DataSets.es }} (R$)<small></small>
       </label>
+      <small class="help"> {{ getHelp("valor") }}</small>
     </div>
 
     <div class="input-field">
@@ -86,6 +72,7 @@
         autocomplete="off"
       />
       <label for="forma_pagamento">Forma de pagamento</label>
+      <small class="help"> {{ getHelp("forma_pagamento") }}</small>
     </div>
 
     <div class="input-field">
@@ -100,6 +87,7 @@
         autocomplete="off"
       />
       <label for="vencimento">Vencimento <small>(Data)</small> </label>
+      <small class="help"> {{ getHelp("vencimento") }}</small>
     </div>
 
     <div class="input-field">
@@ -109,11 +97,12 @@
         :required="updating"
         class="validate"
         id="pago"
-        v-model="DataSets.pago_em"
+        v-model="DataSets.Pago_em"
         type="date"
         autocomplete="off"
       />
       <label for="pago">Pago em <small>(Data)</small> </label>
+      <small class="help"> {{ getHelp("Pago_em") }}</small>
     </div>
 
     <div class="input-field launch">
@@ -126,7 +115,8 @@
         min="1"
         autocomplete="off"
       />
-      <label for="parcelas">Parcela(s): {{ parcelado }} </label>
+      <label for="parcelas">Parcela(s): </label>
+      <small class="help"> {{ getHelp("Parcelas") }}</small>
     </div>
 
     <div class="input-field launch">
@@ -139,14 +129,12 @@
         autocomplete="off"
       />
       <label for="obs"
-        >Observações <small>(Agência / Conta / Nº Cheque)</small></label
+        >Observações
+        <small class="help">(Agência / Conta / Nº Cheque)</small></label
       >
     </div>
 
     <div class="row">
-      <div class="col s12 m6">
-        {{ textoPagamento() }}
-      </div>
       <div class="col s12 m6">
         <button
           v-on:click.prevent.stop="salvar"
@@ -158,7 +146,7 @@
           <i class="material-icons right">save</i>
         </button>
       </div>
-    </div> -->
+    </div>
   </form>
 </template>
 
@@ -166,12 +154,11 @@
 export default {
   data() {
     return {
+      tipo: "Saída",
       DataSets: {
         row: "",
         datetime: "",
         ativo: "true",
-        status:
-          '=IF(AND(ISDATE( INDEX(A:Z; ROW(); 16) )); "Paga"; IF(INDEX(A:Z; ROW(); 13) < TODAY() ;"Vencido";"À vencer"))',
         es: "",
         escola: "",
         titular: "",
@@ -186,9 +173,49 @@ export default {
         pago_em: "",
         updated: "",
       },
+      help: {
+        Entrada: {
+          datetime: "",
+          status: "",
+          escola: "Selecione a escola onde o dinheiro está entrando",
+          titular: "Nome do aluno/cliente que está pagando",
+          tipo: "Selecione o tipo de entrada",
+          disc: "Detalhamento do tipo de entrada",
+          local_movimento: "Selecione o local que o valor está entrando",
+          valor: "Digite o valor que está entrando",
+          forma_pagamento: "Selecione a forma de pagamento",
+          vencimento: "",
+          parcelas: "Quantidade de parcelas",
+          obs: "Informação relevante para lembrar sobre esse recebimento",
+          pago_em: "",
+          updated: "",
+        },
+        Saída: {
+          datetime: "",
+          ativo: "true",
+          es: "",
+          escola: "Selecione a escola onde o dinheiro está saindo",
+          titular: "Nome da empresa/pessoa que está recebendo",
+          tipo: "Selecione o tipo de saída",
+          disc: "Detalhamento do tipo de saída",
+          local_movimento: "Selecione o local onde o valor está saindo",
+          valor: "Digite o valor que está saindo",
+          forma_pagamento: "Selecione a forma de pagamento",
+          vencimento: "",
+          parcelas: "Quantidade de parcelas",
+          obs: "Informação relevante para lembrar sobre esse pagamento",
+          pago_em: "",
+          updated: "",
+        },
+      },
       updating: false,
       message: [],
     };
+  },
+  methods: {
+    getHelp(title) {
+      return this.help[this.tipo][title];
+    },
   },
   watch: {
     "DataSets.escola": function (el) {

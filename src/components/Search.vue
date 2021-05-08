@@ -20,6 +20,7 @@
 <script>
 export default {
   name: "Search",
+  emits: ["submit"],
   data() {
     return {
       search: "",
@@ -27,9 +28,8 @@ export default {
   },
   methods: {
     submit(event) {
-      if (event.keyCode === 13 || event.type == "click") {
-        console.log("Enviar alteração: ", this.search, event);
-        this.$emit("search", this.search);
+      if (this.search == "" || event.keyCode === 13 || event.type == "click") {
+        this.$emit("submit", this.search);
       }
     },
   },

@@ -13,9 +13,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
     <!--Import Google Icon Font-->
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -33,12 +30,21 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <script>
-      document.addEventListener("DOMContentLoaded", () => {}, false);
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+          var options = null;
+          var elems = document.querySelectorAll("select");
+          var instances = M.FormSelect.init(elems, options);
+        },
+        false
+      );
     </script>
 
-    <style>
-    </style>
-
+    <style></style>
   </body>
 </html>

@@ -1,5 +1,5 @@
 <template>
-  <Search setSearch="setSearch" />
+  <Search @submit="submit" />
 
   <table>
     <thead>
@@ -28,7 +28,7 @@
     </tbody>
   </table>
   <h6>
-    {{ limit > countValues ? countValues : limit }} de
+    {{ data.length > countValues ? countValues : data.length }} de
     {{ countValues }} registros.
   </h6>
 
@@ -40,6 +40,7 @@
 <script>
 import ButtonLarge from "../components/ButtonLarge.vue";
 import Search from "../components/Search.vue";
+import { normalizeString } from "../helpers/utility.js";
 
 import { mapActions, mapState, mapGetters } from "vuex";
 
@@ -66,9 +67,18 @@ export default {
     // ...mapMutations(["paginate"]),
     paginate() {
       this.data = this.values.slice(0, this.limit);
+      if (this.search != "") {
+        let search = normalizeString(this.search.toLocaleLowerCase());
+        this.data = this.data.filter((obj) => {
+          return normalizeString(
+            JSON.stringify(obj).toLocaleLowerCase()
+          ).includes(search);
+        });
+      }
     },
-    setSearch(term) {
-      this.search = term;
+    submit(search) {
+      this.search = search;
+      this.paginate();
     },
   },
   mounted() {

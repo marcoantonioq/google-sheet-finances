@@ -10,6 +10,7 @@
       </p>
     </div>
   </div>
+
   <div class="row">v.1.0.1</div>
 </template>
 
