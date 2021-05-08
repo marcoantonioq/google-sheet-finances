@@ -1,5 +1,5 @@
 <template>
-  <Search />
+  <Search setSearch="setSearch" />
 
   <table>
     <thead>
@@ -13,12 +13,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="value in paginate(limit)" :key="value.ID">
+      <tr v-for="value in data" :key="value.ID">
         <td>
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
         <td>{{ value["Titularidade"] }}</td>
-        <td>{{ value["Valor"] }}</td>
+        <td>R$ {{ value["Valor"] }}</td>
         <td>{{ value["Tipo"] }}</td>
         <td>{{ value["Situação"] }}</td>
         <td>
@@ -27,11 +27,14 @@
       </tr>
     </tbody>
   </table>
-  <h3>{{ limit > countValues ? countValues : limit }} de {{ countValues }}</h3>
+  <h6>
+    {{ limit > countValues ? countValues : limit }} de
+    {{ countValues }} registros.
+  </h6>
 
-  <ButtonLarge title="Criar" to="/form" icon="add" />
-
-  <a v-on:click="showValues">Mostrar no console</a>
+  <div class="row right">
+    <ButtonLarge title="Criar novo registro" to="/form" icon="add" />
+  </div>
 </template>
 
 <script>
@@ -48,6 +51,8 @@ export default {
   data() {
     return {
       limit: 20,
+      search: "",
+      data: [],
     };
   },
   computed: {
@@ -59,12 +64,15 @@ export default {
   methods: {
     ...mapActions(["updateValues"]),
     // ...mapMutations(["paginate"]),
-    showValues() {
-      console.log(this.values);
+    paginate() {
+      this.data = this.values.slice(0, this.limit);
     },
-    paginate(lim_val) {
-      return this.values.slice(0, lim_val);
+    setSearch(term) {
+      this.search = term;
     },
+  },
+  mounted() {
+    this.paginate();
   },
 };
 </script>

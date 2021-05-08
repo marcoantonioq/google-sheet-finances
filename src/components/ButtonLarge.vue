@@ -1,7 +1,9 @@
 <template>
   <div class="element">
     <router-link class="shadow" :to="to">
-      {{ title }}
+      <div class="center-align col s12">
+        {{ title }}
+      </div>
       <i class="material-icons"> {{ icon }} </i>
     </router-link>
   </div>

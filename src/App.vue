@@ -76,25 +76,32 @@ html {
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   line-height: 1.5;
   color: var(--dark);
-  min-height: 100vh;
-  min-width: 100vw;
   letter-spacing: 0.02rem;
+}
+
+html,
+body,
+#app {
+  height: 100vh;
+  width: 100vw;
 }
 
 a {
   text-decoration: none;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 nav {
-  display: flex;
-  flex-direction: column;
   background-color: var(--main-color);
   text-align: center;
   line-height: 10px;
   user-select: none;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  box-shadow: none;
 
   a {
     background-color: var(--main-color);
@@ -124,14 +131,11 @@ nav {
 
 #app {
   display: grid;
-  grid-template-columns: 86px auto;
-  justify-content: stretch;
-  align-items: stretch;
-  height: 100vh;
-  width: 100vw;
+  grid-template-columns: 86px 1fr;
 }
 .content {
   padding: 0.5rem 1rem;
+  overflow: auto;
 }
 
 .log {
@@ -191,5 +195,22 @@ nav {
   .content {
     padding: 1rem 1.5rem;
   }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e30713;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e30713;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 3px;
+  box-shadow: inset 0px -11px 12px #f0f0f0;
 }
 </style>

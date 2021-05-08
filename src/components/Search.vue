@@ -1,18 +1,38 @@
 <template>
-  <div class="input-field col s6">
-    <i class="material-icons prefix"> search </i>
-    <input
-      placeholder="Pesquisar..."
-      type="search"
-      id="gsearch"
-      name="gsearch"
-    />
+  <div class="search">
+    <a @click.prevent="submit($event)">
+      <i class="material-icons"> search </i>
+    </a>
+    <div class="input-field col s6">
+      <input
+        placeholder="Pesquisar..."
+        type="search"
+        id="gsearch"
+        name="gsearch"
+        v-model="search"
+        v-on:change="submit($event)"
+        v-on:keydown="submit($event)"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Search",
+  data() {
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    submit(event) {
+      if (event.keyCode === 13 || event.type == "click") {
+        console.log("Enviar alteração: ", this.search, event);
+        this.$emit("search", this.search);
+      }
+    },
+  },
 };
 </script>
 
@@ -24,7 +44,14 @@ input {
 
 @media (max-width: 720px) {
   .search {
+    display: flex;
     justify-content: flex-start;
+  }
+  a {
+    padding: 4px 9px;
+    i {
+      font-size: 2.5rem;
+    }
   }
 }
 </style>
