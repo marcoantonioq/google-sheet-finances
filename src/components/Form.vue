@@ -1,137 +1,159 @@
 <template>
-  <form id="form" name="DB">
-    
-    <div class="input-field">
-      <i class="material-icons prefix">keyboard_tab</i>
-      <input
-        :disabled="updating"
-        id="tipo"
-        v-model="DataSets.tipo"
-        type="text"
-        class="validate"
-        required
-        autocomplete="off"
-      />
-      <label for="tipo">Tipo</label>
-      <small class="help"> {{ getHelp("tipo") }}</small>
+  <div class="row">
+    <div v-on:click="showhelp = !showhelp" class="icon_help right">
+      <i class="material-icons">help_outline</i>
     </div>
-    <div class="input-field">
-      <i class="material-icons prefix">description</i>
-      <input
-        id="disc"
-        v-model="DataSets.disc"
-        type="text"
-        class="validate"
-        required
-        autocomplete="off"
-      />
-      <label for="disc">Discriminação</label>
-      <small class="help"> {{ getHelp("disc") }}</small>
+  </div>
+  <form id="form" name="Banco de Dados">
+    <div class="row">
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">account_balance</i>
+        <select v-model="value.escola" name="escola">
+          <option value="" disabled selected>Escola</option>
+          <option value="Cidade de Goiás">Cidade de Goías</option>
+          <option value="Itaberaí">Itaberaí</option>
+          <option value="Jussara">Jussara</option>
+        </select>
+        <small v-show="showhelp" class="help"> {{ getHelp("escola") }}</small>
+      </div>
+
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">keyboard_tab</i>
+        <select v-model="value.tipo" name="tipo">
+          <option value="" disabled selected>tipo</option>
+        </select>
+        <small v-show="showhelp" class="help"> {{ getHelp("tipo") }}</small>
+      </div>
     </div>
 
-    <div class="input-field">
-      <i class="material-icons prefix">card_travel</i>
-      <input
-        id="local_movimento"
-        v-model="DataSets.local_movimento"
-        type="text"
-        class="y"
-        required
-        autocomplete="off"
-      />
-      <label for="local_movimento">Local de movimento</label>
-      <small class="help"> {{ getHelp("local_movimento") }}</small>
+    <div class="row">
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">description</i>
+        <input
+          id="disc"
+          v-model="value.disc"
+          type="text"
+          class="validate"
+          required
+          autocomplete="off"
+          placeholder="Discriminação"
+        />
+        <small v-show="showhelp" class="help"> {{ getHelp("disc") }}</small>
+      </div>
+
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">card_travel</i>
+        <select v-model="value.local_movimento" name="local_movimento">
+          <option value="" disabled selected>Caixa da escola</option>
+        </select>
+        <small v-show="showhelp" class="help">
+          {{ getHelp("local_movimento") }}</small
+        >
+      </div>
     </div>
 
-    <div class="input-field">
-      <i class="material-icons prefix">attach_money</i>
-      <input
-        id="valor"
-        type="text"
-        @blur="checkValor"
-        v-model="DataSets.valor"
-        class="pagamento validate"
-        pattern="^(-)?\d*(,)?\d{1,2}"
-        required
-        autocomplete="off"
-      />
-      <label for="valor" data-error="Ex: 200,00"
-        >Valor {{ this.DataSets.es }} (R$)<small></small>
-      </label>
-      <small class="help"> {{ getHelp("valor") }}</small>
+    <div class="row">
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">attach_money</i>
+        <input
+          id="valor"
+          type="text"
+          @blur="checkValor"
+          v-model="value.valor"
+          class="pagamento validate"
+          pattern="^(-)?\d*(,)?\d{1,2}"
+          required
+          autocomplete="off"
+          placeholder="Valor (R$)"
+        />
+        <small v-show="showhelp" class="help"> {{ getHelp("valor") }}</small>
+      </div>
+
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">card_membership</i>
+        <select v-model="value.forma_pagamento" name="forma_pagamento">
+          <option value="" disabled selected>Dinheiro</option>
+        </select>
+        <small v-show="showhelp" class="help">
+          {{ getHelp("forma_pagamento") }}</small
+        >
+      </div>
     </div>
 
-    <div class="input-field">
-      <i class="material-icons prefix">card_membership</i>
-      <input
-        id="forma_pagamento"
-        v-model="DataSets.forma_pagamento"
-        type="text"
-        class="pagamento validate"
-        required
-        autocomplete="off"
-      />
-      <label for="forma_pagamento">Forma de pagamento</label>
-      <small class="help"> {{ getHelp("forma_pagamento") }}</small>
+    <div class="row">
+      <div class="col s12 m2 input-field botton10">Vencimento:</div>
+      <div class="col s12 m10">
+        <div class="input-field">
+          <i class="material-icons prefix">date_range</i>
+          <input
+            :disabled="updating"
+            class="validate"
+            id="vencimento"
+            v-model="value.vencimento"
+            type="date"
+            required
+            autocomplete="off"
+            placeholder="Vencimento"
+          />
+          <small v-show="showhelp" class="help">
+            {{ getHelp("vencimento") }}</small
+          >
+        </div>
+      </div>
     </div>
 
-    <div class="input-field">
-      <i class="material-icons prefix">date_range</i>
-      <input
-        :disabled="updating"
-        class="validate"
-        id="vencimento"
-        v-model="DataSets.vencimento"
-        type="date"
-        required
-        autocomplete="off"
-      />
-      <label for="vencimento">Vencimento <small>(Data)</small> </label>
-      <small class="help"> {{ getHelp("vencimento") }}</small>
+    <div class="row">
+      <div class="col s12 m2 input-field botton10">Pago em:</div>
+      <div class="col s12 m10">
+        <div class="input-field">
+          <i class="material-icons prefix">date_range</i>
+          <input
+            :disabled="!updating"
+            :required="updating"
+            class="validate"
+            id="pago"
+            v-model="value.Pago_em"
+            type="date"
+            autocomplete="off"
+          />
+          <small v-show="showhelp" class="help">
+            {{ getHelp("Pago_em") }}</small
+          >
+        </div>
+      </div>
     </div>
 
-    <div class="input-field">
-      <i class="material-icons prefix">date_range</i>
-      <input
-        :disabled="!updating"
-        :required="updating"
-        class="validate"
-        id="pago"
-        v-model="DataSets.Pago_em"
-        type="date"
-        autocomplete="off"
-      />
-      <label for="pago">Pago em <small>(Data)</small> </label>
-      <small class="help"> {{ getHelp("Pago_em") }}</small>
-    </div>
+    <div class="row">
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">add</i>
+        <input
+          :disabled="updating"
+          id="parcelas"
+          v-model="value.parcelas"
+          type="number"
+          min="1"
+          autocomplete="off"
+        />
+        <label for="parcelas">Parcela(s): </label>
+        <small v-show="showhelp" class="help"> {{ getHelp("Parcelas") }}</small>
+      </div>
 
-    <div class="input-field launch">
-      <i class="material-icons prefix">add</i>
-      <input
-        :disabled="updating"
-        id="parcelas"
-        v-model="DataSets.parcelas"
-        type="number"
-        min="1"
-        autocomplete="off"
-      />
-      <label for="parcelas">Parcela(s): </label>
-      <small class="help"> {{ getHelp("Parcelas") }}</small>
-    </div>
-
-    <div class="input-field launch">
-      <i class="material-icons prefix">group</i>
-      <input
-        class="obs"
-        id="obs"
-        v-model="DataSets.obs"
-        type="text"
-        autocomplete="off"
-      />
-      <label for="obs"
-        >Observações
-        <small class="help">(Agência / Conta / Nº Cheque)</small></label
-      >
+      <div class="input-field col s12 m6">
+        <i class="material-icons prefix">group</i>
+        <input
+          class="obs"
+          id="obs"
+          v-model="value.obs"
+          type="text"
+          autocomplete="off"
+        />
+        <label for="obs"
+          >Observações
+          <small v-show="showhelp" class="help">
+            {{ getHelp("") }}</small
+          ></label
+        >
+      </div>
     </div>
 
     <div class="row">
@@ -148,14 +170,21 @@
       </div>
     </div>
   </form>
+
+  <ShowValues />
 </template>
 
 <script>
+import ShowValues from "../components/ShowValues";
 export default {
+  components: {
+    ShowValues,
+  },
   data() {
     return {
       tipo: "Saída",
-      DataSets: {
+      showhelp: false,
+      value: {
         row: "",
         datetime: "",
         ativo: "true",
@@ -218,9 +247,29 @@ export default {
     },
   },
   watch: {
-    "DataSets.escola": function (el) {
+    "value.escola": function (el) {
       console.log(el);
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#form {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.help {
+  color: var(--red);
+  font-size: 1rem;
+}
+
+.botton10 {
+  bottom: -10px;
+}
+
+.icon_help {
+  cursor: pointer;
+  user-select: none;
+}
+</style>

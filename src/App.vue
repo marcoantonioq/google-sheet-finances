@@ -225,6 +225,8 @@ nav {
     a {
       height: auto;
       width: 100%;
+      margin: 0;
+
       &.active-route-exact {
         color: var(--dark);
         background-color: var(--main-color);
