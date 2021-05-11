@@ -1,5 +1,10 @@
 function doGet(e) {
   const services = {
+    datasets: () => {
+      return ContentService.createTextOutput(
+        JSON.stringify(testeFilterDS())
+      ).setMimeType(ContentService.MimeType.JSON);
+    },
     info: (e) => {
       console.log(e.parameter.action);
       var myJSON = JSON.stringify({

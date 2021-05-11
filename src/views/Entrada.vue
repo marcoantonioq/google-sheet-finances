@@ -1,9 +1,12 @@
 <template>
   <Search @submit="submit" />
-  <ShowValues :values="store.getters.entradas()" />
+  <ShowValues
+    :search="search"
+    :values="store.getters.find({ ES: 'Entrada' })"
+  />
 
   <div class="row right">
-    <ButtonLarge title="Criar novo registro" to="/form/entrada" icon="add" />
+    <ButtonLarge title="Criar novo registro" to="/form/Entrada" icon="add" />
   </div>
 </template>
 

@@ -37,15 +37,14 @@ const getters = {
   counterSquared() {
     return state.counter * state.counter;
   },
-  entradas() {
-    return state.values.filter((obj) => {
-      return obj["ES"] == "Entrada";
-    });
-  },
-  saidas() {
-    return state.values.filter((obj) => {
-      return obj["ES"] == "Saída";
-    });
+  find(filter) {
+    if (filter) {
+      return state.values;
+    } else {
+      return state.values.filter((obj) => {
+        return Object.entries(filter).every(([col, val]) => obj[col] == val);
+      });
+    }
   },
 };
 

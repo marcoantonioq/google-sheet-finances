@@ -2,7 +2,6 @@ module.exports = [
   {
     ID: 2,
     "Criado em": "2021-02-04T14:27:34.000Z",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -26,7 +25,6 @@ module.exports = [
   {
     ID: 3,
     "Criado em": "2021-05-04T13:26:56.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -50,7 +48,6 @@ module.exports = [
   {
     ID: 4,
     "Criado em": "2021-05-04T13:32:19.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -74,7 +71,6 @@ module.exports = [
   {
     ID: 5,
     "Criado em": "2021-05-04T16:52:22.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Jussara",
@@ -99,7 +95,6 @@ module.exports = [
   {
     ID: 6,
     "Criado em": "2021-05-04T17:47:45.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -123,7 +118,6 @@ module.exports = [
   {
     ID: 7,
     "Criado em": "2021-05-04T17:49:34.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -147,7 +141,6 @@ module.exports = [
   {
     ID: 8,
     "Criado em": "2021-05-05T11:59:51.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -171,7 +164,6 @@ module.exports = [
   {
     ID: 9,
     "Criado em": "2021-05-05T13:32:32.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -195,7 +187,6 @@ module.exports = [
   {
     ID: 10,
     "Criado em": "2021-05-06T11:51:46.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -219,7 +210,6 @@ module.exports = [
   {
     ID: 11,
     "Criado em": "2021-02-04T14:27:34.000Z",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -243,7 +233,6 @@ module.exports = [
   {
     ID: 12,
     "Criado em": "2021-05-04T13:26:56.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -267,7 +256,6 @@ module.exports = [
   {
     ID: 13,
     "Criado em": "2021-05-04T13:32:19.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -291,7 +279,6 @@ module.exports = [
   {
     ID: 14,
     "Criado em": "",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Saída",
     Escola: "Jussara",
@@ -316,7 +303,6 @@ module.exports = [
   {
     ID: 15,
     "Criado em": "2021-05-04T17:47:45.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -340,7 +326,6 @@ module.exports = [
   {
     ID: 16,
     "Criado em": "2021-05-04T17:49:34.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -364,7 +349,6 @@ module.exports = [
   {
     ID: 17,
     "Criado em": "2021-05-05T11:59:51.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -388,7 +372,6 @@ module.exports = [
   {
     ID: 18,
     "Criado em": "2021-05-05T13:32:32.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -412,7 +395,6 @@ module.exports = [
   {
     ID: 19,
     "Criado em": "2021-05-06T11:51:46.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -436,7 +418,6 @@ module.exports = [
   {
     ID: 20,
     "Criado em": "2021-02-04T14:27:34.000Z",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -460,7 +441,6 @@ module.exports = [
   {
     ID: 21,
     "Criado em": "2021-05-04T13:26:56.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -484,7 +464,6 @@ module.exports = [
   {
     ID: 22,
     "Criado em": "2021-05-04T13:32:19.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -508,7 +487,6 @@ module.exports = [
   {
     ID: 23,
     "Criado em": "",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Saída",
     Escola: "Jussara",
@@ -533,7 +511,6 @@ module.exports = [
   {
     ID: 24,
     "Criado em": "2021-05-04T17:47:45.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -557,7 +534,6 @@ module.exports = [
   {
     ID: 25,
     "Criado em": "2021-05-04T17:49:34.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -581,7 +557,6 @@ module.exports = [
   {
     ID: 26,
     "Criado em": "2021-05-05T11:59:51.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -605,7 +580,6 @@ module.exports = [
   {
     ID: 27,
     "Criado em": "2021-05-05T13:32:32.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -629,7 +603,6 @@ module.exports = [
   {
     ID: 28,
     "Criado em": "2021-05-06T11:51:46.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -653,7 +626,6 @@ module.exports = [
   {
     ID: 29,
     "Criado em": "2021-02-04T14:27:34.000Z",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -677,7 +649,6 @@ module.exports = [
   {
     ID: 30,
     "Criado em": "2021-05-04T13:26:56.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -701,7 +672,6 @@ module.exports = [
   {
     ID: 31,
     "Criado em": "2021-05-04T13:32:19.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -725,7 +695,6 @@ module.exports = [
   {
     ID: 32,
     "Criado em": "",
-    ATIVO: true,
     Situação: "À vencer",
     ES: "Saída",
     Escola: "Jussara",
@@ -750,7 +719,6 @@ module.exports = [
   {
     ID: 33,
     "Criado em": "2021-05-04T17:47:45.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -774,7 +742,6 @@ module.exports = [
   {
     ID: 34,
     "Criado em": "2021-05-04T17:49:34.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Cidade de Goiás",
@@ -798,7 +765,6 @@ module.exports = [
   {
     ID: 35,
     "Criado em": "2021-05-05T11:59:51.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",
@@ -822,7 +788,6 @@ module.exports = [
   {
     ID: 36,
     "Criado em": "2021-05-05T13:32:32.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Entrada",
     Escola: "Itaberaí",
@@ -846,7 +811,6 @@ module.exports = [
   {
     ID: 37,
     "Criado em": "2021-05-06T11:51:46.000Z",
-    ATIVO: true,
     Situação: "Paga",
     ES: "Saída",
     Escola: "Cidade de Goiás",

@@ -184,7 +184,7 @@ export default {
     ShowValues,
   },
   props: {
-    es: String,
+    tipo: String,
   },
   setup() {
     const store = inject("store");
@@ -194,7 +194,6 @@ export default {
   },
   data() {
     return {
-      tipo: "Saída",
       showhelp: false,
       search: "",
       updating: false,
@@ -202,7 +201,6 @@ export default {
       value: {
         row: "",
         datetime: "",
-        ativo: "true",
         es: "",
         escola: "",
         titular: "",
@@ -256,7 +254,15 @@ export default {
   },
   methods: {
     getHelp(title) {
-      return this.help[this.tipo][title];
+      // console.log(this.tipo);
+      try {
+        return this.help[this.tipo][title];
+      } catch (error) {
+        error;
+      }
+    },
+    salvar() {
+      console.log("Valvar:", this.value);
     },
   },
   watch: {
@@ -266,19 +272,15 @@ export default {
   },
   computed: {
     paginate: function () {
+      console.log(this.tipo);
       if (this.search == "") {
         return [];
       } else {
-        const values =
-          this.es == "entrada"
-            ? this.store.getters.entradas()
-            : this.store.getters.saidas();
-        return values;
+        return this.store.getters.find({ ES: this.tipo });
       }
     },
   },
   mounted() {
-    this.tipo = this.es == "entrada" ? "Entrada" : "Saída";
     var options = null;
     var elems = document.querySelectorAll("select");
     // eslint-disable-next-line no-undef
