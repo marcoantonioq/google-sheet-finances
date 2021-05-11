@@ -1,3 +1,5 @@
+import mock from "./db.mock";
+
 function GoogleSheet() {
   var instance = {};
 
@@ -45,6 +47,29 @@ function GoogleSheet() {
         .withSuccessHandler(call)
         .withFailureHandler(fail)
         .find({ table: "Banco de dados", filter: filter });
+    } catch (e) {
+      console.groupCollapsed("Erro ao buscar no Google: More...");
+      console.warn("Erro:", e);
+      console.groupEnd();
+
+      // Mock values
+      console.info("!!!! Dados Mock !!!!");
+      call(JSON.stringify({ status: false, msg: "Dados Mock", data: mock }));
+    }
+  };
+
+  /**
+   * Pega dados de DataSets
+   * @param {function} call Função de retorno
+   * @returns void
+   */
+  instance.onGetDataSets = (call, fail = func) => {
+    try {
+      // eslint-disable-next-line no-undef
+      return google.script.run
+        .withSuccessHandler(call)
+        .withFailureHandler(fail)
+        .FieldsDataSets();
     } catch (e) {
       console.groupCollapsed("Erro ao buscar no Google: More...");
       console.warn("Erro:", e);

@@ -1,10 +1,12 @@
 import { reactive } from "vue";
-import mock from "./db.mock";
+
+import { Sheet } from "./googlesheet";
 
 const state = reactive({
   counter: 0,
   notifications: 0,
   values: [],
+  ds: [],
 });
 
 const methods = {
@@ -20,16 +22,23 @@ const methods = {
     return true;
   },
   async updateValuesFromTables() {
-    console.log("Função async para atualizar banco de dados chamada!");
-    // console.log("Função para atualizar banco de dados chamada!");
-    // Sheet.onGetValues(null, (el) => {
-    //   const { data, msg, status } = JSON.parse(el);
-    //   console.log("Mensagem do banco: ", msg);
-    //   console.log("Status do banco: ", status);
-    //   state.values = data;
-    // });
-    state.values = mock;
+    Sheet.onGetValues(null, (el) => {
+      const { data, msg, status } = JSON.parse(el);
+      console.log("Mensagem do banco: ", msg);
+      console.log("Status do banco: ", status);
+      state.values = data;
+    });
+
     return true;
+  },
+  async updateDataSetsFromTables() {
+    Sheet.onGetDataSets(null, (el) => {
+      const { data, msg, status } = JSON.parse(el);
+      console.log("Mensagem do banco: ", msg);
+      console.log("Status do banco: ", status);
+      state.ds = data;
+    });
+    console.log("Dados datasets: ", state.ds);
   },
 };
 

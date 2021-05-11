@@ -34,6 +34,7 @@ export default {
   setup() {
     provide("store", store);
     store.methods.updateValuesFromTables();
+    store.methods.updateDataSetsFromTables();
   },
   created() {},
 };

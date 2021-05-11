@@ -2,7 +2,7 @@
  * Teste Filter
  * return array
  **/
-function testeFilterDS() {
+function FieldsDataSets() {
   const ds = JSON.parse(
     find({
       table: "Tipos de Valores",
@@ -16,13 +16,24 @@ function testeFilterDS() {
     })
   );
 
-  const result = db.data.reduce((acc, obj) => {
-    if (acc.hasOwnProperty("Titularidade")) {
-      acc["Titularidade"] = [];
-    }
-    acc.push(obj["Titularidade"]);
-  }, {});
+  getEntries = function (field) {
+    let result = db.data.reduce((acc, o) => {
+      acc[o[field]] = {
+        Escolas: o["Escola"],
+        Campo: field,
+        "Entrada/Saída": o["ES"],
+        Texto: o[field],
+      };
+      return acc;
+    }, {});
+    return Object.entries(result).map((obj) => obj[1]);
+  };
 
-  console.log(result);
-  // return result;
+  // Titularidades
+  ds.data = ds.data.concat(getEntries("Titularidade"));
+
+  // Discriminações
+  ds.data = ds.data.concat(getEntries("Discriminação"));
+
+  return JSON.stringify(ds);
 }

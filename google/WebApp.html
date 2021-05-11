@@ -97,6 +97,12 @@
         () => {
           // Click home
           document.querySelector("nav a").click();
+
+          return google.script.run
+            .withSuccessHandler((result) => {
+              console.log(JSON.parse(result));
+            })
+            .FieldsDataSets();
         },
         false
       );

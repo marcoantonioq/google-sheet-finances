@@ -1,21 +1,29 @@
 # google-sheet-finances
 
-## Project setup
+Este projeto tem a finalidade de integrar as tecnologias VUE com o google script e WebApp. Os relatórios são gerados com o Google Data Studio.
+
+## Projeto em desenvolvimento
+
+### Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
-### Run your unit tests
+#### Run your unit tests
+
 ```
 npm run test:unit
 ```
 
 # PrintSC
+
 <p align="center" width="100%">
     <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/printsc.png"> 
 </p>
@@ -23,7 +31,6 @@ npm run test:unit
 <p align="center" width="100%">
     <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/sheet.png"> 
 </p>
-
 
 # Back-end
 
@@ -37,6 +44,7 @@ function doGet(e) {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
     return pageData;
-  
+
 ```
+
 [Leia mais ...](https://github.com/marcoantonioq/google-sheet-finances/blob/main/google/)
