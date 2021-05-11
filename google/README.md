@@ -1,3 +1,9 @@
+# Google Data Studio
+
+<p align="center" width="100%">
+    <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/dashboard.png"> 
+</p>
+
 # Back-end
 
 ```js
@@ -12,7 +18,7 @@ function doGet(e) {
 
 ```
 
-# GetValues
+# CRUD
 
 ```js
 /**
