@@ -139,6 +139,13 @@ nav {
   }
 }
 
+.red {
+  background-color: var(--red) !important;
+}
+.green {
+  background-color: var(--green) !important;
+}
+
 #app {
   display: grid;
   grid-template-columns: 86px 1fr;
@@ -180,6 +187,34 @@ nav {
 
 .shadow {
   box-shadow: 5px 5px 8px -3px rgba(58, 58, 58, 0.44);
+}
+
+/* label color */
+.input-field label {
+  color: #000 !important;
+}
+/* label focus color */
+.input-field input[type="text"]:focus + label {
+  color: #000 !important;
+}
+/* label underline focus color */
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid #000 !important;
+  box-shadow: none !important;
+}
+/* valid color */
+.input-field input[type="text"].valid {
+  border-bottom: 1px solid #000 !important;
+  box-shadow: none !important;
+}
+/* invalid color */
+.input-field input[type="text"].invalid {
+  border-bottom: 1px solid #000 !important;
+  box-shadow: none !important;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #000 !important;
 }
 
 @media (max-width: 2600px) {

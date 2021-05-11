@@ -6,7 +6,7 @@
         <th>Titularidade</th>
         <th>Valor</th>
         <th>Tipo</th>
-        <th>Situação</th>
+        <th>Pago</th>
         <th>Ações</th>
       </tr>
     </thead>
@@ -16,11 +16,18 @@
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
         <td>{{ value["Titularidade"] }}</td>
-        <td>R$ {{ value["Valor"] }}</td>
+        <td>R$ {{ Math.abs(value["Valor"]) }}</td>
         <td>{{ value["Tipo"] }}</td>
-        <td>{{ value["Situação"] }}</td>
         <td>
-          <a class="shadow">Pagar</a>
+          {{
+            value["Pago em"]
+              ? moment(value["Pago em"]).format("DD/MM HH:MM")
+              : ""
+          }}
+        </td>
+        <td>
+          <a v-if="!value['Pago em']" class="shadow"> Pagar </a>
+          <a v-if="value['Pago em']" class="shadow"> Cancelar </a>
         </td>
       </tr>
     </tbody>
@@ -66,8 +73,6 @@ export default {
           );
           return str_obj.includes(
             normalizeString(this.search.toLocaleLowerCase())
-              .split(" ")
-              .every((item) => str_obj.includes(item))
           );
         });
       }

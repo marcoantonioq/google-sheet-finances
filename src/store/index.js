@@ -47,13 +47,9 @@ const getters = {
     return state.counter * state.counter;
   },
   find(filter) {
-    if (filter) {
-      return state.values;
-    } else {
-      return state.values.filter((obj) => {
-        return Object.entries(filter).every(([col, val]) => obj[col] == val);
-      });
-    }
+    return state.values.filter((obj) => {
+      return Object.entries(filter).every(([col, val]) => obj[col] == val);
+    });
   },
 };
 
