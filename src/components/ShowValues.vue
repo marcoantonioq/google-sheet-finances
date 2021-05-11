@@ -1,6 +1,4 @@
 <template>
-  <Search @submit="submit" />
-
   <table>
     <thead>
       <tr>
@@ -13,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="value in data" :key="value.ID">
+      <tr v-for="value in paginate" :key="value.ID">
         <td>
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
@@ -27,62 +25,53 @@
       </tr>
     </tbody>
   </table>
-  <h6>
-    {{ data.length > countValues ? countValues : data.length }} de
-    {{ countValues }} registros.
-  </h6>
-
-  <div class="row right">
-    <ButtonLarge title="Criar novo registro" to="/form" icon="add" />
+  <div class="row">
+    <div class="col s12 m8">
+      <h6>{{ paginate.length }} de {{ values.length }}</h6>
+    </div>
+    <div class="col s12 m4">
+      <div class="input-field">
+        <select v-model="limit">
+          <option value="20">20 registros</option>
+          <option value="50">50 registros</option>
+          <option value="100">100 registros</option>
+          <option value="99999">Todos registros</option>
+        </select>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import ButtonLarge from "../components/ButtonLarge.vue";
-import Search from "../components/Search.vue";
 import { normalizeString } from "../helpers/utility.js";
 
-import { mapActions, mapState, mapGetters } from "vuex";
-
 export default {
-  components: {
-    ButtonLarge,
-    Search,
+  props: {
+    values: { Type: Array, required: true },
+    search: { Type: String, default: "'" },
   },
   data() {
     return {
       limit: 20,
-      search: "",
-      data: [],
     };
   },
   computed: {
-    ...mapState({
-      values: (state) => state.tables.values,
-    }),
-    ...mapGetters(["countValues"]),
-  },
-  methods: {
-    ...mapActions(["updateValues"]),
-    // ...mapMutations(["paginate"]),
-    paginate() {
-      this.data = this.values.slice(0, this.limit);
-      if (this.search != "") {
-        let search = normalizeString(this.search.toLocaleLowerCase());
-        this.data = this.data.filter((obj) => {
-          return normalizeString(
-            JSON.stringify(obj).toLocaleLowerCase()
-          ).includes(search);
+    paginate: function () {
+      if (this.search.trim() == "") {
+        return this.values.slice(0, this.limit);
+      } else {
+        return this.values.slice(0, this.limit).filter((obj) => {
+          let str_obj = normalizeString(
+            JSON.stringify(Object.values(obj)).toLocaleLowerCase()
+          );
+          return str_obj.includes(
+            normalizeString(this.search.toLocaleLowerCase())
+              .split(" ")
+              .every((item) => str_obj.includes(item))
+          );
         });
       }
     },
-    submit(search) {
-      this.search = search;
-      this.paginate();
-    },
-  },
-  mounted() {
-    this.paginate();
   },
 };
 </script>

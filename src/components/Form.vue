@@ -171,19 +171,34 @@
     </div>
   </form>
 
-  <ShowValues />
+  <ShowValues v-if="paginate.length > 0" :values="paginate" />
 </template>
 
 <script>
 import ShowValues from "../components/ShowValues";
+
+import { inject } from "vue";
+
 export default {
   components: {
     ShowValues,
+  },
+  props: {
+    es: String,
+  },
+  setup() {
+    const store = inject("store");
+    return {
+      store,
+    };
   },
   data() {
     return {
       tipo: "Saída",
       showhelp: false,
+      search: "",
+      updating: false,
+      message: [],
       value: {
         row: "",
         datetime: "",
@@ -237,8 +252,6 @@ export default {
           updated: "",
         },
       },
-      updating: false,
-      message: [],
     };
   },
   methods: {
@@ -250,6 +263,26 @@ export default {
     "value.escola": function (el) {
       console.log(el);
     },
+  },
+  computed: {
+    paginate: function () {
+      if (this.search == "") {
+        return [];
+      } else {
+        const values =
+          this.es == "entrada"
+            ? this.store.getters.entradas()
+            : this.store.getters.saidas();
+        return values;
+      }
+    },
+  },
+  mounted() {
+    this.tipo = this.es == "entrada" ? "Entrada" : "Saída";
+    var options = null;
+    var elems = document.querySelectorAll("select");
+    // eslint-disable-next-line no-undef
+    M.FormSelect.init(elems, options);
   },
 };
 </script>

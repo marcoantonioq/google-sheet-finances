@@ -1,20 +1,23 @@
 <template>
-  <div class="search">
-    <a @click.prevent="submit($event)">
-      <i class="material-icons"> search </i>
-    </a>
-    <div class="input-field col s6">
-      <input
-        placeholder="Pesquisar..."
-        type="search"
-        id="gsearch"
-        name="gsearch"
-        v-model="search"
-        v-on:change="submit($event)"
-        v-on:keydown="submit($event)"
-      />
+  <form v-on:submit.prevent.stop class="col s12">
+    <div class="row">
+      <div class="input-field col s12 search">
+        <i @click.prevent="submit($event)" class="material-icons prefix">
+          search
+        </i>
+        <input
+          id="icon_prefix"
+          type="text"
+          class="validate"
+          autocomplete="off"
+          v-model="search"
+          v-on:keydown.enter="submit($event)"
+          autofocus
+        />
+        <label for="icon_prefix">Pesquisar:</label>
+      </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -35,23 +38,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-input {
-  width: 300px;
-  padding-left: 25px;
-}
-
-@media (max-width: 720px) {
-  .search {
-    display: flex;
-    justify-content: flex-start;
-  }
-  a {
-    padding: 4px 9px;
-    i {
-      font-size: 2.5rem;
-    }
-  }
-}
-</style>

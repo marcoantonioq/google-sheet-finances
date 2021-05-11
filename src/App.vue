@@ -28,10 +28,14 @@
 </template>
 
 <script>
+import { provide } from "vue";
+import store from "./store";
 export default {
-  mounted() {
-    this.$store.dispatch("updateValues");
+  setup() {
+    provide("store", store);
+    store.methods.updateValuesFromTables();
   },
+  created() {},
 };
 </script>
 

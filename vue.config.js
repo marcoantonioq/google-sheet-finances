@@ -41,18 +41,13 @@ module.exports = {
     },
   },
   pwa: {
-    name: "My Finances",
-    themeColor: "#4DBA87",
-    msTileColor: "#000000",
-    appleMobileWebAppCapable: "yes",
-    appleMobileWebAppStatusBarStyle: "black",
-
-    // configure the workbox plugin
-    workboxPluginMode: "GenerateSW",
+    name: 'My Finances',
+    themeColor: '#e30713',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
     workboxOptions: {
-      // cleanupOutdatedCaches: true,
-      skipWaiting: true,
-    },
+      skipWaiting: true
+    }
   },
   // devServer: {
   //   host: '0.0.0.0',

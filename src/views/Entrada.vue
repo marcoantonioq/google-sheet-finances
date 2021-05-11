@@ -1,16 +1,42 @@
 <template>
-  <div class="home">Pagina entrada</div>
-  <div>Loading: {{ loading }}</div>
+  <Search @submit="submit" />
+  <ShowValues :values="store.getters.entradas()" />
+
+  <div class="row right">
+    <ButtonLarge title="Criar novo registro" to="/form/entrada" icon="add" />
+  </div>
 </template>
 
 <script>
+import ButtonLarge from "../components/ButtonLarge.vue";
+import ShowValues from "../components/ShowValues";
+import Search from "../components/Search.vue";
+
+import { inject } from "vue";
+
 export default {
   name: "Entrada",
+  components: {
+    ShowValues,
+    Search,
+    ButtonLarge,
+  },
   data() {
     return {
-      loading: false,
+      search: "",
     };
   },
-  components: {},
+  setup() {
+    const store = inject("store");
+
+    return {
+      store,
+    };
+  },
+  methods: {
+    submit(search) {
+      this.search = search;
+    },
+  },
 };
 </script>
