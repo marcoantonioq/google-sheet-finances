@@ -1,4 +1,5 @@
-import mock from "./db.mock";
+import mockDB from "./db.mock";
+import mockDS from "./datasets.mock";
 
 function GoogleSheet() {
   var instance = {};
@@ -54,7 +55,7 @@ function GoogleSheet() {
 
       // Mock values
       console.info("!!!! Dados Mock !!!!");
-      call(JSON.stringify({ status: false, msg: "Dados Mock", data: mock }));
+      call(JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB }));
     }
   };
 
@@ -74,6 +75,12 @@ function GoogleSheet() {
       console.groupCollapsed("Erro ao buscar no Google: More...");
       console.warn("Erro:", e);
       console.groupEnd();
+
+      // Mock values
+      console.info("!!!! DataSets Mock !!!!");
+      call(
+        JSON.stringify({ status: false, msg: "Datasets Mock", data: mockDS })
+      );
     }
   };
 }

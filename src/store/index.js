@@ -6,6 +6,8 @@ const state = reactive({
   counter: 0,
   notifications: 0,
   values: [],
+  escolas: ["Cidade de Goiás", "Jussara", "Itaberaí"],
+  current_escola: "",
   ds: [],
 });
 
@@ -25,20 +27,21 @@ const methods = {
     Sheet.onGetValues(null, (el) => {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do banco: ", msg);
-      console.log("Status do banco: ", status);
+      console.log("Status do datasets: ", status);
       state.values = data;
     });
 
     return true;
   },
   async updateDataSetsFromTables() {
-    Sheet.onGetDataSets(null, (el) => {
+    Sheet.onGetDataSets((el) => {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do banco: ", msg);
       console.log("Status do banco: ", status);
       state.ds = data;
     });
-    console.log("Dados datasets: ", state.ds);
+
+    return true;
   },
 };
 
@@ -53,9 +56,6 @@ const getters = {
   },
   getValue(id) {
     return state.values.find((el) => el.ID == id);
-  },
-  similarBills(titular) {
-    return state.values.find((el) => el["Titularidade"] == titular);
   },
 };
 

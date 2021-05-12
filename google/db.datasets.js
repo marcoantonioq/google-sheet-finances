@@ -19,7 +19,7 @@ function FieldsDataSets() {
   getEntries = function (field) {
     let result = db.data.reduce((acc, o) => {
       acc[o[field]] = {
-        Escolas: o["Escola"],
+        Escola: o["Escola"],
         Campo: field,
         "Entrada/Saída": o["ES"],
         Texto: o[field],

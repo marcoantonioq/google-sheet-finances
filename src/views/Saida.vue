@@ -2,7 +2,7 @@
   <Search @submit="submit" />
   <ValuesIndex :search="search" :values="store.getters.find({ ES: 'Saída' })" />
 
-  <div class="row right">
+  <div class="row">
     <ButtonLarge title="Criar novo registro" to="/create/Saída" icon="add" />
   </div>
 </template>

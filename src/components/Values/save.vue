@@ -4,45 +4,52 @@
       <i class="material-icons">help_outline</i>
     </div>
   </div>
+
+  <div v-if="value['ES'] && value['Local do movimento']" class="row">
+    {{ value["ES"] == Saída ? "Pagando" : "Recebendo" }}, o valor de R$
+    {{ value["Valor"] }} {{ value["Local do movimento"] }} /
+    {{ store.state.current_escola }}
+  </div>
   <form id="form" name="Banco de Dados">
     <div class="row">
-      <div class="input-field">
+      <div class="input-field col s12 m6">
         <i class="material-icons prefix">account_circle</i>
         <input
           :disabled="updating"
           id="Titularidade"
-          v-model="value.Titularidade"
+          v-model.trim="value.Titularidade"
           type="text"
           class="validate"
           minlength="6"
           required
           autocomplete="off"
+          placeholder="Titular"
         />
-        <label for="Titularidade">Titular</label>
         <small v-show="showhelp" class="help">
           {{ getHelp("Titularidade") }}</small
         >
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12 m6">
-        <i class="material-icons prefix">account_balance</i>
-        <select v-model="value.Escola" name="Escola">
-          <option value="" disabled selected>Escola</option>
-          <option value="Cidade de Goiás">Cidade de Goías</option>
-          <option value="Itaberaí">Itaberaí</option>
-          <option value="Jussara">Jussara</option>
-        </select>
-        <small v-show="showhelp" class="help"> {{ getHelp("Escola") }}</small>
       </div>
 
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">keyboard_tab</i>
         <select v-model="value['Tipo']" name="Tipo">
           <option value="" disabled selected>Tipo</option>
+          <option
+            v-for="item in getTipos()"
+            :key="item['Texto']"
+            v-bind:value="item['Texto']"
+          >
+            {{ item["Texto"] }}
+          </option>
         </select>
         <small v-show="showhelp" class="help"> {{ getHelp("Tipo") }}</small>
       </div>
+
+      <ul>
+        <li v-for="tip in getTipos()" :key="tip">
+          {{ tip }}
+        </li>
+      </ul>
     </div>
 
     <div class="row">
@@ -50,7 +57,7 @@
         <i class="material-icons prefix">description</i>
         <input
           id="Discriminação"
-          v-model="value.Discriminação"
+          v-model.trim="value.Discriminação"
           type="text"
           class="validate"
           required
@@ -80,7 +87,7 @@
           id="Valor"
           type="text"
           @blur="checkValor"
-          v-model="value.Valor"
+          v-model.trim="value.Valor"
           class="pagamento validate"
           pattern="^(-)?\d*(,)?\d{1,2}"
           required
@@ -146,16 +153,16 @@
 
     <div class="row">
       <div class="input-field col s12 m6">
-        <i class="material-icons prefix">add</i>
+        <span class="prefix">P <sub>x</sub></span>
         <input
           :disabled="updating"
           id="Parcelas"
-          v-model="value.Parcelas"
+          v-model.trim="value.Parcelas"
           type="number"
           min="1"
           autocomplete="off"
+          placeholder="Parcela(s): "
         />
-        <label for="Parcelas">Parcela(s): </label>
         <small v-show="showhelp" class="help"> {{ getHelp("Parcelas") }}</small>
       </div>
 
@@ -164,7 +171,7 @@
         <input
           class="Observações"
           id="Observações"
-          v-model="value['Observações']"
+          v-model.trim="value['Observações']"
           type="text"
           autocomplete="off"
         />
@@ -203,7 +210,6 @@
 
 <script>
 import ValuesIndex from "./index.vue";
-import { upMaterialize } from "../../helpers/materialize.js";
 
 import { inject } from "vue";
 
@@ -228,30 +234,29 @@ export default {
       updating: false,
       message: [],
       value: {
-        ID: null,
-        "Criado em": null,
-        ES: null,
-        Escola: null,
-        Titularidade: null,
-        Tipo: null,
-        Discriminação: null,
-        "Local do movimento": null,
-        Valor: null,
-        "Forma de pagamento": null,
-        Vencimento: null,
-        Parcelas: null,
-        Observações: null,
-        "Pago em": null,
-        "Atualizado em": null,
-        "Outras Observações": null,
-        "Titular Cheque": null,
-        "Conta Cheque": null,
-        "Agência Cheque": null,
-        "Nº Cheque": null,
+        ID: "",
+        "Criado em": "",
+        ES: "",
+        Escola: "",
+        Titularidade: "",
+        Tipo: "",
+        Discriminação: "",
+        "Local do movimento": "",
+        Valor: "",
+        "Forma de pagamento": "",
+        Vencimento: "",
+        Parcelas: "",
+        Observações: "",
+        "Pago em": "",
+        "Atualizado em": "",
+        "Outras Observações": "",
+        "Titular Cheque": "",
+        "Conta Cheque": "",
+        "Agência Cheque": "",
+        "Nº Cheque": "",
       },
       help: {
         Entrada: {
-          status: "",
           Escola: "Selecione a escola onde o dinheiro está entrando",
           Titularidade: "Nome do aluno/cliente que está pagando",
           Tipo: "Selecione o tipo de entrada",
@@ -259,13 +264,11 @@ export default {
           ["Local de movimento"]: "Selecione o local que o valor está entrando",
           Valor: "Digite o valor que está entrando",
           "Forma de pagamento": "Selecione a forma de pagamento",
-          Vencimento: "",
           Parcelas: "Quantidade de parcelas",
           Observações:
             "Informação relevante para lembrar sobre esse recebimento",
         },
         Saída: {
-          ativo: "true",
           Escola: "Selecione a escola onde o dinheiro está saindo",
           Titularidade: "Nome da empresa/pessoa que está recebendo",
           Tipo: "Selecione o tipo de saída",
@@ -273,7 +276,6 @@ export default {
           ["Local de movimento"]: "Selecione o local onde o valor está saindo",
           Valor: "Digite o valor que está saindo",
           "Forma de pagamento": "Selecione a forma de pagamento",
-          Vencimento: "",
           Parcelas: "Quantidade de parcelas",
           Observações: "Informação relevante para lembrar sobre esse pagamento",
         },
@@ -291,15 +293,25 @@ export default {
     salvar() {
       console.log("Valvar:", this.value);
     },
+    getTipos() {
+      let values = this.store.state.ds.filter((el) => {
+        return (
+          this.value["Escola"] == el["Escola"] ||
+          this.value["Escola"] == el["Todas"] ||
+          (el["Campo"] == "Tipo" &&
+            (el["Campo"] == this.es_pass || el["Campo"] == "Entrada/Saída"))
+        );
+      });
+      return values;
+    },
   },
   watch: {
     "value.Escola": function (el) {
-      console.log(el);
+      console.log("Alterado valor de escola: ", el);
     },
   },
   computed: {
     paginate: function () {
-      console.log(this.es_pass);
       if (this.search == "") {
         return [];
       } else {
@@ -308,10 +320,14 @@ export default {
     },
   },
   mounted() {
-    console.log("Type:", this.es_pass);
-    console.log("ID:", this.id_pass);
-    console.log("Params: ", this.$route.params);
-    upMaterialize();
+    if (this.id_pass) {
+      this.updating = true;
+      this.value = this.store.getters.getValue(this.id_pass);
+      console.log("Atualizar valores...");
+    } else {
+      this.value["ES"] = this.es_pass;
+    }
+    this.value["Escola"] = this.store.state.current_escola;
   },
 };
 </script>
@@ -333,5 +349,11 @@ export default {
 .icon_help {
   cursor: pointer;
   user-select: none;
+}
+sub {
+  position: relative;
+  right: 13px;
+  top: 3px;
+  font-size: 1.2rem;
 }
 </style>

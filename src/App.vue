@@ -23,6 +23,7 @@
     </router-link>
   </nav>
   <div class="content">
+    <Escola />
     <router-view />
   </div>
 </template>
@@ -30,7 +31,11 @@
 <script>
 import { provide } from "vue";
 import store from "./store";
+
+import Escola from "./components/Escola.vue";
+
 export default {
+  components: { Escola },
   setup() {
     provide("store", store);
     store.methods.updateValuesFromTables();
@@ -59,8 +64,9 @@ export default {
   --pink: #e83e8c;
   --primary: #007bff;
   --purple: #6f42c1;
-  --red-dark: #870000;
   --red: #dc3545;
+  --red-dark: #870000;
+  --red-light: #ffd6d6;
   --secondary: #6c757d;
   --success: #28a745;
   --teal: #20c997;

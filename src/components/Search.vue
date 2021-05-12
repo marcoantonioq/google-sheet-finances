@@ -10,7 +10,7 @@
       autocomplete="off"
       placeholder="Pesquisar..."
       ref="search"
-      v-model="search"
+      v-model.trim="search"
       v-on:keydown="submit($event)"
       v-on:keydown.enter="submit($event)"
       v-on:keydown.esc="clear()"

@@ -1,14 +1,8 @@
-/**
- * Atualizar componentes MaterializeCss
- */
-export function upMaterialize() {
-  var options = null;
+let Materialize = {
+  mounted() {
+    // eslint-disable-next-line no-undef
+    M.AutoInit();
+  },
+};
 
-  // select
-  // eslint-disable-next-line no-undef
-  M.FormSelect.init(document.querySelectorAll("select"), options);
-
-  // Tooltips
-  // eslint-disable-next-line no-undef
-  M.Tooltip.init(document.querySelectorAll(".tooltipped"), options);
-}
+export { Materialize };

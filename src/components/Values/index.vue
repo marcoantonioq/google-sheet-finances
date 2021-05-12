@@ -2,12 +2,12 @@
   <table class="highlight">
     <thead>
       <tr>
-        <th>Vencimento</th>
-        <th>Titularidade</th>
-        <th>Valor</th>
-        <th>Tipo</th>
-        <th>Pago</th>
-        <th>Ações</th>
+        <th @click="sort('Vencimento')">Vencimento</th>
+        <th @click="sort('Titularidade')">Titularidade</th>
+        <th @click="sort('Valor')">Valor</th>
+        <th @click="sort('Tipo')">Tipo</th>
+        <th @click="sort('Pago')">Pago</th>
+        <th @click="sort('Ações')">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -33,44 +33,54 @@
           <i
             v-on:click.stop.prevent="pay(value.ID)"
             v-if="!value['Pago em']"
-            class="green-text cursor material-icons tooltipped"
-            data-position="left"
-            data-tooltip="Efetuar pagamento!"
+            class="green-text cursor material-icons"
           >
             input
           </i>
           <i
             v-on:click.stop.prevent="view(value.ID)"
             v-if="value['Pago em']"
-            class="cursor material-icons tooltipped"
-            data-position="left"
-            data-tooltip="Cancelar pagamento!"
+            class="cursor material-icons"
           >
-            visibility
+            view_headline
           </i>
         </td>
       </tr>
     </tbody>
   </table>
   <div class="row">
-    <div class="col s12 m8">
-      <h6>{{ paginate.length }} de {{ values.length }}</h6>
-    </div>
     <div class="col s12 m4">
-      <div class="input-field">
-        <select v-model="limit">
-          <option value="20">20 registros</option>
-          <option value="50">50 registros</option>
-          <option value="100">100 registros</option>
-          <option value="99999">Todos registros</option>
-        </select>
+      <div v-show="valuesCount > paginateCount">
+        <button class="btn-small grey lighten-4 black-text" @click="prevPage">
+          Anterior
+        </button>
+        <button class="btn-small grey lighten-4 black-text" @click="nextPage">
+          Próximo
+        </button>
+      </div>
+    </div>
+
+    <div class="col s12 m4 center">
+      Página: {{ currentPage }} <br />
+      Mostrando {{ paginateCount }} de
+      {{ valuesCount }}
+    </div>
+
+    <div class="col s12 m4">
+      <div v-show="valuesCount > paginateCount">
+        <a
+          class="col s12 btn-small grey lighten-4 black-text"
+          v-on:click="pageSize = 9999"
+        >
+          <i class="material-icons left"> arrow_drop_down </i>
+          Mostrar todos os registros
+        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { upMaterialize } from "../../helpers/materialize.js";
 import { format } from "../../helpers/utility";
 
 export default {
@@ -78,31 +88,52 @@ export default {
     values: { Type: Array, required: true },
     search: { Type: String, default: "'" },
   },
+  emits: ["view"],
   data() {
     return {
-      limit: 20,
       modalOpen: false,
+      currentSort: "name",
+      currentSortDir: "asc",
+      pageSize: 20,
+      currentPage: 1,
     };
   },
   computed: {
     paginate: function () {
-      if (this.search.trim() == "") {
-        return this.values.slice(0, this.limit);
-      } else {
-        return this.values.slice(0, this.limit).filter((obj) => {
+      let values = this.values
+        .filter((obj) => {
           let str_obj = format.normalize(
             JSON.stringify(Object.values(obj)).toLocaleLowerCase()
           );
           return str_obj.includes(
             format.normalize(this.search.toLocaleLowerCase())
           );
+        })
+        .sort((a, b) => {
+          let modifier = 1;
+          if (this.currentSortDir === "desc") modifier = -1;
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          return 0;
+        })
+        .filter((row, index) => {
+          let start = (this.currentPage - 1) * this.pageSize;
+          let end = this.currentPage * this.pageSize;
+          if (index >= start && index < end) return true;
         });
-      }
+
+      return values;
+    },
+    paginateCount: function () {
+      return this.paginate.length;
+    },
+    valuesCount: function () {
+      return this.values.length;
     },
   },
   methods: {
     view(id) {
-      console.log("View ", id);
+      this.$emit("view", id);
       this.$router.push({ name: "View", params: { id_pass: id } });
     },
     cancel(id) {
@@ -112,9 +143,21 @@ export default {
       console.log("Pay ", id);
       this.$router.push({ name: "Update", params: { id_pass: id } });
     },
-  },
-  mounted() {
-    upMaterialize();
+    sort: function (s) {
+      console.log("Set:", s);
+      //if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    nextPage: function () {
+      if (this.currentPage * this.pageSize < this.values.length)
+        this.currentPage++;
+    },
+    prevPage: function () {
+      if (this.currentPage > 1) this.currentPage--;
+    },
   },
 };
 </script>
@@ -158,8 +201,6 @@ table {
   tbody {
     a {
       font-size: 0.9rem;
-      background-color: var(--red-dark);
-      color: var(--white);
       padding: 0 1.1rem;
       border-radius: 0.2rem;
     }

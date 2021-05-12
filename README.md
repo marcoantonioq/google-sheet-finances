@@ -48,3 +48,9 @@ function doGet(e) {
 ```
 
 [Leia mais ...](https://github.com/marcoantonioq/google-sheet-finances/blob/main/google/)
+
+# Ongoing tasks
+
+- [x] Componente para selecionar escola
+- [ ] Filtrar dados por escola
+- [ ] Formulário de entrada e saída
