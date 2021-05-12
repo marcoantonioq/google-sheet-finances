@@ -51,6 +51,12 @@ const getters = {
       return Object.entries(filter).every(([col, val]) => obj[col] == val);
     });
   },
+  getValue(id) {
+    return state.values.find((el) => el.ID == id);
+  },
+  similarBills(titular) {
+    return state.values.find((el) => el["Titularidade"] == titular);
+  },
 };
 
 export default {

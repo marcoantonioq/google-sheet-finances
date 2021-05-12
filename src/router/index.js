@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import Home from "../views/Home.vue";
 import Entrada from "../views/Entrada.vue";
 import Saida from "../views/Saida.vue";
 import Transferir from "../views/Transferir.vue";
 import Cheque from "../views/Cheque.vue";
-
-import Form from "../components/Form.vue";
+import save from "../components/Values/save.vue";
+import view from "../components/Values/view.vue";
 
 const routes = [
   {
@@ -22,12 +23,23 @@ const routes = [
     path: "/saida",
     component: Saida,
     name: "Saída",
-    children: [],
   },
   {
-    name: "form",
-    path: "/form/:tipo",
-    component: Form,
+    path: "/create/:es_pass",
+    component: save,
+    name: "Create",
+    props: true,
+  },
+  {
+    path: "/update/:id_pass",
+    component: save,
+    name: "Update",
+    props: true,
+  },
+  {
+    path: "/view/:id_pass",
+    component: view,
+    name: "View",
     props: true,
   },
   {

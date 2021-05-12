@@ -9,7 +9,9 @@
       class="validate"
       autocomplete="off"
       placeholder="Pesquisar..."
+      ref="search"
       v-model="search"
+      v-on:keydown="submit($event)"
       v-on:keydown.enter="submit($event)"
       v-on:keydown.esc="clear()"
     />
@@ -26,15 +28,16 @@ export default {
     };
   },
   methods: {
-    submit(event) {
-      if (this.search == "" || event.keyCode === 13 || event.type == "click") {
-        this.$emit("submit", this.search);
-      }
+    submit() {
+      this.$emit("submit", this.search);
     },
     clear() {
       this.search = "";
       this.$emit("submit", this.search);
     },
+  },
+  mounted() {
+    this.$refs.search.focus();
   },
 };
 </script>

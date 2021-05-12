@@ -131,7 +131,7 @@ nav {
       top: -8px;
     }
 
-    &.active-route-exact {
+    &.active-route {
       color: var(--dark);
       background-color: var(--white);
       border-radius: 19px 0px 0px 18px;
@@ -144,6 +144,10 @@ nav {
 }
 .green {
   background-color: var(--green) !important;
+}
+
+.cursor {
+  cursor: pointer;
 }
 
 #app {
@@ -249,7 +253,7 @@ nav {
     display: grid;
     // grid-template-columns: 1fr;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 70px;
+    grid-template-rows: 1fr 70px;
     grid-template-areas:
       "content"
       "nav";

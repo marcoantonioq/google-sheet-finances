@@ -1,15 +1,15 @@
 <template>
   <Search @submit="submit" />
-  <ShowValues :search="search" :values="store.getters.find({ ES: 'Saída' })" />
+  <ValuesIndex :search="search" :values="store.getters.find({ ES: 'Saída' })" />
 
   <div class="row right">
-    <ButtonLarge title="Criar novo registro" to="/form/Saída" icon="add" />
+    <ButtonLarge title="Criar novo registro" to="/create/Saída" icon="add" />
   </div>
 </template>
 
 <script>
 import ButtonLarge from "../components/ButtonLarge.vue";
-import ShowValues from "../components/ShowValues";
+import ValuesIndex from "../components/Values/";
 import Search from "../components/Search.vue";
 
 import { inject } from "vue";
@@ -17,7 +17,7 @@ import { inject } from "vue";
 export default {
   name: "Saída",
   components: {
-    ShowValues,
+    ValuesIndex,
     Search,
     ButtonLarge,
   },
