@@ -1,4 +1,10 @@
 <template>
+  <img
+    v-if="!value['Escola']"
+    class="arrow_escola"
+    src="https://www.seekpng.com/png/full/240-2401269_youtube-arrow-png-red-arrow-youtube-png.png"
+  />
+
   <div class="row">
     <div v-on:click="showhelp = !showhelp" class="icon_help right">
       <i class="material-icons">help_outline</i>
@@ -226,17 +232,10 @@
       </div>
     </div>
   </form>
-
-  <Parcelas v-if="parcelas.length > 0" :parcelas="parcelas" />
-
-  <ValuesIndex v-if="paginate.length > 0" :values="paginate" />
 </template>
 
 <script>
-import ValuesIndex from "./index.vue";
-import Parcelas from "./parcelas.vue";
 import Helps from "../../store/helps";
-import Values from "../../store/values";
 
 import { money } from "../../helpers/utility";
 
@@ -244,10 +243,6 @@ import { inject } from "vue";
 
 export default {
   name: "Save",
-  components: {
-    ValuesIndex,
-    Parcelas,
-  },
   props: {
     es_pass: String,
     id_pass: String,
@@ -264,7 +259,28 @@ export default {
       search: "",
       updating: false,
       message: [],
-      value: Values,
+      value: {
+        ID: "",
+        "Criado em": "",
+        ES: "",
+        Escola: "",
+        Titularidade: "",
+        Tipo: "",
+        Discriminação: "",
+        "Local do movimento": "",
+        Valor: "",
+        "Forma de pagamento": "",
+        Vencimento: "",
+        Parcelas: 1,
+        Observações: "",
+        "Pago em": "",
+        "Atualizado em": "",
+        "Outras Observações": "",
+        "Titular Cheque": "",
+        "Conta Cheque": "",
+        "Agência Cheque": "",
+        "Nº Cheque": "",
+      },
       help: Helps,
       parcelas: [],
     };
@@ -306,20 +322,20 @@ export default {
     },
     getTipos() {
       return this.getDataSetsOnFilter([
-        (el) => el["Escola"].includes(this.value["Escola"]),
-        (el) => el["Campo"].includes("Tipo"),
+        (el) => String(el["Escola"]).includes(this.value["Escola"]),
+        (el) => String(el["Campo"]).includes("Tipo"),
       ]);
     },
     getLocaisMovimento() {
       return this.getDataSetsOnFilter([
-        (el) => el["Escola"].includes(this.value["Escola"]),
-        (el) => el["Campo"].includes("Local de movimento"),
+        (el) => String(el["Escola"]).includes(this.value["Escola"]),
+        (el) => String(el["Campo"]).includes("Local de movimento"),
       ]);
     },
     getFormaPagamentos() {
       return this.getDataSetsOnFilter([
-        (el) => el["Escola"].includes(this.value["Escola"]),
-        (el) => el["Campo"].includes("Forma de Pagamento"),
+        (el) => String(el["Escola"]).includes(this.value["Escola"]),
+        (el) => String(el["Campo"]).includes("Forma de Pagamento"),
       ]);
     },
     updateParcelas() {
