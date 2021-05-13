@@ -15,7 +15,9 @@ function GoogleSheet() {
   /**
    * Função modelo
    */
-  let func = (el) => el;
+  let func = (el) => {
+    console.info("Função retornada!", el);
+  };
 
   /**
    * Salvar dados no banco de dados {ID:1} => update {ID: null} => Insert
@@ -25,12 +27,12 @@ function GoogleSheet() {
   instance.onSaveValues = (values, call = func, fail = func) => {
     try {
       let sendData = JSON.stringify({ data: values, table: "Banco de dados" });
-      console.log("onSaveValues em GoogleSheet.js recebeu: ", sendData);
+      console.log("onSaveValues em GoogleSheet.js recebeu: ", sendData, call);
       // eslint-disable-next-line no-undef
       google.script.run
         .withSuccessHandler(call)
         .withFailureHandler(fail)
-        .save({ data: values, table: "Banco de dados" });
+        .save(sendData);
     } catch (e) {
       console.groupCollapsed("Erro ao salvar no Google: More...");
       console.warn("Erro:", e);
