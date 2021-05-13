@@ -288,23 +288,39 @@ export default {
         this.emitter.emit("msg", "Verifique todos valores!");
       }
     },
+    getDataSetsOnFilter(filters = []) {
+      try {
+        if (this.store.state.ds) {
+          let values = [];
+          filters.forEach((filter) => {
+            values = this.store.state.ds.filter(filter);
+          });
+          return values;
+        } else {
+          throw "Não há DataSets";
+        }
+      } catch (e) {
+        this.emitter.emit("msg", "Erro ao carregar DataSets!");
+        return [];
+      }
+    },
     getTipos() {
-      let values = this.store.state.ds
-        .filter((el) => el["Escola"].includes(this.value["Escola"]))
-        .filter((el) => el["Campo"].includes("Tipo"));
-      return values;
+      return this.getDataSetsOnFilter([
+        (el) => el["Escola"].includes(this.value["Escola"]),
+        (el) => el["Campo"].includes("Tipo"),
+      ]);
     },
     getLocaisMovimento() {
-      let values = this.store.state.ds
-        .filter((el) => el["Escola"].includes(this.value["Escola"]))
-        .filter((el) => el["Campo"].includes("Local de movimento"));
-      return values;
+      return this.getDataSetsOnFilter([
+        (el) => el["Escola"].includes(this.value["Escola"]),
+        (el) => el["Campo"].includes("Local de movimento"),
+      ]);
     },
     getFormaPagamentos() {
-      let values = this.store.state.ds
-        .filter((el) => el["Escola"].includes(this.value["Escola"]))
-        .filter((el) => el["Campo"].includes("Forma de Pagamento"));
-      return values;
+      return this.getDataSetsOnFilter([
+        (el) => el["Escola"].includes(this.value["Escola"]),
+        (el) => el["Campo"].includes("Forma de Pagamento"),
+      ]);
     },
     updateParcelas() {
       this.value["Escola"] = this.store.state.current_escola;
