@@ -2,51 +2,52 @@
   <div class="row">
     <dl>
       <dt>Titular:</dt>
-      <dd>{{ value["Titularidade"] }}</dd>
+      <dd>{{ value["Titularidade"] }}&nbsp;</dd>
 
       <dt>Escola:</dt>
-      <dd>{{ value["Escola"] }}</dd>
+      <dd>{{ value["Escola"] }}&nbsp;</dd>
 
       <dt>Tipo:</dt>
-      <dd>{{ value["Tipo"] }}</dd>
+      <dd>{{ value["Tipo"] }}&nbsp;</dd>
 
       <dt>Discriminação:</dt>
-      <dd>{{ value["Discriminação"] }}</dd>
+      <dd>{{ value["Discriminação"] }}&nbsp;</dd>
 
       <dt>Local do movimento:</dt>
-      <dd>{{ value["Local do movimento"] }}</dd>
+      <dd>{{ value["Local do movimento"] }}&nbsp;</dd>
 
       <dt>Valor:</dt>
       <dd :class="[value['Valor'] > 0 ? 'green-text' : 'red-text']">
-        R$ {{ Math.abs(value["Valor"]) }}
+        R$ {{ Math.abs(value["Valor"]) }} &nbsp;
       </dd>
 
       <dt>Forma de pagamento:</dt>
-      <dd>{{ value["Forma de pagamento"] }}</dd>
+      <dd>{{ value["Forma de pagamento"] }}&nbsp;</dd>
 
       <dt>Data/Vencimento:</dt>
-      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}</dd>
+      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
 
       <dt>Parcelas:</dt>
-      <dd>{{ value["Parcelas"] }}</dd>
+      <dd>{{ value["Parcelas"] }}&nbsp;</dd>
 
       <dt>Observações:</dt>
       <dd>
         {{ value["Observações"] }} <br />
         {{ value["Outras Observações"] }}
+        &nbsp;
       </dd>
 
       <dt v-if="value['Titular Cheque']">Titular Cheque:</dt>
-      <dd>{{ value["Titular Cheque"] }}</dd>
+      <dd>{{ value["Titular Cheque"] }}&nbsp;</dd>
 
       <dt v-if="value['Conta Cheque']">Conta Cheque:</dt>
-      <dd>{{ value["Conta Cheque"] }}</dd>
+      <dd>{{ value["Conta Cheque"] }}&nbsp;</dd>
 
       <dt v-if="value['Titular Cheque']">Agência Cheque:</dt>
-      <dd>{{ value["Agência Cheque"] }}</dd>
+      <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
 
       <dt v-if="value['Titular Cheque']">Nº Cheque</dt>
-      <dd>{{ value["Nº Cheque"] }}</dd>
+      <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
     </dl>
   </div>
 
