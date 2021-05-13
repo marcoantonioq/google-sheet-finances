@@ -93,7 +93,7 @@ function select(table, id) {
  * return result {status: true, updated:[], data: [], msg: ""} Onde updated são os valores atualizados
  **/
 function save({ data, table } = { data: false, table: "Banco de dados" }) {
-  var result = { status: true, updated: [], created: [], data: [], msg: "" };
+  var result = { status: true, data: { created: [], updated: [] }, msg: "" };
 
   if (data) {
     let DB = SpreadsheetApp.getActive().getSheetByName(table);
@@ -131,16 +131,20 @@ function save({ data, table } = { data: false, table: "Banco de dados" }) {
     );
 
     const getRow = (num) => IDs.findIndex((id) => id == num) + 1;
+
     // Console update
-    result.updated = data_to_save.update.map((obj) => {
+    result.data.updated = data_to_save.update.map((obj) => {
+      if (obj.hasOwnProperty("Criado em") && obj["Criado em"] == "") {
+        obj["Criado em"] = new Date().getDataHora("en");
+      }
       obj = updateValues(obj);
       let val = Object.values(obj);
       DB.getRange(getRow(obj["ID"]), 1, 1, val.length).setValues([val]);
-      return val;
+      return obj;
     });
 
     // Console create
-    result.created = data_to_save.create.map((obj) => {
+    result.data.created = data_to_save.create.map((obj) => {
       if (obj.hasOwnProperty("Criado em")) {
         obj["Criado em"] = new Date().getDataHora("en");
       }
@@ -150,14 +154,15 @@ function save({ data, table } = { data: false, table: "Banco de dados" }) {
 
       let val = Object.values(obj);
       DB.appendRow(val);
-      return val;
+      return obj;
     });
   } else {
     result.status = false;
     result.msg = "Nenhuma informação para salvar!";
   }
 
-  console.log(result.msg);
+  console.log("Dados atualizados: ", result.data.updated);
+  console.log("Dados atualizados: ", result.data.created);
   return JSON.stringify(result);
 }
 

@@ -25,7 +25,7 @@
       <dd>{{ value["Forma de pagamento"] }}</dd>
 
       <dt>Data/Vencimento:</dt>
-      <dd>{{ value["Data/Vencimento"] }}</dd>
+      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}</dd>
 
       <dt>Parcelas:</dt>
       <dd>{{ value["Parcelas"] }}</dd>
@@ -65,7 +65,8 @@
 <script>
 import ValuesIndex from "./index";
 
-import { inject } from "vue";
+import { inject, ref } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   name: "View",
@@ -76,15 +77,15 @@ export default {
     es_pass: String,
     id_pass: String,
   },
-  data() {
-    return {
-      value: [],
-    };
-  },
   setup() {
     const store = inject("store");
+    const route = useRoute();
+
+    var value = ref([]);
+    value = store.getters.getValue(route.params.id_pass);
 
     return {
+      value,
       store,
     };
   },
@@ -99,10 +100,6 @@ export default {
     upView(id) {
       this.value = this.store.getters.getValue(id);
     },
-  },
-  mounted() {
-    console.log("Moutend");
-    this.upView(this.id_pass);
   },
 };
 </script>

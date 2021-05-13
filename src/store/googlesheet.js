@@ -28,7 +28,7 @@ function GoogleSheet() {
       google.script.run
         .withSuccessHandler(call)
         .withFailureHandler(fail)
-        .save({ data: values, table: "Bano de dados" });
+        .save({ data: values, table: "Banco de dados" });
     } catch (e) {
       console.groupCollapsed("Erro ao salvar no Google: More...");
       console.warn("Erro:", e);

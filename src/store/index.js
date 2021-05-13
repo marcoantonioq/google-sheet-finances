@@ -19,13 +19,25 @@ const methods = {
     console.log("Ok, vamos enviar para o google salvar!", values);
     Sheet.onSaveValues(values, (el) => {
       const { data, msg, status } = JSON.parse(el);
-      // state.values.push(values);
+
+      console.log("Dados atualizados: ", data.updated);
+      state.updateValues(data.updated);
+
+      state.values.push(data.created);
+
       console.log("Mensagem do banco: ", msg);
       console.log("Status do datasets: ", status);
       state.values = data;
     });
 
     return true;
+  },
+  updateValues(values) {
+    values.forEach((value) => {
+      console.log("Atualizar:", value);
+      let index = state.values.findIndex((obj) => obj.ID == value.ID);
+      state.values[index] = value;
+    });
   },
   async delValue({ key }) {
     state.values.splice(key, 1);
