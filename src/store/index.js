@@ -26,9 +26,16 @@ const methods = {
       console.log("Dados atualizados: ", data.updated);
       console.log("Dados criados: ", data.created);
 
-      state.updateValues(data.updated);
-
-      state.values.push(data.created);
+      try {
+        state.updateValues(data.updated);
+      } catch (e) {
+        console.log("Erro update values!", e);
+      }
+      try {
+        state.values.push(data.created);
+      } catch (e) {
+        console.log("Erro push values!", e);
+      }
     });
 
     return true;
