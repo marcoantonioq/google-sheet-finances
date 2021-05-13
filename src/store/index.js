@@ -20,14 +20,15 @@ const methods = {
     Sheet.onSaveValues(values, (el) => {
       const { data, msg, status } = JSON.parse(el);
 
+      console.log("Mensagem do banco: ", msg);
+      console.log("Status do datasets: ", status);
+
       console.log("Dados atualizados: ", data.updated);
+      console.log("Dados criados: ", data.created);
+
       state.updateValues(data.updated);
 
       state.values.push(data.created);
-
-      console.log("Mensagem do banco: ", msg);
-      console.log("Status do datasets: ", status);
-      state.values = data;
     });
 
     return true;
