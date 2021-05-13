@@ -1,14 +1,6 @@
 <template>
   <div class="home">Pagina home</div>
 
-  <select v-model="selected">
-    <option v-for="option in options" v-bind:value="option.value" :key="option">
-      {{ option.text }}
-    </option>
-  </select>
-  <br />
-  <span>Selecionado: {{ selected }}</span>
-
   <div class="row">v.1.0.1</div>
 </template>
 
@@ -25,6 +17,9 @@ export default {
   },
   data() {
     return {
+      value: {
+        Escola: "Cidade de Goiás",
+      },
       selected: "A",
       options: [
         { text: "Um", value: "A" },

@@ -41,7 +41,14 @@ export default {
     store.methods.updateValuesFromTables();
     store.methods.updateDataSetsFromTables();
   },
-  created() {},
+  created() {
+    this.emitter.on("msg", (text) => {
+      // eslint-disable-next-line no-undef
+      M.toast({ html: text });
+      // eslint-disable-next-line no-undef
+      M.updateTextFields();
+    });
+  },
 };
 </script>
 
@@ -214,13 +221,12 @@ nav {
 }
 /* valid color */
 .input-field input[type="text"].valid {
-  border-bottom: 1px solid #000 !important;
+  border-bottom: 1px solid var(--green) !important;
   box-shadow: none !important;
 }
 /* invalid color */
 .input-field input[type="text"].invalid {
-  border-bottom: 1px solid #000 !important;
-  box-shadow: none !important;
+  border-bottom: 1px solid var(--main-color) !important;
 }
 /* icon prefix focus color */
 .input-field .prefix.active {

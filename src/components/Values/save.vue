@@ -1,4 +1,10 @@
 <template>
+  <img
+    v-if="!value['Escola']"
+    class="arrow_escola"
+    src="https://www.seekpng.com/png/full/240-2401269_youtube-arrow-png-red-arrow-youtube-png.png"
+  />
+
   <div class="row">
     <div v-on:click="showhelp = !showhelp" class="icon_help right">
       <i class="material-icons">help_outline</i>
@@ -10,7 +16,7 @@
     {{ value["Valor"] }} {{ value["Local do movimento"] }} /
     {{ store.state.current_escola }}
   </div>
-  <form id="form" name="Banco de Dados">
+  <form ref="form" id="form" name="DB">
     <div class="row">
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">account_circle</i>
@@ -32,8 +38,13 @@
 
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">keyboard_tab</i>
-        <select v-model="value['Tipo']" name="Tipo">
-          <option value="" disabled selected>Tipo</option>
+        <select
+          :required="!updating"
+          :disabled="updating"
+          v-model="value['Tipo']"
+          name="Tipo"
+        >
+          <option value="" disabled selected>Tipo de {{ value["ES"] }}</option>
           <option
             v-for="item in getTipos()"
             :key="item['Texto']"
@@ -44,12 +55,6 @@
         </select>
         <small v-show="showhelp" class="help"> {{ getHelp("Tipo") }}</small>
       </div>
-
-      <ul>
-        <li v-for="tip in getTipos()" :key="tip">
-          {{ tip }}
-        </li>
-      </ul>
     </div>
 
     <div class="row">
@@ -71,8 +76,19 @@
 
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">card_travel</i>
-        <select v-model="value['Local de movimento']" name="local_movimento">
-          <option value="" disabled selected>Caixa da escola</option>
+        <select
+          required
+          v-model="value['Local de movimento']"
+          name="local_movimento"
+        >
+          <option value="" disabled selected>Local de movimento:</option>
+          <option
+            v-for="item in getLocaisMovimento()"
+            :key="item['Texto']"
+            v-bind:value="item['Texto']"
+          >
+            {{ item["Texto"] }}
+          </option>
         </select>
         <small v-show="showhelp" class="help">
           {{ getHelp("Local de movimento") }}</small
@@ -99,8 +115,19 @@
 
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">card_membership</i>
-        <select v-model="value['Forma de pagamento']" name="Forma de pagamento">
-          <option value="" disabled selected>Dinheiro</option>
+        <select
+          required
+          v-model="value['Forma de pagamento']"
+          name="Forma de pagamento"
+        >
+          <option value="" disabled selected>Forma de pagamento</option>
+          <option
+            v-for="item in getFormaPagamentos()"
+            :key="item['Texto']"
+            v-bind:value="item['Texto']"
+          >
+            {{ item["Texto"] }}
+          </option>
         </select>
         <small v-show="showhelp" class="help">
           {{ getHelp("Forma de pagamento") }}</small
@@ -160,6 +187,7 @@
           v-model.trim="value.Parcelas"
           type="number"
           min="1"
+          max="12"
           autocomplete="off"
           placeholder="Parcela(s): "
         />
@@ -174,13 +202,9 @@
           v-model.trim="value['Observações']"
           type="text"
           autocomplete="off"
+          placeholder="Observações"
         />
-        <label for="Observações"
-          >Observações
-          <small v-show="showhelp" class="help">
-            {{ getHelp("") }}</small
-          ></label
-        >
+        <small v-show="showhelp" class="help"> {{ getHelp("") }}</small>
       </div>
     </div>
 
@@ -205,17 +229,24 @@
     </div>
   </form>
 
+  <Parcelas :parcelas="parcelas" />
+
   <ValuesIndex v-if="paginate.length > 0" :values="paginate" />
 </template>
 
 <script>
 import ValuesIndex from "./index.vue";
+import Parcelas from "./parcelas.vue";
+import Helps from "../../store/helps";
+import Values from "../../store/values";
 
 import { inject } from "vue";
 
 export default {
+  name: "Save",
   components: {
     ValuesIndex,
+    Parcelas,
   },
   props: {
     es_pass: String,
@@ -233,81 +264,77 @@ export default {
       search: "",
       updating: false,
       message: [],
-      value: {
-        ID: "",
-        "Criado em": "",
-        ES: "",
-        Escola: "",
-        Titularidade: "",
-        Tipo: "",
-        Discriminação: "",
-        "Local do movimento": "",
-        Valor: "",
-        "Forma de pagamento": "",
-        Vencimento: "",
-        Parcelas: "",
-        Observações: "",
-        "Pago em": "",
-        "Atualizado em": "",
-        "Outras Observações": "",
-        "Titular Cheque": "",
-        "Conta Cheque": "",
-        "Agência Cheque": "",
-        "Nº Cheque": "",
-      },
-      help: {
-        Entrada: {
-          Escola: "Selecione a escola onde o dinheiro está entrando",
-          Titularidade: "Nome do aluno/cliente que está pagando",
-          Tipo: "Selecione o tipo de entrada",
-          Discriminação: "Detalhamento do tipo de entrada",
-          ["Local de movimento"]: "Selecione o local que o valor está entrando",
-          Valor: "Digite o valor que está entrando",
-          "Forma de pagamento": "Selecione a forma de pagamento",
-          Parcelas: "Quantidade de parcelas",
-          Observações:
-            "Informação relevante para lembrar sobre esse recebimento",
-        },
-        Saída: {
-          Escola: "Selecione a escola onde o dinheiro está saindo",
-          Titularidade: "Nome da empresa/pessoa que está recebendo",
-          Tipo: "Selecione o tipo de saída",
-          Discriminação: "Detalhamento do tipo de saída",
-          ["Local de movimento"]: "Selecione o local onde o valor está saindo",
-          Valor: "Digite o valor que está saindo",
-          "Forma de pagamento": "Selecione a forma de pagamento",
-          Parcelas: "Quantidade de parcelas",
-          Observações: "Informação relevante para lembrar sobre esse pagamento",
-        },
-      },
+      value: Values,
+      help: Helps,
+      parcelas: [],
     };
   },
   methods: {
     getHelp(title) {
       try {
-        return this.help[this.es_pass][title];
+        return this.help[this.value["ES"]][title];
       } catch (error) {
         error;
       }
     },
+    async setValue(val) {
+      this.value = val;
+    },
     salvar() {
-      console.log("Valvar:", this.value);
+      if (this.$refs.form.checkValidity()) {
+        console.log("Valvar:", this.value);
+        console.log(
+          "Vecimento em:",
+          this.moment().format(this.value["Vencimento"], "YYY-MM-DD")
+        );
+      } else {
+        this.emitter.emit("msg", "Verifique todos valores!");
+      }
     },
     getTipos() {
-      let values = this.store.state.ds.filter((el) => {
-        return (
-          this.value["Escola"] == el["Escola"] ||
-          this.value["Escola"] == el["Todas"] ||
-          (el["Campo"] == "Tipo" &&
-            (el["Campo"] == this.es_pass || el["Campo"] == "Entrada/Saída"))
-        );
-      });
+      let values = this.store.state.ds
+        .filter((el) => el["Escola"].includes(this.value["Escola"]))
+        .filter((el) => el["Campo"].includes("Tipo"));
       return values;
+    },
+    getLocaisMovimento() {
+      let values = this.store.state.ds
+        .filter((el) => el["Escola"].includes(this.value["Escola"]))
+        .filter((el) => el["Campo"].includes("Local de movimento"));
+      return values;
+    },
+    getFormaPagamentos() {
+      let values = this.store.state.ds
+        .filter((el) => el["Escola"].includes(this.value["Escola"]))
+        .filter((el) => el["Campo"].includes("Forma de Pagamento"));
+      return values;
+    },
+    updateParcelas() {
+      let countParcelas = this.value["Parcelas"];
+      let parcelas = [];
+      for (let i = 0; i < countParcelas; i++) {
+        let obj = Object.assign({}, this.value);
+        obj["Pago em"] = "";
+        obj["Vencimento"] = this.moment(obj["Vencimento"]).add(i, "months");
+        obj["Outras Observações"] = `Parcela: ${i + 1}/${countParcelas}`;
+        parcelas.push(obj);
+      }
+      parcelas[0]["Pago em"] = this.value["Pago em"];
+      this.parcelas = parcelas;
+      console.log(this.parcelas);
     },
   },
   watch: {
-    "value.Escola": function (el) {
-      console.log("Alterado valor de escola: ", el);
+    "value.Vencimento": function (val) {
+      this.value["Pago em"] = this.moment(val).isSame(
+        this.moment().format("YYYY-MM-DD")
+      )
+        ? this.moment().format("YYYY-MM-DD")
+        : "";
+    },
+    "value.Parcelas": function (val) {
+      console.log("Parcelas:", val);
+      this.updateParcelas(val);
     },
   },
   computed: {
@@ -319,15 +346,23 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
+    console.log("created");
     if (this.id_pass) {
       this.updating = true;
-      this.value = this.store.getters.getValue(this.id_pass);
+      this.setValue(this.store.getters.getValue(this.id_pass));
       console.log("Atualizar valores...");
+      console.log(this.value);
     } else {
-      this.value["ES"] = this.es_pass;
+      this.value["ES"] = this.es_pass == "Entrada" ? "Entrada" : "Saída";
+      console.log("Criar dado!");
     }
+
     this.value["Escola"] = this.store.state.current_escola;
+
+    this.value["Vencimento"] = this.moment(
+      this.value["Vencimento"] || new Date()
+    ).format("YYYY-MM-DD");
   },
 };
 </script>
@@ -355,5 +390,28 @@ sub {
   right: 13px;
   top: 3px;
   font-size: 1.2rem;
+}
+
+@keyframes shake {
+  0% {
+    transform: scaleY(-1) scaleX(-1) translate(1px, 1px) rotate(22deg);
+  }
+  50% {
+    transform: scaleY(-1) scaleX(-1) translate(-1px, 2px) rotate(21deg);
+  }
+  100% {
+    transform: scaleY(-1) scaleX(-1) translate(1px, 1px) rotate(22deg);
+  }
+}
+
+img.arrow_escola {
+  position: fixed;
+  top: 20px;
+  right: 81px;
+  width: 20%;
+  transform: scaleY(-1) scaleX(-1) rotate(22deg);
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+  z-index: -1;
 }
 </style>
