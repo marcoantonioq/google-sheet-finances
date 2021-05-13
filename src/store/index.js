@@ -15,8 +15,16 @@ const methods = {
   countValues() {
     return state.values.length;
   },
-  async addValue(value) {
-    state.values.push(value);
+  saveValues(values) {
+    console.log("Ok, vamos enviar para o google salvar!", values);
+    Sheet.onSaveValues(values, (el) => {
+      const { data, msg, status } = JSON.parse(el);
+      // state.values.push(values);
+      console.log("Mensagem do banco: ", msg);
+      console.log("Status do datasets: ", status);
+      state.values = data;
+    });
+
     return true;
   },
   async delValue({ key }) {

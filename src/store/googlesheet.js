@@ -22,13 +22,13 @@ function GoogleSheet() {
    * @param {function} call Função de retorno
    * @returns void
    */
-  instance.pushValues = (value, call = func, fail = func) => {
+  instance.onSaveValues = (values, call = func, fail = func) => {
     try {
       // eslint-disable-next-line no-undef
       google.script.run
         .withSuccessHandler(call)
         .withFailureHandler(fail)
-        .pushValueWebApp(value);
+        .save({ data: values, table: "Bano de dados" });
     } catch (e) {
       console.groupCollapsed("Erro ao salvar no Google: More...");
       console.warn("Erro:", e);

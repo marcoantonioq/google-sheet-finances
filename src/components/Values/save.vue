@@ -1,21 +1,14 @@
 <template>
-  <img
-    v-if="!value['Escola']"
-    class="arrow_escola"
-    src="https://www.seekpng.com/png/full/240-2401269_youtube-arrow-png-red-arrow-youtube-png.png"
-  />
-
   <div class="row">
     <div v-on:click="showhelp = !showhelp" class="icon_help right">
       <i class="material-icons">help_outline</i>
     </div>
   </div>
 
-  <div v-if="value['ES'] && value['Local do movimento']" class="row">
-    {{ value["ES"] == Saída ? "Pagando" : "Recebendo" }}, o valor de R$
-    {{ value["Valor"] }} {{ value["Local do movimento"] }} /
-    {{ store.state.current_escola }}
+  <div class="row">
+    <h4>{{ value["ES"] }}</h4>
   </div>
+
   <form ref="form" id="form" name="DB">
     <div class="row">
       <div class="input-field col s12 m6">
@@ -183,6 +176,7 @@
         <span class="prefix">P <sub>x</sub></span>
         <input
           :disabled="updating"
+          :required="!updating"
           id="Parcelas"
           v-model.trim="value.Parcelas"
           type="number"
@@ -208,6 +202,10 @@
       </div>
     </div>
 
+    <div class="margin2 row">
+      {{ info_user }}
+    </div>
+
     <div class="row">
       <div class="col s12 m6">
         <a class="btn red" v-on:click="$router.go(-1)">
@@ -229,7 +227,7 @@
     </div>
   </form>
 
-  <Parcelas :parcelas="parcelas" />
+  <Parcelas v-if="parcelas.length > 0" :parcelas="parcelas" />
 
   <ValuesIndex v-if="paginate.length > 0" :values="paginate" />
 </template>
@@ -239,6 +237,8 @@ import ValuesIndex from "./index.vue";
 import Parcelas from "./parcelas.vue";
 import Helps from "../../store/helps";
 import Values from "../../store/values";
+
+import { money } from "../../helpers/utility";
 
 import { inject } from "vue";
 
@@ -282,11 +282,8 @@ export default {
     },
     salvar() {
       if (this.$refs.form.checkValidity()) {
-        console.log("Valvar:", this.value);
-        console.log(
-          "Vecimento em:",
-          this.moment().format(this.value["Vencimento"], "YYY-MM-DD")
-        );
+        this.updateParcelas();
+        this.store.methods.saveValues(this.parcelas);
       } else {
         this.emitter.emit("msg", "Verifique todos valores!");
       }
@@ -310,31 +307,37 @@ export default {
       return values;
     },
     updateParcelas() {
-      let countParcelas = this.value["Parcelas"];
+      this.value["Escola"] = this.store.state.current_escola;
+      let countParcelas = Number(this.value["Parcelas"]);
       let parcelas = [];
-      for (let i = 0; i < countParcelas; i++) {
-        let obj = Object.assign({}, this.value);
-        obj["Pago em"] = "";
-        obj["Vencimento"] = this.moment(obj["Vencimento"]).add(i, "months");
-        obj["Outras Observações"] = `Parcela: ${i + 1}/${countParcelas}`;
-        parcelas.push(obj);
+      if (countParcelas) {
+        console.log("Numero de parcelas:", parcelas);
+        for (let i = 0; i < countParcelas; i++) {
+          let obj = Object.assign({}, this.value);
+          obj["Pago em"] = "";
+          obj["Vencimento"] = this.moment(obj["Vencimento"]).add(i, "months");
+          obj["Outras Observações"] = `Parcela ${i + 1}/${countParcelas}`;
+          parcelas.push(obj);
+        }
+        parcelas[0]["Pago em"] = this.value["Pago em"];
+        this.parcelas = parcelas;
       }
-      parcelas[0]["Pago em"] = this.value["Pago em"];
-      this.parcelas = parcelas;
-      console.log(this.parcelas);
     },
   },
   watch: {
+    "value.Valor": function () {
+      this.updateParcelas();
+    },
     "value.Vencimento": function (val) {
-      this.value["Pago em"] = this.moment(val).isSame(
-        this.moment().format("YYYY-MM-DD")
-      )
+      let current_data = this.moment().format("YYYY-MM-DD");
+      this.value["Pago em"] = this.moment(val).isSame(current_data)
         ? this.moment().format("YYYY-MM-DD")
         : "";
+      this.updateParcelas();
     },
     "value.Parcelas": function (val) {
       console.log("Parcelas:", val);
-      this.updateParcelas(val);
+      this.updateParcelas();
     },
   },
   computed: {
@@ -344,6 +347,29 @@ export default {
       } else {
         return this.store.getters.find({ ES: this.Tipo });
       }
+    },
+    info_user: function () {
+      if (!this.value["Valor"]) return "";
+      let isPay = this.value["ES"] == "Saída" ? true : false;
+
+      const replaces = {
+        "{es}": isPay ? "Pagando" : "Recebendo",
+        "{tipo_pagamento}": this.value["Tipo"].toLowerCase() || "...tipo...",
+        "{escola}": this.store.state.current_escola || "...Escola...",
+        "{valor}": money.toReal(this.value["Valor"]),
+        "{local_movimento}":
+          this.value["Local de movimento"] || "...local movimento...",
+        "{forma_pagamento}":
+          this.value["Forma de pagamento"] || "...forma pagamento...",
+        "{titular}": this.value["Titularidade"] || "...titular...",
+      };
+      let template = isPay
+        ? "{es} {tipo_pagamento} no valor de {valor} para {titular} com {forma_pagamento} / {local_movimento} / {escola}."
+        : "{es} {tipo_pagamento} {valor} de {titular} com {forma_pagamento} para {local_movimento} / {escola}.";
+
+      return Object.entries(replaces).reduce((acc, [k, v]) => {
+        return acc.replaceAll(k, v);
+      }, template);
     },
   },
   created() {
@@ -379,6 +405,12 @@ export default {
 
 .botton10 {
   bottom: -10px;
+}
+
+.margin2 {
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
 }
 
 .icon_help {

@@ -10,7 +10,7 @@ module.exports = {
   Valor: "",
   "Forma de pagamento": "",
   Vencimento: "",
-  Parcelas: "",
+  Parcelas: 1,
   Observações: "",
   "Pago em": "",
   "Atualizado em": "",

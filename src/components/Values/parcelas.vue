@@ -1,20 +1,21 @@
 <template>
-  {{ total }} em {{ parcelas.length }}x de
-  {{ valorParcelas }}
-  <div class="row">
+  <div class="row"></div>
+  <div class="row parcelas">
+    <b> {{ total }} em {{ parcelas.length }}x de {{ valorParcelas }}</b>
     <table>
       <thead>
         <tr>
-          <th>Data de vencimento</th>
+          <th>Vencimento</th>
           <th>Valor</th>
           <th>Pago em</th>
+          <th>Parcelas</th>
         </tr>
       </thead>
 
       <tbody>
         <tr v-for="parcela in parcelas" :key="parcela">
           <td>{{ moment(parcela["Vencimento"]).format("DD/MM") }}</td>
-          <td>{{ parcela["Valor"] }}</td>
+          <td>{{ toReal(parcela["Valor"]) }}</td>
           <td>
             {{
               parcela["Pago em"]
@@ -22,16 +23,15 @@
                 : ""
             }}
           </td>
+          <td>{{ parcela["Outras Observações"] }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div class="row">
-    {{ parcelas }}
-  </div>
 </template>
 
 <script>
+import { money } from "../../helpers/utility";
 export default {
   name: "View",
   props: {
@@ -41,7 +41,10 @@ export default {
     total: function () {
       if (this.parcelas) {
         return this.toReal(
-          this.parcelas.reduce((acc, obj) => acc + Number(obj["Valor"]), 0)
+          this.parcelas.reduce(
+            (acc, obj) => acc + this.toNumber(obj["Valor"]),
+            0
+          )
         );
       } else {
         return 0;
@@ -56,15 +59,19 @@ export default {
     },
   },
   methods: {
-    toReal(val) {
-      return Number(val).toLocaleString("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      });
-    },
-  },
-  mounted() {
-    console.log("Parcelas recebidas: ", this.parcelas);
+    toNumber: money.toNumber,
+    toReal: money.toReal,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.parcelas {
+  max-width: 70%;
+}
+@media (max-width: 600px) {
+  .parcelas {
+    max-width: 90%;
+  }
+}
+</style>
