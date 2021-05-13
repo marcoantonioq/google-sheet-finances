@@ -92,7 +92,8 @@ function select(table, id) {
  * Append Value
  * return result {status: true, updated:[], data: [], msg: ""} Onde updated são os valores atualizados
  **/
-function save({ data, table } = { data: false, table: "Banco de dados" }) {
+function save(sendData) {
+  const { data, table } = JSON.parse(sendData);
   var result = { status: true, data: { created: [], updated: [] }, msg: "" };
 
   if (data) {

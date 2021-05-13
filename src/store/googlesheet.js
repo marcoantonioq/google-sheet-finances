@@ -24,6 +24,8 @@ function GoogleSheet() {
    */
   instance.onSaveValues = (values, call = func, fail = func) => {
     try {
+      let sendData = JSON.stringify({ data: values, table: "Banco de dados" });
+      console.log("onSaveValues em GoogleSheet.js recebeu: ", sendData);
       // eslint-disable-next-line no-undef
       google.script.run
         .withSuccessHandler(call)
