@@ -1,18 +1,18 @@
 <template>
   <img
-    v-if="!store.state.current_escola"
+    v-if="!store.escola.nome"
     class="arrow_escola"
     src="https://www.seekpng.com/png/full/240-2401269_youtube-arrow-png-red-arrow-youtube-png.png"
   />
   <div class="row">
     <a class="dropdown-trigger" href="#" data-target="dropdown1">
-      {{ current_escola || "Selectione uma escola" }}
+      {{ store.escola.nome || "Selectione uma escola" }}
       <i class="material-icons">arrow_drop_down</i>
     </a>
 
     <!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
-      <li v-for="escola in escolas" :key="escola">
+      <li v-for="escola in store.escola.escolas" :key="escola">
         <a v-on:click="setEscola(escola)">{{ escola }}</a>
       </li>
     </ul>
@@ -24,32 +24,17 @@ import { inject } from "vue";
 
 export default {
   name: "Escola",
-  data() {
-    return {
-      current_escola: "",
-      escolas: [],
-    };
-  },
   setup() {
     const store = inject("store");
 
+    function setEscola(escola) {
+      store.escola.nome = escola;
+    }
+
     return {
       store,
+      setEscola,
     };
-  },
-  methods: {
-    setEscola(escola) {
-      this.current_escola = escola;
-      this.store.state.current_escola = escola;
-      localStorage.setItem("escola", escola);
-    },
-  },
-  mounted() {
-    this.escolas = this.store.state.escolas;
-    let current_escola = localStorage.getItem("escola");
-    if (current_escola) {
-      this.setEscola(current_escola);
-    }
   },
 };
 </script>

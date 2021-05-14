@@ -111,6 +111,9 @@
         <small v-show="navegation.showhelp" class="help">
           {{ navegation.help.get("Valor") }}</small
         >
+        <div class="row">
+          {{ value["Valor"] }}
+        </div>
       </div>
 
       <div class="input-field col s12 m6">
@@ -238,28 +241,28 @@
     </div>
   </form>
 
-  <Parcelas v-if="parcelas.length > 0" :parcelas="parcelas" />
+  <Parcelas v-if="parcelas.length > 0" :parcelas="parcelas || []" />
 
   <ValuesIndex v-if="paginate.length > 0" :values="paginate" />
 </template>
 
 <script>
 import ValuesIndex from "./index.vue";
-import Parcelas from "./parcelas.vue";
+// import Parcelas from "./parcelas.vue";
 import Helps from "../../store/helps";
 import Values from "../../store/values";
 
 import { money } from "../../helpers/utility";
 const moment = require("moment");
 
-import { inject, reactive, ref } from "vue";
+import { inject, reactive, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 export default {
   name: "Save",
   components: {
     ValuesIndex,
-    Parcelas,
+    // Parcelas,
   },
   props: {
     es_pass: String,
@@ -270,7 +273,8 @@ export default {
     const route = useRoute();
 
     const search = ref("");
-    var value = reactive(Values);
+    const form = ref(null);
+    const value = reactive(Values);
     const parcelas = reactive([]);
     const navegation = reactive({
       updating: false,
@@ -281,7 +285,8 @@ export default {
     navegation.help.tipo = "Entrada";
     if (route.params.id_pass) {
       navegation.updating = true;
-      value = store.getters.getValue(route.params.id_pass);
+      // value = store.getters.getValue(route.params.id_pass);
+      Object.assign(value, store.getters.getValue(route.params.id_pass));
     } else {
       value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
       console.log("Criar dado!");
@@ -293,6 +298,20 @@ export default {
       "YYYY-MM-DD"
     );
 
+    // function salvar() {
+    //   try {
+    //     if (form.checkValidity()) {
+    //       // updateParcelas();
+    //       this.store.methods.saveValues(this.parcelas);
+    //       // emitter.emit("msg", "Verifique todos valores!");
+    //     }
+    //   } catch (e) {
+    //     e;
+    //   }
+    // }
+
+    onMounted(() => {});
+
     return {
       navegation,
       parcelas,
@@ -300,20 +319,11 @@ export default {
       store,
       value,
       moment,
+      form,
+      // salvar,
     };
   },
   methods: {
-    async setValue(val) {
-      this.value = val;
-    },
-    salvar() {
-      if (this.$refs.form.checkValidity()) {
-        this.updateParcelas();
-        this.store.methods.saveValues(this.parcelas);
-      } else {
-        this.emitter.emit("msg", "Verifique todos valores!");
-      }
-    },
     getDataSetsOnFilter(filters = []) {
       try {
         if (this.store.state.ds) {

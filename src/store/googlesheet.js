@@ -1,4 +1,4 @@
-import mockDB from "./db.mock";
+import mockDB from "./database.mock";
 import mockDS from "./datasets.mock";
 
 function GoogleSheet() {

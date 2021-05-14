@@ -3,7 +3,7 @@
   "dependencies": {
   },
   "webapp": {
-    "access": "MYSELF",
+    "access": "ANYONE",
     "executeAs": "USER_DEPLOYING"
   },
   "exceptionLogging": "STACKDRIVER",
