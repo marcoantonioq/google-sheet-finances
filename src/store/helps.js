@@ -1,4 +1,12 @@
 module.exports = {
+  tipo: "Entrada",
+  get: function (title) {
+    try {
+      return this[this.tipo][title];
+    } catch (error) {
+      error;
+    }
+  },
   Entrada: {
     Escola: "Selecione a escola onde o dinheiro está entrando",
     Titularidade: "Nome do aluno/cliente que está pagando",

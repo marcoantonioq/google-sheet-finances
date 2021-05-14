@@ -1,12 +1,9 @@
 <template>
-  <img
-    v-if="!value['Escola']"
-    class="arrow_escola"
-    src="https://www.seekpng.com/png/full/240-2401269_youtube-arrow-png-red-arrow-youtube-png.png"
-  />
-
   <div class="row">
-    <div v-on:click="showhelp = !showhelp" class="icon_help right">
+    <div
+      v-on:click="navegation.showhelp = !navegation.showhelp"
+      class="icon_help right"
+    >
       <i class="material-icons">help_outline</i>
     </div>
   </div>
@@ -20,7 +17,7 @@
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">account_circle</i>
         <input
-          :disabled="updating"
+          :disabled="navegation.updating"
           id="Titularidade"
           v-model.trim="value.Titularidade"
           type="text"
@@ -30,16 +27,16 @@
           autocomplete="off"
           placeholder="Titular"
         />
-        <small v-show="showhelp" class="help">
-          {{ getHelp("Titularidade") }}</small
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Titularidade") }}</small
         >
       </div>
 
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">keyboard_tab</i>
         <select
-          :required="!updating"
-          :disabled="updating"
+          :required="!navegation.updating"
+          :disabled="navegation.updating"
           v-model="value['Tipo']"
           name="Tipo"
         >
@@ -52,7 +49,9 @@
             {{ item["Texto"] }}
           </option>
         </select>
-        <small v-show="showhelp" class="help"> {{ getHelp("Tipo") }}</small>
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Tipo") }}</small
+        >
       </div>
     </div>
 
@@ -68,8 +67,8 @@
           autocomplete="off"
           placeholder="Discriminação"
         />
-        <small v-show="showhelp" class="help">
-          {{ getHelp("Discriminação") }}</small
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Discriminação") }}</small
         >
       </div>
 
@@ -89,8 +88,8 @@
             {{ item["Texto"] }}
           </option>
         </select>
-        <small v-show="showhelp" class="help">
-          {{ getHelp("Local de movimento") }}</small
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Local de movimento") }}</small
         >
       </div>
     </div>
@@ -109,7 +108,9 @@
           autocomplete="off"
           placeholder="Valor (R$)"
         />
-        <small v-show="showhelp" class="help"> {{ getHelp("Valor") }}</small>
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Valor") }}</small
+        >
       </div>
 
       <div class="input-field col s12 m6">
@@ -128,8 +129,8 @@
             {{ item["Texto"] }}
           </option>
         </select>
-        <small v-show="showhelp" class="help">
-          {{ getHelp("Forma de pagamento") }}</small
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Forma de pagamento") }}</small
         >
       </div>
     </div>
@@ -140,7 +141,7 @@
         <div class="input-field">
           <i class="material-icons prefix">date_range</i>
           <input
-            :disabled="updating"
+            :disabled="navegation.updating"
             class="validate"
             id="Vencimento"
             v-model="value.Vencimento"
@@ -149,8 +150,8 @@
             autocomplete="off"
             placeholder="Vencimento"
           />
-          <small v-show="showhelp" class="help">
-            {{ getHelp("Vencimento") }}</small
+          <small v-show="navegation.showhelp" class="help">
+            {{ navegation.help.get("Vencimento") }}</small
           >
         </div>
       </div>
@@ -162,16 +163,16 @@
         <div class="input-field">
           <i class="material-icons prefix">date_range</i>
           <input
-            :disabled="!updating"
-            :required="updating"
+            :disabled="!navegation.updating"
+            :required="navegation.updating"
             class="validate"
             id="pago"
             v-model="value['Pago em']"
             type="date"
             autocomplete="off"
           />
-          <small v-show="showhelp" class="help">
-            {{ getHelp("Pago em") }}</small
+          <small v-show="navegation.showhelp" class="help">
+            {{ navegation.help.get("Pago em") }}</small
           >
         </div>
       </div>
@@ -181,8 +182,8 @@
       <div class="input-field col s12 m6">
         <span class="prefix">P <sub>x</sub></span>
         <input
-          :disabled="updating"
-          :required="!updating"
+          :disabled="navegation.updating"
+          :required="!navegation.updating"
           id="Parcelas"
           v-model.trim="value.Parcelas"
           type="number"
@@ -191,7 +192,9 @@
           autocomplete="off"
           placeholder="Parcela(s): "
         />
-        <small v-show="showhelp" class="help"> {{ getHelp("Parcelas") }}</small>
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("Parcelas") }}</small
+        >
       </div>
 
       <div class="input-field col s12 m6">
@@ -204,7 +207,9 @@
           autocomplete="off"
           placeholder="Observações"
         />
-        <small v-show="showhelp" class="help"> {{ getHelp("") }}</small>
+        <small v-show="navegation.showhelp" class="help">
+          {{ navegation.help.get("") }}</small
+        >
       </div>
     </div>
 
@@ -245,8 +250,10 @@ import Helps from "../../store/helps";
 import Values from "../../store/values";
 
 import { money } from "../../helpers/utility";
+const moment = require("moment");
 
-import { inject } from "vue";
+import { inject, reactive, ref } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   name: "Save",
@@ -260,29 +267,42 @@ export default {
   },
   setup() {
     const store = inject("store");
-    return {
-      store,
-    };
-  },
-  data() {
-    return {
-      showhelp: false,
-      search: "",
+    const route = useRoute();
+
+    const search = ref("");
+    var value = reactive(Values);
+    const parcelas = reactive([]);
+    const navegation = reactive({
       updating: false,
-      message: [],
-      value: Values,
+      showhelp: false,
       help: Helps,
-      parcelas: [],
+    });
+
+    navegation.help.tipo = "Entrada";
+    if (route.params.id_pass) {
+      navegation.updating = true;
+      value = store.getters.getValue(route.params.id_pass);
+    } else {
+      value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
+      console.log("Criar dado!");
+    }
+
+    value["Escola"] = store.state.current_escola;
+
+    value["Vencimento"] = moment(value["Vencimento"] || new Date()).format(
+      "YYYY-MM-DD"
+    );
+
+    return {
+      navegation,
+      parcelas,
+      search,
+      store,
+      value,
+      moment,
     };
   },
   methods: {
-    getHelp(title) {
-      try {
-        return this.help[this.value["ES"]][title];
-      } catch (error) {
-        error;
-      }
-    },
     async setValue(val) {
       this.value = val;
     },
@@ -396,21 +416,6 @@ export default {
   },
   created() {
     console.log("created");
-    if (this.id_pass) {
-      this.updating = true;
-      this.setValue(this.store.getters.getValue(this.id_pass));
-      console.log("Atualizar valores...");
-      console.log(this.value);
-    } else {
-      this.value["ES"] = this.es_pass == "Entrada" ? "Entrada" : "Saída";
-      console.log("Criar dado!");
-    }
-
-    this.value["Escola"] = this.store.state.current_escola;
-
-    this.value["Vencimento"] = this.moment(
-      this.value["Vencimento"] || new Date()
-    ).format("YYYY-MM-DD");
   },
 };
 </script>
@@ -444,28 +449,5 @@ sub {
   right: 13px;
   top: 3px;
   font-size: 1.2rem;
-}
-
-@keyframes shake {
-  0% {
-    transform: scaleY(-1) scaleX(-1) translate(1px, 1px) rotate(22deg);
-  }
-  50% {
-    transform: scaleY(-1) scaleX(-1) translate(-1px, 2px) rotate(21deg);
-  }
-  100% {
-    transform: scaleY(-1) scaleX(-1) translate(1px, 1px) rotate(22deg);
-  }
-}
-
-img.arrow_escola {
-  position: fixed;
-  top: 20px;
-  right: 81px;
-  width: 20%;
-  transform: scaleY(-1) scaleX(-1) rotate(22deg);
-  animation: shake 0.5s;
-  animation-iteration-count: infinite;
-  z-index: -1;
 }
 </style>

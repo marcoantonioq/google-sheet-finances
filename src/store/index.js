@@ -2,6 +2,10 @@ import { reactive } from "vue";
 
 import { Sheet } from "./googlesheet";
 
+const escola = reactive({
+  nome: "Teste",
+});
+
 const state = reactive({
   counter: 0,
   notifications: 0,
@@ -88,6 +92,7 @@ const getters = {
 };
 
 export default {
+  escola,
   state,
   methods,
   getters,

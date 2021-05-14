@@ -68,6 +68,7 @@ import ValuesIndex from "./index";
 
 import { inject, ref } from "vue";
 import { useRoute } from "vue-router";
+const moment = require("moment");
 
 export default {
   name: "View",
@@ -88,6 +89,7 @@ export default {
     return {
       value,
       store,
+      moment,
     };
   },
   computed: {

@@ -82,6 +82,7 @@
 
 <script>
 import { format } from "../../helpers/utility";
+const moment = require("moment");
 
 export default {
   props: {
@@ -89,6 +90,11 @@ export default {
     search: { Type: String, default: "'" },
   },
   emits: ["view"],
+  setup() {
+    return {
+      moment,
+    };
+  },
   data() {
     return {
       modalOpen: false,

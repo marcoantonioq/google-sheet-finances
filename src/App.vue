@@ -102,6 +102,7 @@ body,
 #app {
   height: 100vh;
   width: 100vw;
+  background-color: var(--white);
 }
 
 a {
@@ -122,6 +123,7 @@ nav {
   box-shadow: none;
   overflow: auto;
   grid-area: nav;
+  overflow: hidden;
 
   a {
     background-color: var(--main-color);
@@ -131,7 +133,7 @@ nav {
     flex-direction: column;
     font-weight: bold;
     justify-content: center;
-    margin: 1.5rem 0;
+    margin: 1.3rem 0;
     margin-left: 5px;
     padding: 0px;
     text-decoration: none;
@@ -231,6 +233,18 @@ nav {
 /* icon prefix focus color */
 .input-field .prefix.active {
   color: #000 !important;
+}
+@media (max-height: 400px) {
+  nav {
+    a {
+      min-height: 30px;
+      margin: 0.2rem 0;
+      margin-left: 5px;
+      i.material-icons {
+        display: none;
+      }
+    }
+  }
 }
 
 @media (max-width: 2600px) {
