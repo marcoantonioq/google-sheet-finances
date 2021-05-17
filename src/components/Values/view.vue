@@ -2,10 +2,7 @@
   <div class="row">
     <dl>
       <dt>ID:</dt>
-      <dd>
-        index: {{ index }} <br />
-        ID2: {{ values[index]["ID"] }}&nbsp;
-      </dd>
+      <dd>{{ values[index]["ID"] }}&nbsp;</dd>
 
       <dt>Titular:</dt>
       <dd>{{ values[index]["Titularidade"] }}&nbsp;</dd>
@@ -95,7 +92,12 @@ export default {
 
     const index = ref(+route.params.id_pass);
     const values = reactive(store.database.values);
-    const similarBills = store.database.similarBills;
+
+    function similarBills(obj) {
+      return values
+        .filter((el) => el["Titularidade"] == obj["Titularidade"])
+        .filter((el) => el["ID"] != obj["ID"]);
+    }
 
     function upView(id) {
       // index.value = values.findIndex((el) => el["ID"] == route.params.id_pass);

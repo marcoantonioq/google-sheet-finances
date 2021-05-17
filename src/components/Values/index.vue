@@ -50,7 +50,7 @@
   </table>
   <div class="row">
     <div class="col s12 m4">
-      <div v-show="valuesCount > paginateCount">
+      <div v-show="values.length > paginate.length">
         <button class="btn-small grey lighten-4 black-text" @click="prevPage">
           Anterior
         </button>
@@ -61,16 +61,16 @@
     </div>
 
     <div class="col s12 m4 center">
-      Página: {{ currentPage }} <br />
-      Mostrando {{ paginateCount }} de
-      {{ valuesCount }}
+      Página: {{ navegation.currentPage }} <br />
+      Mostrando {{ paginate.length }} de
+      {{ values.length }}
     </div>
 
     <div class="col s12 m4">
-      <div v-show="valuesCount > paginateCount">
+      <div v-show="values.length > paginate.length">
         <a
           class="col s12 btn-small grey lighten-4 black-text"
-          v-on:click="pageSize = 9999"
+          v-on:click="navegation.pageSize = 9999"
         >
           <i class="material-icons left"> arrow_drop_down </i>
           Mostrar todos os registros
@@ -81,6 +81,9 @@
 </template>
 
 <script>
+import { reactive, computed } from "vue";
+import { useRouter } from "vue-router";
+
 import { format, money } from "../../helpers/utility";
 const moment = require("moment");
 
@@ -90,85 +93,81 @@ export default {
     search: { Type: String, default: "'" },
   },
   emits: ["view"],
-  setup() {
-    return {
-      moment,
-      money,
-    };
-  },
-  data() {
-    return {
-      modalOpen: false,
+  setup(props) {
+    const router = useRouter();
+    const values = reactive(props.values);
+
+    const navegation = reactive({
       currentSort: "name",
       currentSortDir: "asc",
-      pageSize: 20,
+      pageSize: 50,
       currentPage: 1,
-    };
-  },
-  computed: {
-    paginate: function () {
-      console.log("o.O", this.values);
-      if (!this.values) {
-        return [];
-      }
-      let values = this.values
+    });
+
+    const paginate = computed(() => {
+      return values
         .filter((obj) => {
           let str_obj = format.normalize(
             JSON.stringify(Object.values(obj)).toLocaleLowerCase()
           );
           return str_obj.includes(
-            format.normalize(this.search.toLocaleLowerCase())
+            format.normalize(props.search.toLocaleLowerCase())
           );
         })
         .sort((a, b) => {
           let modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          if (navegation.currentSortDir === "desc") modifier = -1;
+          if (a[navegation.currentSort] < b[navegation.currentSort])
+            return -1 * modifier;
+          if (a[navegation.currentSort] > b[navegation.currentSort])
+            return 1 * modifier;
           return 0;
         })
         .filter((row, index) => {
-          let start = (this.currentPage - 1) * this.pageSize;
-          let end = this.currentPage * this.pageSize;
+          let start = (navegation.currentPage - 1) * navegation.pageSize;
+          let end = navegation.currentPage * navegation.pageSize;
           if (index >= start && index < end) return true;
         });
+    });
 
-      return values;
-    },
-    paginateCount: function () {
-      return this.paginate.length;
-    },
-    valuesCount: function () {
-      return this.values.length;
-    },
-  },
-  methods: {
-    view(id) {
-      this.$emit("view", id);
-      this.$router.push({ name: "View", params: { id_pass: id } });
-    },
-    cancel(id) {
+    function view(id) {
+      router.push({ name: "View", params: { id_pass: id } });
+    }
+    function cancel(id) {
       console.log("Cancel ", id);
-    },
-    pay(id) {
+    }
+    function pay(id) {
       console.log("Pay ", id);
-      this.$router.push({ name: "Update", params: { id_pass: id } });
-    },
-    sort: function (s) {
-      console.log("Set:", s);
+      router.push({ name: "Update", params: { id_pass: id } });
+    }
+    function sort(s) {
       //if s == current sort, reverse
-      if (s === this.currentSort) {
-        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      if (s === navegation.currentSort) {
+        navegation.currentSortDir =
+          navegation.currentSortDir === "asc" ? "desc" : "asc";
       }
-      this.currentSort = s;
-    },
-    nextPage: function () {
-      if (this.currentPage * this.pageSize < this.values.length)
-        this.currentPage++;
-    },
-    prevPage: function () {
-      if (this.currentPage > 1) this.currentPage--;
-    },
+      navegation.currentSort = s;
+    }
+    function nextPage() {
+      if (navegation.currentPage * navegation.pageSize < values.length)
+        navegation.currentPage++;
+    }
+    function prevPage() {
+      if (navegation.currentPage > 1) navegation.currentPage--;
+    }
+
+    return {
+      moment,
+      money,
+      navegation,
+      paginate,
+      view,
+      cancel,
+      pay,
+      sort,
+      nextPage,
+      prevPage,
+    };
   },
 };
 </script>

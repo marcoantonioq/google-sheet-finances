@@ -62,11 +62,6 @@ class DataBase {
   getValue(id) {
     return this.values.find((el) => el.ID == id);
   }
-  similarBills(obj) {
-    return this.values.filter(
-      (el) => (el["Titularidade"] = obj["Titularidade"])
-    );
-  }
 }
 
 const database = new DataBase();
