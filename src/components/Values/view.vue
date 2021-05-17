@@ -17,7 +17,10 @@
       <dd>{{ values[index]["Tipo"] }}&nbsp;</dd>
 
       <dt>Discriminação:</dt>
-      <dd>{{ values[index]["Discriminação"] }}&nbsp;</dd>
+      <dd>
+        {{ values[index]["Discriminação"] }}
+        {{ values[index]["Outras Observações"] }}&nbsp;
+      </dd>
 
       <dt>Local do movimento:</dt>
       <dd>{{ values[index]["Local do movimento"] }}&nbsp;</dd>
@@ -40,8 +43,7 @@
 
       <dt>Observações:</dt>
       <dd>
-        {{ values[index]["Observações"] }} <br />
-        {{ values[index]["Outras Observações"] }}
+        {{ values[index]["Observações"] }}
         &nbsp;
       </dd>
     </dl>
@@ -102,11 +104,14 @@ export default {
     }
     upView(index.value);
 
+    function back() {}
+
     return {
       values,
       moment,
       upView,
       index,
+      back,
       similarBills,
     };
   },

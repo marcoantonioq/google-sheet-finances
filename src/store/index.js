@@ -1,5 +1,5 @@
 import database from "./database.js";
-import datasets from "./database.js";
+import datasets from "./datasets.js";
 
 import { reactive } from "vue";
 
@@ -19,5 +19,5 @@ const escola = reactive({
 export default {
   escola,
   database,
-  datasets: datasets,
+  datasets,
 };

@@ -27,9 +27,9 @@
           autocomplete="off"
           placeholder="Titular"
         />
-        <small v-show="navegation.showhelp" class="help">
-          {{ navegation.help.get("Titularidade") }}</small
-        >
+        <small v-show="navegation.showhelp" class="help"
+          >{{ navegation.help.get("Titularidade") }}
+        </small>
       </div>
 
       <div class="input-field col s12 m6">
@@ -37,12 +37,15 @@
         <select
           :required="!navegation.updating"
           :disabled="navegation.updating"
+          class="validate"
           v-model="value['Tipo']"
           name="Tipo"
         >
-          <option value="" disabled selected>Tipo de {{ value["ES"] }}</option>
+          <option value="" disabled selected>
+            __Tipo de {{ value["ES"] }}__
+          </option>
           <option
-            v-for="item in getTipos()"
+            v-for="item in datasets.tiposMovimento(value['Escola'])"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -78,10 +81,11 @@
           required
           v-model="value['Local de movimento']"
           name="local_movimento"
+          class="validate"
         >
-          <option value="" disabled selected>Local de movimento:</option>
+          <option value="" disabled selected>__Local de movimento:__</option>
           <option
-            v-for="item in getLocaisMovimento()"
+            v-for="item in datasets.locaisMovimento(value['Escola'])"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -102,7 +106,7 @@
           type="text"
           @blur="checkValor"
           v-model.trim="value.Valor"
-          class="pagamento validate"
+          class="validate"
           pattern="^(-)?\d*(,)?\d{1,2}"
           required
           autocomplete="off"
@@ -111,21 +115,19 @@
         <small v-show="navegation.showhelp" class="help">
           {{ navegation.help.get("Valor") }}</small
         >
-        <div class="row">
-          {{ value["Valor"] }}
-        </div>
       </div>
 
-      <div class="input-field col s12 m6">
+      <div class="input-field col s12 m6 cheque">
         <i class="material-icons prefix">card_membership</i>
         <select
           required
+          class="validate"
           v-model="value['Forma de pagamento']"
           name="Forma de pagamento"
         >
-          <option value="" disabled selected>Forma de pagamento</option>
+          <option value="" disabled selected>__Forma de pagamento__</option>
           <option
-            v-for="item in getFormaPagamentos()"
+            v-for="item in datasets.formasPagamento(value['Escola'])"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -135,6 +137,49 @@
         <small v-show="navegation.showhelp" class="help">
           {{ navegation.help.get("Forma de pagamento") }}</small
         >
+        <div
+          v-show="
+            value['Forma de pagamento'].toLocaleLowerCase().includes('cheque')
+          "
+          class="row"
+        >
+          <div class="input-field col s12">
+            <i class="material-icons prefix">check</i>
+            <input
+              v-model.trim="value['Titular Cheque']"
+              type="text"
+              autocomplete="off"
+              placeholder="Titular cheque"
+            />
+          </div>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">check</i>
+            <input
+              v-model.trim="value['Agência Cheque']"
+              type="text"
+              autocomplete="off"
+              placeholder="Agência Cheque"
+            />
+          </div>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">check</i>
+            <input
+              v-model.trim="value['Conta Cheque']"
+              type="text"
+              autocomplete="off"
+              placeholder="Conta"
+            />
+          </div>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">check</i>
+            <input
+              v-model.trim="value['N° Cheque']"
+              type="text"
+              autocomplete="off"
+              placeholder="N° Cheque"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -188,6 +233,7 @@
           :disabled="navegation.updating"
           :required="!navegation.updating"
           id="Parcelas"
+          class="validate"
           v-model.trim="value.Parcelas"
           type="number"
           min="1"
@@ -203,7 +249,7 @@
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">group</i>
         <input
-          class="Observações"
+          class="validate"
           id="Observações"
           v-model.trim="value['Observações']"
           type="text"
@@ -216,9 +262,7 @@
       </div>
     </div>
 
-    <div class="margin2 row">
-      {{ info_user }}
-    </div>
+    <div class="margin2 row" v-html="getInfo"></div>
 
     <div class="row">
       <div class="col s12 m6">
@@ -241,28 +285,30 @@
     </div>
   </form>
 
-  <Parcelas v-if="parcelas.length > 0" :parcelas="parcelas || []" />
-
-  <ValuesIndex v-if="paginate.length > 0" :values="paginate" />
+  <Parcelas v-if="!navegation.updating" :parcelas="parcelas" />
 </template>
 
 <script>
-import ValuesIndex from "./index.vue";
-// import Parcelas from "./parcelas.vue";
-import Helps from "../../store/helps";
-import Values from "../../store/values";
+// import ValuesIndex from "./index.vue";
+import Parcelas from "./parcelas.vue";
+
+import { createParcelas } from "../../model/parcelas";
+import { helpsForm, createInfo } from "../../model/helps";
 
 import { money } from "../../helpers/utility";
 const moment = require("moment");
 
-import { inject, reactive, ref, onMounted } from "vue";
+import { inject, reactive, ref, computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+
+import Values from "../../store/values";
+import event from "../../lib/Event";
 
 export default {
   name: "Save",
   components: {
-    ValuesIndex,
-    // Parcelas,
+    // ValuesIndex,
+    Parcelas,
   },
   props: {
     es_pass: String,
@@ -272,160 +318,84 @@ export default {
     const store = inject("store");
     const route = useRoute();
 
-    const search = ref("");
     const form = ref(null);
     const value = reactive(Values);
-    const parcelas = reactive([]);
+    const datasets = reactive(store.datasets);
     const navegation = reactive({
       updating: false,
       showhelp: false,
-      help: Helps,
+      help: helpsForm,
     });
 
-    navegation.help.tipo = "Entrada";
     if (route.params.id_pass) {
       navegation.updating = true;
-      // value = store.getters.getValue(route.params.id_pass);
-      Object.assign(value, store.getters.getValue(route.params.id_pass));
+      Object.assign(value, store.database.getValue(route.params.id_pass));
     } else {
       value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
       console.log("Criar dado!");
     }
 
-    value["Escola"] = store.state.current_escola;
-
-    value["Vencimento"] = moment(value["Vencimento"] || new Date()).format(
-      "YYYY-MM-DD"
-    );
-
-    // function salvar() {
-    //   try {
-    //     if (form.checkValidity()) {
-    //       // updateParcelas();
-    //       this.store.methods.saveValues(this.parcelas);
-    //       // emitter.emit("msg", "Verifique todos valores!");
-    //     }
-    //   } catch (e) {
-    //     e;
-    //   }
-    // }
-
-    onMounted(() => {});
-
-    return {
-      navegation,
-      parcelas,
-      search,
-      store,
-      value,
-      moment,
-      form,
-      // salvar,
-    };
-  },
-  methods: {
-    getDataSetsOnFilter(filters = []) {
+    function salvar() {
+      console.log("Salvar...");
       try {
-        if (this.store.state.ds) {
-          let values = [];
-          filters.forEach((filter) => {
-            values = this.store.state.ds.filter(filter);
-          });
-          return values;
+        if (form.value.checkValidity()) {
+          store.database.saveValues(this.parcelas);
+          store.database.saveValues(this.parcelas);
+          event.trigger("msg", "Dados enviados com sucesso!");
         } else {
-          throw "Não há DataSets";
+          navegation.showhelp = true;
+          throw "Preencha todos os camos!";
         }
       } catch (e) {
-        this.emitter.emit("msg", "Erro ao carregar DataSets!");
-        return [];
+        console.info(e);
+        event.trigger("msg", "Aglumas informações obrigatárias!");
       }
-    },
-    getTipos() {
-      return this.getDataSetsOnFilter([
-        (el) => String(el["Escola"]).includes(this.value["Escola"]),
-        (el) => String(el["Campo"]).includes("Tipo"),
-      ]);
-    },
-    getLocaisMovimento() {
-      return this.getDataSetsOnFilter([
-        (el) => String(el["Escola"]).includes(this.value["Escola"]),
-        (el) => String(el["Campo"]).includes("Local de movimento"),
-      ]);
-    },
-    getFormaPagamentos() {
-      return this.getDataSetsOnFilter([
-        (el) => String(el["Escola"]).includes(this.value["Escola"]),
-        (el) => String(el["Campo"]).includes("Forma de Pagamento"),
-      ]);
-    },
-    updateParcelas() {
-      this.value["Escola"] = this.store.state.current_escola;
-      let countParcelas = Number(this.value["Parcelas"]);
-      let parcelas = [];
-      if (countParcelas) {
-        console.log("Numero de parcelas:", parcelas);
-        for (let i = 0; i < countParcelas; i++) {
-          let obj = Object.assign({}, this.value);
-          obj["Pago em"] = "";
-          obj["Vencimento"] = this.moment(obj["Vencimento"]).add(i, "months");
-          obj["Outras Observações"] = `Parcela ${i + 1}/${countParcelas}`;
-          parcelas.push(obj);
-        }
-        parcelas[0]["Pago em"] = this.value["Pago em"];
-        this.parcelas = parcelas;
-      }
-    },
-  },
-  watch: {
-    "value.Valor": function () {
-      this.updateParcelas();
-    },
-    "value.Vencimento": function (val) {
-      let current_data = this.moment().format("YYYY-MM-DD");
-      this.value["Pago em"] = this.moment(val).isSame(current_data)
-        ? this.moment().format("YYYY-MM-DD")
-        : "";
-      this.updateParcelas();
-    },
-    "value.Parcelas": function (val) {
-      console.log("Parcelas:", val);
-      this.updateParcelas();
-    },
-  },
-  computed: {
-    paginate: function () {
-      if (this.search == "") {
-        return [];
-      } else {
-        return this.store.getters.find({ ES: this.Tipo });
-      }
-    },
-    info_user: function () {
-      if (!this.value["Valor"]) return "";
-      let isPay = this.value["ES"] == "Saída" ? true : false;
+    }
 
-      const replaces = {
-        "{es}": isPay ? "Pagando" : "Recebendo",
-        "{tipo_pagamento}": this.value["Tipo"].toLowerCase() || "...tipo...",
-        "{escola}": this.store.state.current_escola || "...Escola...",
-        "{valor}": money.toReal(this.value["Valor"]),
-        "{local_movimento}":
-          this.value["Local de movimento"] || "...local movimento...",
-        "{forma_pagamento}":
-          this.value["Forma de pagamento"] || "...forma pagamento...",
-        "{titular}": this.value["Titularidade"] || "...titular...",
-      };
-      let template = isPay
-        ? "{es} {tipo_pagamento} no valor de {valor} para {titular} com {forma_pagamento} / {local_movimento} / {escola}."
-        : "{es} {tipo_pagamento} {valor} de {titular} com {forma_pagamento} para {local_movimento} / {escola}.";
+    const parcelas = computed(() => {
+      return createParcelas(value);
+    });
 
-      return Object.entries(replaces).reduce((acc, [k, v]) => {
-        return acc.replaceAll(k, v);
-      }, template);
-    },
-  },
-  created() {
-    console.log("created");
+    const getInfo = computed(() => {
+      return createInfo(value);
+    });
+
+    watch(
+      () => value.Vencimento,
+      (val) => {
+        let current_data = moment().format("YYYY-MM-DD");
+        value["Pago em"] = moment(val).isSame(current_data)
+          ? moment().format("YYYY-MM-DD")
+          : "";
+      }
+    );
+    function setEscola(escola) {
+      value["Escola"] = escola;
+    }
+    watch(() => store.escola.nome, setEscola);
+
+    onMounted(() => {
+      setEscola(store.escola.nome);
+
+      navegation.help.tipo = route.params.es_pass || value["ES"];
+
+      value["Vencimento"] = moment(value["Vencimento"] || new Date()).format(
+        "YYYY-MM-DD"
+      );
+    });
+
+    return {
+      datasets,
+      form,
+      getInfo,
+      moment,
+      money,
+      navegation,
+      parcelas,
+      salvar,
+      store,
+      value,
+    };
   },
 };
 </script>
@@ -437,7 +407,7 @@ export default {
 }
 .help {
   color: var(--red);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .botton10 {
@@ -459,5 +429,13 @@ sub {
   right: 13px;
   top: 3px;
   font-size: 1.2rem;
+}
+.cheque {
+  .row {
+    .input-field {
+      padding-left: 40px;
+      margin: 0;
+    }
+  }
 }
 </style>

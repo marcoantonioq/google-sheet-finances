@@ -18,5 +18,5 @@ module.exports = {
   "Titular Cheque": "",
   "Conta Cheque": "",
   "Agência Cheque": "",
-  "Nº Cheque": "",
+  "N° Cheque": "",
 };

@@ -53,12 +53,12 @@ function GoogleSheet() {
         .withFailureHandler(fail)
         .find({ table: "Banco de dados", filter: filter });
     } catch (e) {
-      console.groupCollapsed("Erro ao buscar no Google: More...");
-      console.warn("Erro:", e);
+      console.groupCollapsed("Erro ao buscar Dados no Google: More...");
+      console.error("Erro:", e);
+      console.info("!!!! Dados Mock !!!!");
       console.groupEnd();
 
       // Mock values
-      console.info("!!!! Dados Mock !!!!");
       call(JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB }));
     }
   };
@@ -76,12 +76,12 @@ function GoogleSheet() {
         .withFailureHandler(fail)
         .FieldsDataSets();
     } catch (e) {
-      console.groupCollapsed("Erro ao buscar no Google: More...");
-      console.warn("Erro:", e);
+      console.groupCollapsed("Erro ao buscar DataSets no Google: More...");
+      console.error("Erro:", e);
+      console.info("!!!! DataSets Mock !!!!");
       console.groupEnd();
 
       // Mock values
-      console.info("!!!! DataSets Mock !!!!");
       call(
         JSON.stringify({ status: false, msg: "Datasets Mock", data: mockDS })
       );

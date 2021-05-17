@@ -32,10 +32,17 @@
 
 <script>
 import { money } from "../../helpers/utility";
+const moment = require("moment");
+
 export default {
   name: "View",
   props: {
     parcelas: Array,
+  },
+  setup() {
+    return {
+      moment,
+    };
   },
   computed: {
     total: function () {
@@ -61,6 +68,9 @@ export default {
   methods: {
     toNumber: money.toNumber,
     toReal: money.toReal,
+  },
+  created() {
+    console.log(this.parcelas);
   },
 };
 </script>

@@ -4,7 +4,6 @@ class DataBase {
   static #values = [];
 
   constructor() {
-    console.log("DataBase criado");
     this.updateValuesFromTables();
   }
 
@@ -45,11 +44,10 @@ class DataBase {
   }
 
   updateValuesFromTables() {
-    console.log("Escopo updateValues", this);
     Sheet.onGetValues(null, (el) => {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do banco: ", msg);
-      console.log("Status do datasets: ", status);
+      console.log("Status: ", status);
       this.values = data;
     });
 

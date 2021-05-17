@@ -2,7 +2,6 @@
   <table class="highlight">
     <thead>
       <tr>
-        <th @click="sort('Vencimento')">ES</th>
         <th @click="sort('Vencimento')">Vencimento</th>
         <th @click="sort('Titularidade')">Titularidade</th>
         <th @click="sort('Valor')">Valor</th>
@@ -17,12 +16,11 @@
         v-for="value in paginate"
         :key="value.ID"
       >
-        <td>{{ value["ES"] }}</td>
         <td>
-          {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
+          {{ moment(value["Vencimento"]).format("DD/MM") }}
         </td>
         <td>{{ value["Titularidade"] }}</td>
-        <td>R$ {{ Math.abs(value["Valor"]) }}</td>
+        <td>{{ money.toReal(Math.abs(value["Valor"])) }}</td>
         <td>{{ value["Tipo"] }}</td>
         <td>
           {{
@@ -83,7 +81,7 @@
 </template>
 
 <script>
-import { format } from "../../helpers/utility";
+import { format, money } from "../../helpers/utility";
 const moment = require("moment");
 
 export default {
@@ -95,6 +93,7 @@ export default {
   setup() {
     return {
       moment,
+      money,
     };
   },
   data() {
@@ -205,7 +204,10 @@ table {
       font-weight: 1000;
     }
     th:nth-child(2) {
-      min-width: 250px;
+      min-width: 150px;
+    }
+    th:nth-child(3) {
+      min-width: 100px;
     }
     border-bottom: 1px solid var(--gray);
   }
