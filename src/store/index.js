@@ -18,6 +18,6 @@ const escola = reactive({
 
 export default {
   escola,
-  ...database,
-  ...datasets,
+  database,
+  datasets: datasets,
 };

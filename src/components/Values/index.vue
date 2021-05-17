@@ -2,6 +2,7 @@
   <table class="highlight">
     <thead>
       <tr>
+        <th @click="sort('Vencimento')">ES</th>
         <th @click="sort('Vencimento')">Vencimento</th>
         <th @click="sort('Titularidade')">Titularidade</th>
         <th @click="sort('Valor')">Valor</th>
@@ -16,6 +17,7 @@
         v-for="value in paginate"
         :key="value.ID"
       >
+        <td>{{ value["ES"] }}</td>
         <td>
           {{ moment(value["Data/Vencimento"]).format("DD/MM") }}
         </td>
@@ -106,6 +108,10 @@ export default {
   },
   computed: {
     paginate: function () {
+      console.log("o.O", this.values);
+      if (!this.values) {
+        return [];
+      }
       let values = this.values
         .filter((obj) => {
           let str_obj = format.normalize(

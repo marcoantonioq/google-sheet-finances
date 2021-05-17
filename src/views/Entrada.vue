@@ -1,8 +1,9 @@
 <template>
   <Search @submit="submit" />
+
   <ValuesIndex
     :search="search"
-    :values="store.getters.find({ ES: 'Entrada' })"
+    :values="store.database.find({ ES: 'Entrada' })"
   />
 
   <div class="row right">

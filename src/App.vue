@@ -38,9 +38,6 @@ export default {
   components: { Escola },
   setup() {
     provide("store", store);
-    console.log("Escola:", );
-    store.database.methods.updateValuesFromTables();
-    // store.datasets.methods.updateDataSetsFromTables();
   },
   created() {
     this.emitter.on("msg", (text) => {
