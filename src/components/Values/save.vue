@@ -45,7 +45,10 @@
             __Tipo de {{ value["ES"] }}__
           </option>
           <option
-            v-for="item in datasets.tiposMovimento(value['Escola'])"
+            v-for="item in datasets.tiposMovimento(
+              value['Escola'],
+              value['ES']
+            )"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -85,7 +88,10 @@
         >
           <option value="" disabled selected>__Local do movimento:__</option>
           <option
-            v-for="item in datasets.locaisMovimento(value['Escola'])"
+            v-for="item in datasets.locaisMovimento(
+              value['Escola'],
+              value['ES']
+            )"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -127,7 +133,10 @@
         >
           <option value="" disabled selected>__Forma de pagamento__</option>
           <option
-            v-for="item in datasets.formasPagamento(value['Escola'])"
+            v-for="item in datasets.formasPagamento(
+              value['Escola'],
+              value['ES']
+            )"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >

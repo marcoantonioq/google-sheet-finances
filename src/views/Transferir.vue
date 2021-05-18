@@ -192,6 +192,13 @@ export default {
         de["Titularidade"] = `Escola ${para["Escola"]}`;
         para["Titularidade"] = `Escola ${de["Escola"]}`;
 
+        de[
+          "Discriminação"
+        ] = `De ${de["Local do movimento"]}/${de["Escola"]} para ${para["Local do movimento"]}/${para["Escola"]}`;
+        para[
+          "Discriminação"
+        ] = `De ${de["Local do movimento"]}/${de["Escola"]} para ${para["Local do movimento"]}/${para["Escola"]}`;
+
         de["Observações"] = data["Observações"];
         para["Observações"] = data["Observações"];
 

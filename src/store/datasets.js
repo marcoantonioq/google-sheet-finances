@@ -30,9 +30,10 @@ class DataSets {
   getDataSetsOnFilter(filters = []) {
     try {
       if (DataSets.#values) {
-        let values = [];
+        let values = DataSets.#values;
+
         filters.forEach((filter) => {
-          values = DataSets.#values.filter(filter);
+          values = values.filter(filter);
         });
         return values;
       } else {
@@ -43,22 +44,25 @@ class DataSets {
       return [];
     }
   }
-  tiposMovimento(escola) {
+  tiposMovimento(escola, es = "Entrada/Saída") {
     return this.getDataSetsOnFilter([
       (el) => String(el["Escola"]).includes(escola),
       (el) => String(el["Campo"]).includes("Tipo"),
+      (el) => String(el["Entrada/Saída"]).includes(es),
     ]);
   }
-  locaisMovimento(escola) {
+  locaisMovimento(escola, es = "Entrada/Saída") {
     return datasets.getDataSetsOnFilter([
       (el) => String(el["Escola"]).includes(escola),
       (el) => String(el["Campo"]).includes("Local do movimento"),
+      (el) => String(el["Entrada/Saída"]).includes(es),
     ]);
   }
-  formasPagamento(escola) {
+  formasPagamento(escola, es = "Entrada/Saída") {
     return datasets.getDataSetsOnFilter([
       (el) => String(el["Escola"]).includes(escola),
       (el) => String(el["Campo"]).includes("Forma de Pagamento"),
+      (el) => String(el["Entrada/Saída"]).includes(es),
     ]);
   }
 }
