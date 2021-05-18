@@ -25,11 +25,25 @@
   <div class="content">
     <Escola />
     <router-view />
+
+    <div v-bind:class="{ active: preload }" class="preloader-wrapper">
+      <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { provide } from "vue";
+import { provide, ref } from "vue";
 import store from "./store";
 import event from "./lib/Event";
 
@@ -41,12 +55,18 @@ export default {
     provide("store", store);
     provide("event", event);
 
+    const preload = ref(store.database.preload);
+
     event.on("msg", (text) => {
       // eslint-disable-next-line no-undef
       M.toast({ html: text });
       // eslint-disable-next-line no-undef
       M.updateTextFields();
     });
+
+    return {
+      preload,
+    };
   },
 };
 </script>
@@ -278,6 +298,14 @@ nav {
       }
     }
   }
+}
+
+.preloader-wrapper {
+  width: 35px;
+  height: 35px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
 }
 
 ::-webkit-scrollbar {

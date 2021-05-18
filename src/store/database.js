@@ -2,9 +2,14 @@ import { Sheet } from "./googlesheet";
 
 class DataBase {
   static #values = [];
+  static #preload = false;
 
   constructor() {
     this.updateValuesFromTables();
+  }
+
+  get preload() {
+    return DataBase.#preload;
   }
 
   get values() {
@@ -19,6 +24,7 @@ class DataBase {
   }
 
   saveValues(values) {
+    DataBase.#preload = true;
     console.log("Ok, vamos enviar para o google salvar!", values);
     Sheet.onSaveValues(values, (el) => {
       const { data, msg, status } = JSON.parse(el);
@@ -37,20 +43,23 @@ class DataBase {
         });
       } catch (e) {
         console.log("Erro sync values!", e);
+      } finally {
+        DataBase.#preload = false;
       }
     });
 
     return true;
   }
 
-  updateValuesFromTables() {
+  async updateValuesFromTables() {
+    DataBase.#preload = true;
     Sheet.onGetValues(null, (el) => {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do banco: ", msg);
       console.log("Status: ", status);
       this.values = data;
+      DataBase.#preload = false;
     });
-
     return true;
   }
 
