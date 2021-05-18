@@ -60,6 +60,12 @@ class DataBase {
       this.values = data;
       DataBase.#preload = false;
     });
+    setTimeout(() => {
+      if (DataBase.#preload) {
+        console.error("Tempo limit para updateValues!");
+        DataBase.#preload = false;
+      }
+    }, 10000);
     return true;
   }
 

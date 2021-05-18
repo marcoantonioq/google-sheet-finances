@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { provide, ref } from "vue";
+import { provide, reactive } from "vue";
 import store from "./store";
 import event from "./lib/Event";
 
@@ -55,7 +55,7 @@ export default {
     provide("store", store);
     provide("event", event);
 
-    const preload = ref(store.database.preload);
+    const preload = reactive(store.database.preload);
 
     event.on("msg", (text) => {
       // eslint-disable-next-line no-undef
