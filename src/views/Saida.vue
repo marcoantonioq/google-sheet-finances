@@ -1,10 +1,7 @@
 <template>
   <Search @submit="submit" />
 
-  <ValuesIndex
-    :search="search"
-    :values="store.database.find({ ES: 'Saída', Escola: store.escola.nome })"
-  />
+  <ValuesIndex :search="search" :values="values_escola" />
 
   <div class="row right">
     <ButtonLarge title="Criar novo registro" to="/create/Saída" icon="add" />
@@ -16,7 +13,7 @@ import ButtonLarge from "../components/ButtonLarge.vue";
 import ValuesIndex from "../components/Values/";
 import Search from "../components/Search.vue";
 
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
 export default {
   name: "Saída",
@@ -33,8 +30,13 @@ export default {
   setup() {
     const store = inject("store");
 
+    const values_escola = computed(() => {
+      return store.database.find({ ES: "Saída", Escola: store.escola.nome });
+    });
+
     return {
       store,
+      values_escola,
     };
   },
   methods: {

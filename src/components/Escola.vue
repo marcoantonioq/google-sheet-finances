@@ -21,17 +21,17 @@
 
 <script>
 import { inject } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
 export default {
   name: "Escola",
   setup() {
     const store = inject("store");
-    const router = useRouter();
+    // const router = useRouter();
 
     function setEscola(escola) {
       store.escola.nome = escola;
-      router.push("/");
+      // router.push("/");
     }
 
     return {
