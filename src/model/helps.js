@@ -1,4 +1,4 @@
-import { money } from "../helpers/utility";
+import { format } from "../helpers/utility";
 
 export const helpsForm = {
   tipo: "Entrada",
@@ -13,12 +13,12 @@ export const helpsForm = {
     Escola: "Selecione a escola onde o dinheiro está entrando",
     Titularidade: "Nome do aluno/cliente que está pagando",
     Tipo: "Selecione o tipo de entrada",
-    Discriminação: "Detalhamento do tipo de entrada",
+    Discriminação: "Detalhamento do tipo de entrada.",
     ["Local de movimento"]: "Selecione o local que o valor está entrando",
     Valor: "Digite o valor que está entrando",
     "Forma de pagamento": "Selecione a forma de pagamento",
     Parcelas: "Quantidade de parcelas",
-    Observações: "Informação relevante para lembrar sobre esse recebimento",
+    Observações: "Informação relevante para lembrar sobre esse recebimento.",
     "Pago em": "Data de pagamento",
   },
   Saída: {
@@ -44,7 +44,7 @@ export function createInfo(values) {
     "{tipo__pagamento}":
       values["Tipo"].toLowerCase() || "<b class='red'>__tipo de entrada__</b>",
     "{escola}": values["Escola"] || "<b class='red'>__Escola__</b>",
-    "{valor}": money.toReal(values["Valor"]),
+    "{valor}": format.toReal(values["Valor"]),
     "{local__movimento}":
       values["Local de movimento"] || "<b class='red'>__local movimento__</b>",
     "{forma__pagamento}":

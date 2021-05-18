@@ -20,7 +20,7 @@
           {{ moment(value["Vencimento"]).format("DD/MM") }}
         </td>
         <td>{{ value["Titularidade"] }}</td>
-        <td>{{ money.toReal(Math.abs(value["Valor"])) }}</td>
+        <td>{{ format.toReal(Math.abs(value["Valor"])) }}</td>
         <td>{{ value["Tipo"] }}</td>
         <td>
           {{
@@ -84,7 +84,7 @@
 import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import { format, money } from "../../helpers/utility";
+import { format } from "../../helpers/utility";
 const moment = require("moment");
 
 export default {
@@ -93,7 +93,7 @@ export default {
     search: { Type: String, default: "'" },
   },
   emits: ["view"],
-  setup(props) {
+  setup(props, context) {
     const router = useRouter();
     const values = reactive(props.values);
 
@@ -131,6 +131,7 @@ export default {
     });
 
     function view(id) {
+      context.emit("view", id);
       router.push({ name: "View", params: { id_pass: id } });
     }
     function cancel(id) {
@@ -158,7 +159,7 @@ export default {
 
     return {
       moment,
-      money,
+      format,
       navegation,
       paginate,
       view,

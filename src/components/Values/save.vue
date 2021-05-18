@@ -295,7 +295,6 @@ import Parcelas from "./parcelas.vue";
 import { createParcelas } from "../../model/parcelas";
 import { helpsForm, createInfo } from "../../model/helps";
 
-import { money } from "../../helpers/utility";
 const moment = require("moment");
 
 import { inject, reactive, ref, computed, watch, onMounted } from "vue";
@@ -389,7 +388,6 @@ export default {
       form,
       getInfo,
       moment,
-      money,
       navegation,
       parcelas,
       salvar,

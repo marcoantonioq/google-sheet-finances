@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { money } from "../../helpers/utility";
+import { format } from "../../helpers/utility";
 const moment = require("moment");
 
 export default {
@@ -66,8 +66,8 @@ export default {
     },
   },
   methods: {
-    toNumber: money.toNumber,
-    toReal: money.toReal,
+    toNumber: format.toNumber,
+    toReal: format.toReal,
   },
   created() {
     console.log(this.parcelas);

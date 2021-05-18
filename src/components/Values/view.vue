@@ -2,60 +2,58 @@
   <div class="row">
     <dl>
       <dt>ID:</dt>
-      <dd>{{ values[index]["ID"] }}&nbsp;</dd>
+      <dd>{{ value["ID"] }}&nbsp;</dd>
 
       <dt>Titular:</dt>
-      <dd>{{ values[index]["Titularidade"] }}&nbsp;</dd>
+      <dd>{{ value["Titularidade"] }}&nbsp;</dd>
 
       <dt>Escola:</dt>
-      <dd>{{ values[index]["Escola"] }}&nbsp;</dd>
+      <dd>{{ value["Escola"] }}&nbsp;</dd>
 
       <dt>Tipo:</dt>
-      <dd>{{ values[index]["Tipo"] }}&nbsp;</dd>
+      <dd>{{ value["Tipo"] }}&nbsp;</dd>
 
       <dt>Discriminação:</dt>
       <dd>
-        {{ values[index]["Discriminação"] }}
-        {{ values[index]["Outras Observações"] }}&nbsp;
+        {{ value["Discriminação"] }}
+        {{ value["Outras Observações"] }}&nbsp;
       </dd>
 
       <dt>Local do movimento:</dt>
-      <dd>{{ values[index]["Local do movimento"] }}&nbsp;</dd>
+      <dd>{{ value["Local do movimento"] }}&nbsp;</dd>
 
       <dt>Valor:</dt>
-      <dd :class="[values[index]['Valor'] > 0 ? 'green-text' : 'red-text']">
-        R$ {{ Math.abs(values[index]["Valor"]) }} &nbsp;
+      <dd :class="[value['Valor'] > 0 ? 'green-text' : 'red-text']">
+        {{ format.toReal(Math.abs(value["Valor"])) }} &nbsp;
       </dd>
 
       <dt>Forma de pagamento:</dt>
-      <dd>{{ values[index]["Forma de pagamento"] }}&nbsp;</dd>
+      <dd>{{ value["Forma de pagamento"] }}&nbsp;</dd>
 
       <dt>Data/Vencimento:</dt>
-      <dd>
-        {{ moment(values[index]["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;
-      </dd>
+      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
 
       <dt>Parcelas:</dt>
-      <dd>{{ values[index]["Parcelas"] }}&nbsp;</dd>
+      <dd>{{ value["Parcelas"] }}&nbsp;</dd>
 
       <dt>Observações:</dt>
       <dd>
-        {{ values[index]["Observações"] }}
+        {{ value["Observações"] }}
         &nbsp;
       </dd>
     </dl>
-    <dl v-if="values[index]['Titular Cheque']">
-      <dt v-if="values[index]['Titular Cheque']">Titular Cheque:</dt>
-      <dd>{{ values[index]["Titular Cheque"] }}&nbsp;</dd>
+    <dl v-if="value['Titular Cheque']">
+      <dt v-if="value['Titular Cheque']">Titular Cheque:</dt>
+      <dd>{{ value["Titular Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="values[index]['Conta Cheque']">Conta Cheque:</dt>
-      <dd>{{ values[index]["Conta Cheque"] }}&nbsp;</dd>
+      <dt v-if="value['Conta Cheque']">Conta Cheque:</dt>
+      <dd>{{ value["Conta Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="values[index]['Agência Cheque']">Agência Cheque:</dt>
-      <dd>{{ values[index]["Agência Cheque"] }}&nbsp;</dd>
+      <dt v-if="value['Agência Cheque']">Agência Cheque:</dt>
+      <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="values[index]['Nº Cheque']">Nº Cheque</dt>
-      <dd>{{ values[index]["Nº Cheque"] }}&nbsp;</dd>
+      <dt v-if="value['Nº Cheque']">Nº Cheque</dt>
+      <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
     </dl>
   </div>
 
@@ -67,15 +65,17 @@
   </div>
 
   <div class="row">
-    <ValuesIndex v-on:view="upView" :values="similarBills(values[index])" />
+    <ValuesIndex v-on:view="upView" :values="similarBills" />
   </div>
 </template>
 
 <script>
 import ValuesIndex from "./index";
-import { inject, reactive, ref } from "vue";
+import { inject, onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
+
 const moment = require("moment");
+import { format } from "../../helpers/utility";
 
 export default {
   name: "View",
@@ -90,31 +90,35 @@ export default {
     const store = inject("store");
     const route = reactive(useRoute());
 
-    const index = ref(+route.params.id_pass);
+    const value = reactive({});
     const values = reactive(store.database.values);
 
-    function similarBills(obj) {
-      return values
-        .filter((el) => el["Titularidade"] == obj["Titularidade"])
-        .filter((el) => el["ID"] != obj["ID"]);
-    }
+    const similarBills = reactive([]);
 
     function upView(id) {
-      // index.value = values.findIndex((el) => el["ID"] == route.params.id_pass);
-      index.value = values.findIndex((el) => el["ID"] == id);
       console.log("upView ID:", id, "Route: ", route.params.id_pass);
+      Object.assign(value, store.database.getValue(id));
+
+      let similar = values
+        .filter((el) => el["Titularidade"] == value["Titularidade"])
+        .filter((el) => el["ID"] != value["ID"]);
+      Object.assign(similarBills, similar);
     }
-    upView(index.value);
+
+    onMounted(() => {
+      console.log("Primeiro update view");
+      upView(+route.params.id_pass);
+    });
 
     function back() {}
 
     return {
-      values,
+      value,
       moment,
       upView,
-      index,
       back,
       similarBills,
+      format,
     };
   },
 };
