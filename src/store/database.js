@@ -1,5 +1,8 @@
 import { Sheet } from "./googlesheet";
+import event from "../lib/Event";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 class DataBase {
   static #values = [];
   static #preload = false;
@@ -25,28 +28,41 @@ class DataBase {
 
   saveValues(values) {
     DataBase.#preload = true;
-    console.log("Ok, vamos enviar para o google salvar!", values);
-    Sheet.onSaveValues(values, (el) => {
+    console.log("Enviando dados para google salvar!", values);
+    const call = (el) => {
       const { data, msg, status } = JSON.parse(el);
 
-      console.log("Mensagem do banco: ", msg);
       console.log("Status do datasets: ", status);
+      if (status) {
+        console.log("Dados atualizados: ", data.updated);
+        console.log("Dados criados: ", data.created);
 
-      console.log("Dados atualizados: ", data.updated);
-      console.log("Dados criados: ", data.created);
-
-      try {
-        this.values.push(data.created);
-        data.updated.forEach((value) => {
-          let index = this.values.findIndex((obj) => obj.ID == value.ID);
-          this.values[index] = value;
-        });
-      } catch (e) {
-        console.log("Erro sync values!", e);
-      } finally {
-        DataBase.#preload = false;
+        try {
+          this.values.push(data.created);
+          data.updated.forEach((value) => {
+            let index = this.values.findIndex((obj) => obj.ID == value.ID);
+            this.values[index] = value;
+          });
+        } catch (e) {
+          console.log("Erro sync values!", e);
+        } finally {
+          DataBase.#preload = false;
+        }
+        router.go(-1);
+        event.trigger("msg", "Dados salvo com sucesso! :)");
+      } else {
+        event.trigger("msg", "Erro ao salvar no banco de dados! :(");
+        event.trigger("msg", msg);
       }
-    });
+    };
+
+    const fail = (msg) => {
+      event.trigger("msg", "Erro ao salvar no banco de dados! :(");
+      event.trigger("msg", msg);
+      DataBase.#preload = false;
+    };
+
+    Sheet.onSaveValues(values, call, fail);
 
     return true;
   }

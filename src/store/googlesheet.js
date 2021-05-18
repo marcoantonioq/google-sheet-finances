@@ -33,10 +33,13 @@ function GoogleSheet() {
         .withSuccessHandler(call)
         .withFailureHandler(fail)
         .save(sendData);
+      return true;
     } catch (e) {
       console.groupCollapsed("Erro ao salvar no Google: More...");
       console.warn("Erro:", e);
       console.groupEnd();
+      fail();
+      return false;
     }
   };
 

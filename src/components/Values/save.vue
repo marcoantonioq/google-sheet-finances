@@ -88,10 +88,7 @@
         >
           <option value="" disabled selected>__Local do movimento:__</option>
           <option
-            v-for="item in datasets.locaisMovimento(
-              value['Escola'],
-              value['ES']
-            )"
+            v-for="item in locaisMovimento"
             :key="item['Texto']"
             v-bind:value="item['Texto']"
           >
@@ -345,7 +342,6 @@ export default {
     }
 
     function salvar() {
-      console.log("Salvar...");
       try {
         if (form.value.checkValidity()) {
           store.database.saveValues(this.parcelas);
@@ -362,6 +358,10 @@ export default {
 
     const parcelas = computed(() => {
       return createParcelas(value);
+    });
+
+    const locaisMovimento = computed(() => {
+      return datasets.locaisMovimento(value["Escola"], value["ES"]);
     });
 
     const getInfo = computed(() => {
@@ -402,6 +402,7 @@ export default {
       salvar,
       store,
       value,
+      locaisMovimento,
     };
   },
 };

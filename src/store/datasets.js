@@ -31,7 +31,6 @@ class DataSets {
     try {
       if (DataSets.#values) {
         let values = DataSets.#values;
-
         filters.forEach((filter) => {
           values = values.filter(filter);
         });
