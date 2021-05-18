@@ -32,7 +32,6 @@ export default {
     function setEscola(escola) {
       store.escola.nome = escola;
       router.push("/");
-      window.location.reload();
     }
 
     return {

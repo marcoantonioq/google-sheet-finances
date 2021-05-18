@@ -3,7 +3,7 @@
 
   <ValuesIndex
     :search="search"
-    :values="store.database.find({ ES: 'Saída' })"
+    :values="store.database.find({ ES: 'Saída', Escola: store.escola.nome })"
   />
 
   <div class="row right">
