@@ -1,11 +1,12 @@
 <template>
   <Search @submit="submit" />
+
   <ValuesIndex
     :search="search"
     :values="store.database.find({ ES: 'Saída' })"
   />
 
-  <div class="row">
+  <div class="row right">
     <ButtonLarge title="Criar novo registro" to="/create/Saída" icon="add" />
   </div>
 </template>

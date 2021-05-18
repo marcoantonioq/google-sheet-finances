@@ -320,6 +320,7 @@ export default {
     const form = ref(null);
     const value = reactive(Values);
     const datasets = reactive(store.datasets);
+
     const navegation = reactive({
       updating: false,
       showhelp: false,
@@ -338,7 +339,6 @@ export default {
       console.log("Salvar...");
       try {
         if (form.value.checkValidity()) {
-          store.database.saveValues(this.parcelas);
           store.database.saveValues(this.parcelas);
           event.trigger("msg", "Dados enviados com sucesso!");
         } else {

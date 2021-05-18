@@ -69,9 +69,6 @@ export default {
     toNumber: format.toNumber,
     toReal: format.toReal,
   },
-  created() {
-    console.log(this.parcelas);
-  },
 };
 </script>
 

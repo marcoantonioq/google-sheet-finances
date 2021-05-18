@@ -26,7 +26,7 @@
           {{
             value["Pago em"]
               ? moment(value["Pago em"]).format("DD/MM HH:MM")
-              : ""
+              : "Não"
           }}
         </td>
         <td>
@@ -60,11 +60,7 @@
       </div>
     </div>
 
-    <div class="col s12 m4 center">
-      Página: {{ navegation.currentPage }} <br />
-      Mostrando {{ paginate.length }} de
-      {{ values.length }}
-    </div>
+    <div class="col s12 m4 center">Página: {{ navegation.currentPage }}</div>
 
     <div class="col s12 m4">
       <div v-show="values.length > paginate.length">
@@ -105,7 +101,17 @@ export default {
     });
 
     const paginate = computed(() => {
-      return values
+      let vals = values;
+
+      if (!props.search) {
+        vals = vals.filter((obj) => obj["Pago em"] == "");
+      }
+
+      if (navegation.pageSize == 9999) {
+        vals = values;
+      }
+
+      return vals
         .filter((obj) => {
           let str_obj = format.normalize(
             JSON.stringify(Object.values(obj)).toLocaleLowerCase()

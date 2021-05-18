@@ -33,6 +33,15 @@
       <dt>Data/Vencimento:</dt>
       <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
 
+      <dt>Pago em:</dt>
+      <dd>
+        {{
+          value["Pago em"]
+            ? moment(value["Pago em"]).format("DD/MM/YYYY HH:MM")
+            : "Não pago"
+        }}&nbsp;
+      </dd>
+
       <dt>Parcelas:</dt>
       <dd>{{ value["Parcelas"] }}&nbsp;</dd>
 
