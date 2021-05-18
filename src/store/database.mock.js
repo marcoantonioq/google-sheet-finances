@@ -30,7 +30,7 @@ module.exports = [
     Tipo: "Rematrícula",
     Discriminação: "Taxa de rematrícula",
     "Local do movimento": "Caixa da Escola",
-    Valor: -534,
+    Valor: -1534,
     "Forma de pagamento": "Cheque",
     Vencimento: "2021-04-25T03:00:00.000Z",
     Parcelas: 1,

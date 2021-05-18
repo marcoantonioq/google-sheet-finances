@@ -52,7 +52,7 @@ class DataSets {
   locaisMovimento(escola) {
     return datasets.getDataSetsOnFilter([
       (el) => String(el["Escola"]).includes(escola),
-      (el) => String(el["Campo"]).includes("Local de movimento"),
+      (el) => String(el["Campo"]).includes("Local do movimento"),
     ]);
   }
   formasPagamento(escola) {

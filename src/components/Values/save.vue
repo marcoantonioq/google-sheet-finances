@@ -79,11 +79,11 @@
         <i class="material-icons prefix">card_travel</i>
         <select
           required
-          v-model="value['Local de movimento']"
+          v-model="value['Local do movimento']"
           name="local_movimento"
           class="validate"
         >
-          <option value="" disabled selected>__Local de movimento:__</option>
+          <option value="" disabled selected>__Local do movimento:__</option>
           <option
             v-for="item in datasets.locaisMovimento(value['Escola'])"
             :key="item['Texto']"
@@ -93,7 +93,7 @@
           </option>
         </select>
         <small v-show="navegation.showhelp" class="help">
-          {{ navegation.help.get("Local de movimento") }}</small
+          {{ navegation.help.get("Local do movimento") }}</small
         >
       </div>
     </div>
@@ -117,7 +117,7 @@
         >
       </div>
 
-      <div class="input-field col s12 m6 cheque">
+      <div class="input-field col s12 m6">
         <i class="material-icons prefix">card_membership</i>
         <select
           required
