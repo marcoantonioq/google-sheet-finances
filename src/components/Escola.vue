@@ -29,6 +29,7 @@ export default {
 
     function setEscola(escola) {
       store.escola.nome = escola;
+      location.reload();
     }
 
     return {
