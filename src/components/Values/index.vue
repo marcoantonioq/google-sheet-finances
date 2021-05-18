@@ -101,14 +101,14 @@ export default {
     });
 
     const paginate = computed(() => {
-      let vals = values;
+      let vals = props.values;
 
       if (!props.search) {
         vals = vals.filter((obj) => obj["Pago em"] == "");
       }
 
       if (navegation.pageSize == 9999) {
-        vals = values;
+        vals = props.values;
       }
 
       return vals
