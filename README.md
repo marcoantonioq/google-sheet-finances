@@ -53,4 +53,4 @@ function doGet(e) {
 
 - [x] Componente para selecionar escola
 - [ ] Filtrar dados por escola
-- [ ] Formulário de entrada e saída
+- [ ] Fila de processos em segundo plano lib/Queue

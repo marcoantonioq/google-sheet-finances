@@ -1,18 +1,19 @@
 import { Sheet } from "./googlesheet";
 import event from "../lib/Event";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
+import { reactive } from "vue";
+
+// import { useRouter } from "vue-router";
+
+// const router = useRouter();
 class DataBase {
   static #values = [];
-  static #preload = false;
+  status = reactive({
+    load: false,
+  });
 
   constructor() {
     this.updateValuesFromTables();
-  }
-
-  get preload() {
-    return DataBase.#preload;
   }
 
   get values() {
@@ -27,7 +28,7 @@ class DataBase {
   }
 
   saveValues(values) {
-    DataBase.#preload = true;
+    database.status.load = true;
     console.log("Enviando dados para google salvar!", values);
     const call = (el) => {
       const { data, msg, status } = JSON.parse(el);
@@ -46,9 +47,9 @@ class DataBase {
         } catch (e) {
           console.log("Erro sync values!", e);
         } finally {
-          DataBase.#preload = false;
+          database.status.load = false;
         }
-        router.go(-1);
+        // router.go(-1);
         event.trigger("msg", "Dados salvo com sucesso! :)");
       } else {
         event.trigger("msg", "Erro ao salvar no banco de dados! :(");
@@ -59,7 +60,7 @@ class DataBase {
     const fail = (msg) => {
       event.trigger("msg", "Erro ao salvar no banco de dados! :(");
       event.trigger("msg", msg);
-      DataBase.#preload = false;
+      database.status.load = false;
     };
 
     Sheet.onSaveValues(values, call, fail);
@@ -67,21 +68,31 @@ class DataBase {
     return true;
   }
 
-  async updateValuesFromTables() {
-    DataBase.#preload = true;
-    Sheet.onGetValues(null, (el) => {
-      const { data, msg, status } = JSON.parse(el);
-      console.log("Mensagem do banco: ", msg);
-      console.log("Status: ", status);
-      this.values = data;
-      DataBase.#preload = false;
-    });
+  updateValuesFromTables() {
+    const database = this;
+    database.status.load = true;
+
     setTimeout(() => {
-      if (DataBase.#preload) {
-        console.error("Tempo limit para updateValues!");
-        DataBase.#preload = false;
+      if (database.status.load) {
+        database.status.load = false;
+        console.error("Tempo limit para updateValues!", database.load);
       }
     }, 10000);
+
+    Sheet.onGetValues(
+      null,
+      (el) => {
+        const { data, msg, status } = JSON.parse(el);
+        console.log("Mensagem do banco: ", msg);
+        console.log("Status: ", status);
+        this.values = data;
+        database.status.load = false;
+      },
+      (error) => {
+        console.log("Erro ao carregar dados: ", error);
+        database.status.load = false;
+      }
+    );
     return true;
   }
 

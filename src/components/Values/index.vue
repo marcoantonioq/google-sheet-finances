@@ -49,29 +49,17 @@
     </tbody>
   </table>
   <div class="row">
-    <div class="col s12 m4">
-      <div v-show="values.length > paginate.length">
-        <button class="btn-small grey lighten-4 black-text" @click="prevPage">
-          Anterior
-        </button>
-        <button class="btn-small grey lighten-4 black-text" @click="nextPage">
-          Próximo
-        </button>
-      </div>
+    <div v-show="values.length > paginate.length" class="flex col s12 m6">
+      <a> <i class="material-icons" @click="prevPage"> chevron_left </i> </a>
+      Página: {{ navegation.currentPage }}
+      <a> <i class="material-icons" @click="nextPage"> chevron_right </i> </a>
     </div>
 
-    <div class="col s12 m4 center">Página: {{ navegation.currentPage }}</div>
-
-    <div class="col s12 m4">
-      <div v-show="values.length > paginate.length">
-        <a
-          class="col s12 btn-small grey lighten-4 black-text"
-          v-on:click="navegation.pageSize = 9999"
-        >
-          <i class="material-icons left"> arrow_drop_down </i>
-          Mostrar todos os registros
-        </a>
-      </div>
+    <div v-show="values.length > paginate.length" class="flex col s12 m6">
+      <a v-on:click="navegation.pageSize = 9999">
+        <i class="material-icons left"> arrow_drop_down </i>
+        Todos os registros
+      </a>
     </div>
   </div>
 </template>

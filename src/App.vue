@@ -26,36 +26,23 @@
     <Escola />
     <router-view />
 
-    <div v-bind:class="{ active: preload }" class="preloader-wrapper">
-      <div class="spinner-layer spinner-red-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <Load />
   </div>
 </template>
 
 <script>
-import { provide, reactive } from "vue";
+import { provide } from "vue";
 import store from "./store";
 import event from "./lib/Event";
 
 import Escola from "./components/Escola.vue";
+import Load from "./components/Load";
 
 export default {
-  components: { Escola },
+  components: { Escola, Load },
   setup() {
     provide("store", store);
     provide("event", event);
-
-    const preload = reactive(store.database.preload);
 
     event.on("msg", (text) => {
       // eslint-disable-next-line no-undef
@@ -63,10 +50,6 @@ export default {
       // eslint-disable-next-line no-undef
       M.updateTextFields();
     });
-
-    return {
-      preload,
-    };
   },
 };
 </script>
@@ -114,6 +97,7 @@ html {
   line-height: 1.5;
   color: var(--dark);
   letter-spacing: 0.02rem;
+  -ms-text-size-adjust: 100%;
 }
 
 html,
@@ -171,6 +155,13 @@ nav {
       border-radius: 19px 0px 0px 18px;
     }
   }
+}
+
+.flex {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .red {
@@ -297,6 +288,9 @@ nav {
         left: 0;
       }
     }
+  }
+  .preloader-wrapper {
+    bottom: 80px !important;
   }
 }
 
