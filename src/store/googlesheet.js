@@ -1,30 +1,19 @@
 import mockDB from "./database.mock";
 import mockDS from "./datasets.mock";
 
-function GoogleSheet() {
-  var instance = {};
-
-  // Set the instance.
-  instance = this;
-
-  // eslint-disable-next-line no-func-assign
-  GoogleSheet = function () {
-    return instance;
-  };
-
-  /**
-   * Função modelo
-   */
-  let func = (el) => {
-    console.info("Função retornada!", el);
-  };
+class Google {
+  func(resp) {
+    return resp;
+  }
 
   /**
    * Salvar dados no banco de dados {ID:1} => update {ID: null} => Insert
+   * @param {array} values Valores enviados ao Google Sheets
    * @param {function} call Função de retorno
-   * @returns void
+   * @param {function} fail Função de error
+   * @returns boolean
    */
-  instance.onSaveValues = (values, call = func, fail = func) => {
+  onSaveValues(values, call = this.func, fail = this.func) {
     try {
       let sendData = JSON.stringify({ data: values, table: "Banco de dados" });
       console.log("onSaveValues em GoogleSheet.js recebeu: ", sendData, call);
@@ -41,14 +30,16 @@ function GoogleSheet() {
       fail();
       return false;
     }
-  };
+  }
 
   /**
    * Pega dados do Banco de Dados
+   * @param {*} filter Filtro no formato Ex. {ES: "Entrada"}
    * @param {function} call Função de retorno
-   * @returns void
+   * @param {function} fail Função de error
+   * @returns
    */
-  instance.onGetValues = (filter = null, call, fail = func) => {
+  onGetValues(filter = null, call, fail = this.func) {
     try {
       // eslint-disable-next-line no-undef
       return google.script.run
@@ -64,14 +55,15 @@ function GoogleSheet() {
       // Mock values
       call(JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB }));
     }
-  };
+  }
 
   /**
    * Pega dados de DataSets
    * @param {function} call Função de retorno
-   * @returns void
+   * @param {function} fail Função de error
+   * @returns
    */
-  instance.onGetDataSets = (call, fail = func) => {
+  onGetDataSets(call, fail = this.func) {
     try {
       // eslint-disable-next-line no-undef
       return google.script.run
@@ -89,7 +81,7 @@ function GoogleSheet() {
         JSON.stringify({ status: false, msg: "Datasets Mock", data: mockDS })
       );
     }
-  };
+  }
 }
 
-export const Sheet = new GoogleSheet();
+export const Sheet = new Google();

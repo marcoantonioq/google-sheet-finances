@@ -41,13 +41,13 @@ module.exports = {
     },
   },
   pwa: {
-    name: 'My Finances',
-    themeColor: '#e30713',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
+    name: "My Finances",
+    themeColor: "#e30713",
+    appleMobileWebAppCapable: "yes",
+    appleMobileWebAppStatusBarStyle: "black",
     workboxOptions: {
-      skipWaiting: true
-    }
+      skipWaiting: true,
+    },
   },
   // devServer: {
   //   host: '0.0.0.0',
