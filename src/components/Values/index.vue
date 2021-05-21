@@ -178,6 +178,10 @@ table {
   border-bottom: 1px solid var(--gray);
   text-align: center;
 
+  tr {
+    cursor: pointer;
+  }
+
   td,
   th {
     padding: 0.5rem;

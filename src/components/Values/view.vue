@@ -81,7 +81,7 @@
 <script>
 import ValuesIndex from "./index";
 import { inject, onMounted, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const moment = require("moment");
 import { format } from "../../helpers/utility";
@@ -97,7 +97,8 @@ export default {
   },
   setup() {
     const store = inject("store");
-    const route = reactive(useRoute());
+    const router = useRouter();
+    const route = useRoute();
 
     const value = reactive({});
     const values = reactive(store.database.values);
@@ -114,12 +115,14 @@ export default {
       Object.assign(similarBills, similar);
     }
 
+    function back() {
+      router.go(-1);
+    }
+
     onMounted(() => {
       console.log("Primeiro update view");
       upView(+route.params.id_pass);
     });
-
-    function back() {}
 
     return {
       value,

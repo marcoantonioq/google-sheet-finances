@@ -1,20 +1,24 @@
 import { Sheet } from "./googlesheet";
 
+import { reactive } from "vue";
+
 class DataSets {
-  static #values = [];
+  static #data = reactive({
+    values: [],
+  });
 
   constructor() {
     this.updateDataSetsFromTables();
   }
 
   set values(values) {
-    DataSets.#values = values;
+    DataSets.#data.values = values;
   }
   get values() {
-    return DataSets.#values;
+    return DataSets.#data.values;
   }
   get count() {
-    return DataSets.#values.length;
+    return DataSets.#data.values.length;
   }
 
   async updateDataSetsFromTables() {
@@ -29,8 +33,8 @@ class DataSets {
 
   getDataSetsOnFilter(filters = []) {
     try {
-      if (DataSets.#values) {
-        let values = DataSets.#values;
+      if (this.values) {
+        let values = this.values;
         filters.forEach((filter) => {
           values = values.filter(filter);
         });
