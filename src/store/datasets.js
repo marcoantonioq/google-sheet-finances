@@ -26,47 +26,8 @@ class DataSets {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do datasets: ", msg);
       console.log("Status: ", status);
-      this.values = data;
+      DataSets.#data.values = data;
     });
-    return true;
-  }
-
-  getDataSetsOnFilter(filters = []) {
-    try {
-      if (this.values) {
-        let values = this.values;
-        filters.forEach((filter) => {
-          values = values.filter(filter);
-        });
-        return values;
-      } else {
-        throw "Não há DataSets";
-      }
-    } catch (e) {
-      console.info(e);
-      return [];
-    }
-  }
-  tiposMovimento(escola, es = "Entrada/Saída") {
-    return this.getDataSetsOnFilter([
-      (el) => String(el["Escola"]).includes(escola),
-      (el) => String(el["Campo"]).includes("Tipo"),
-      (el) => String(el["Entrada/Saída"]).includes(es),
-    ]);
-  }
-  locaisMovimento(escola, es = "Entrada/Saída") {
-    return datasets.getDataSetsOnFilter([
-      (el) => String(el["Escola"]).includes(escola),
-      (el) => String(el["Campo"]).includes("Local do movimento"),
-      (el) => String(el["Entrada/Saída"]).includes(es),
-    ]);
-  }
-  formasPagamento(escola, es = "Entrada/Saída") {
-    return datasets.getDataSetsOnFilter([
-      (el) => String(el["Escola"]).includes(escola),
-      (el) => String(el["Campo"]).includes("Forma de Pagamento"),
-      (el) => String(el["Entrada/Saída"]).includes(es),
-    ]);
   }
 }
 

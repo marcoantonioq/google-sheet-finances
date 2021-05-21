@@ -41,30 +41,25 @@ function createDataSets() {
  * return JSON
  **/
 function FieldsDataSets() {
-  let ds = createDataSets();
-  return JSON.stringify(ds);
-}
+  var result = { status: true, data: [], msg: "" };
+  let ds = createDataSets().data.filter((obj) => obj["Escolas"]);
 
-function getDataSetsFromEscola() {
-  let ds = createDataSets().data;
+  splitValues = (text) => {
+    return text.split("/").map((el) => el.trim());
+  };
+  getValuesToArray = (arr, attr) => {
+    return [
+      ...new Set(
+        arr.reduce((acc, obj) => {
+          return [...acc, ...splitValues(obj[attr])];
+        }, [])
+      ),
+    ];
+  };
 
-  let escolas = [];
-  ds.filter((obj) => obj["Escolas"]).forEach((obj) => {
-    escolas.push(...obj["Escolas"].split("/").map((el) => el.trim()));
-  });
-  escolas = [...new Set(escolas)];
-
-  let campos = [];
-  ds.filter((obj) => obj["Campo"]).forEach((obj) => {
-    campos.push(obj["Campo"].trim());
-  });
-  campos = [...new Set(campos)];
-
-  let ess = [];
-  ds.filter((obj) => obj["Entrada/Saída"]).forEach((obj) => {
-    ess.push(...obj["Entrada/Saída"].split("/").map((el) => el.trim()));
-  });
-  ess = [...new Set(ess)];
+  let escolas = getValuesToArray(ds, "Escolas");
+  let campos = getValuesToArray(ds, "Campo");
+  let ess = getValuesToArray(ds, "Entrada/Saída");
 
   let createObjData = escolas.reduce((acc, escola) => {
     acc[escola] = {};
@@ -79,96 +74,20 @@ function getDataSetsFromEscola() {
 
   console.log(createObjData);
 
-  let data = {};
-  try {
-    data = ds.reduce((acc, o) => {
-      console.log(
-        "Entrada cidade de goias:",
-        acc["Cidade de Goiás"]["Forma de Pagamento"]["Entrada"]
-      );
-      console.log("Dados", o);
+  result.data = ds.reduce((acc, o) => {
+    const { Escolas, Campo, Texto } = o;
+    const ES = o["Entrada/Saída"];
 
-      let ess = o["Entrada/Saída"].split("/").map((el) => el.trim());
-      console.log("Tipo ES: ", ess);
-
-      ess.forEach((es) => {
-        acc[o["Escolas"]][o["Campo"]][es].push(o["Texto"]);
+    splitValues(Escolas).forEach((escola) => {
+      splitValues(ES).forEach((es) => {
+        acc[escola][Campo][es].push(Texto);
       });
-      return acc;
-    }, createObjData);
-  } catch (e) {
-    console.log("Erro:", e);
-  }
+    });
 
-  console.log(data);
+    return acc;
+  }, createObjData);
 
-  return JSON.stringify(data);
-}
+  console.log(result.data);
 
-/**
- * Retorna dados filtrados
- * @param {array} filters Filtro do tipo array de funções match
- * @returns array
- */
-function getDataSetsOnFilter(filters = []) {
-  try {
-    let values = createDataSets().data;
-    if (values) {
-      filters.forEach((filter) => {
-        values = values.filter(filter);
-      });
-      return values;
-    } else {
-      throw "Não há DataSets";
-    }
-  } catch (e) {
-    console.error("Erro:", e);
-    return [];
-  }
-}
-
-/**
- * Retorna locaisMovimento
- * @param {string} escola Nome da Escola
- * @param {string} es Tipo Entrada, Saída ou Entrada/Saída
- * @returns array
- */
-function tiposMovimento(escola = "Itaberaí", es = "Entrada/Saída") {
-  let val = getDataSetsOnFilter([
-    (el) => String(el["Escola"]).includes(escola),
-    (el) => String(el["Campo"]).includes("Tipo"),
-    (el) => String(el["Entrada/Saída"]).includes(es),
-  ]);
-  console.log("Valores filtrados: ", val);
-  return val;
-}
-
-/**
- * Retorna tiposMovimento
- * @param {string} escola Nome da Escola
- * @param {string} es Tipo Entrada, Saída ou Entrada/Saída
- * @returns array
- */
-function locaisMovimento(escola = "Itaberaí", es = "Entrada/Saída") {
-  let val = getDataSetsOnFilter([
-    (el) => String(el["Escola"]).includes(escola),
-    (el) => String(el["Campo"]).includes("Local do movimento"),
-    (el) => String(el["Entrada/Saída"]).includes(es),
-  ]);
-  console.log("Valores filtrados: ", val);
-  return val;
-}
-
-/**
- * Retorna getDataSetsOnFilter
- * @param {string} escola Nome da Escola
- * @param {string} es Tipo Entrada, Saída ou Entrada/Saída
- * @returns array
- */
-function formasPagamento(escola, es = "Entrada/Saída") {
-  return getDataSetsOnFilter([
-    (el) => String(el["Escola"]).includes(escola),
-    (el) => String(el["Campo"]).includes("Forma de Pagamento"),
-    (el) => String(el["Entrada/Saída"]).includes(es),
-  ]);
+  return JSON.stringify(result);
 }
