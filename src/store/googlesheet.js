@@ -2,6 +2,8 @@ import mockDB from "./database.mock";
 import mockDS from "./datasets.mock";
 
 class Google {
+  constructor() {}
+
   func(resp) {
     return resp;
   }

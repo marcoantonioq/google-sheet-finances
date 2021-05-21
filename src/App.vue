@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="logo">FISK</div>
+    <div class="logo">NM</div>
     <router-link to="/">
       <i class="material-icons">home</i>
       Home

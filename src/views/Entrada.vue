@@ -3,6 +3,8 @@
 
   <ValuesIndex :search="search" :values="values_escola" />
 
+  {{ values_escola }}
+
   <div class="row right">
     <ButtonLarge title="Criar novo registro" to="/create/Entrada" icon="add" />
   </div>
@@ -31,7 +33,10 @@ export default {
     const store = inject("store");
 
     const values_escola = computed(() => {
-      return store.database.find({ ES: "Saída", Escola: store.escola.nome });
+      return store.database.find({
+        Escola: store.escola.nome,
+        ES: "Entrada",
+      });
     });
 
     return {

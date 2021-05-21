@@ -141,6 +141,12 @@
         },
         false
       );
+      try {
+        // eslint-disable-next-line no-undef
+        console.log("Google: ", google.script);
+      } catch (e) {
+        console.log("Erro Google:", e);
+      }
     </script>
 
     <style>

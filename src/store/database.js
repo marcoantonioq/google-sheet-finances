@@ -7,7 +7,9 @@ import { reactive } from "vue";
 
 // const router = useRouter();
 class DataBase {
-  static #values = [];
+  static #data = reactive({
+    values: [],
+  });
   status = reactive({
     load: false,
   });
@@ -17,14 +19,14 @@ class DataBase {
   }
 
   get values() {
-    return DataBase.#values;
+    return DataBase.#data.values;
   }
   set values(value) {
-    DataBase.#values = value;
+    DataBase.#data.values = value;
   }
 
   log(msg) {
-    console.log("msg", msg, DataBase.#values);
+    console.log("msg", msg, DataBase.#data);
   }
 
   saveValues(values) {
@@ -97,8 +99,9 @@ class DataBase {
   }
 
   find(filter) {
+    let entries = Object.entries(filter);
     return this.values.filter((obj) => {
-      return Object.entries(filter).every(([col, val]) => obj[col] == val);
+      return entries.every(([col, val]) => obj[col] === val);
     });
   }
   getValue(id) {
