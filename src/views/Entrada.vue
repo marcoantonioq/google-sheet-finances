@@ -3,8 +3,6 @@
 
   <ValuesIndex :search="search" :values="values_escola" />
 
-  {{ values_escola }}
-
   <div class="row right">
     <ButtonLarge title="Criar novo registro" to="/create/Entrada" icon="add" />
   </div>
