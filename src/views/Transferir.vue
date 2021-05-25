@@ -18,21 +18,19 @@
         />
       </div>
 
-      <div class="input-field col s12">
+      <div class="input-field">
         <i class="material-icons prefix">card_travel</i>
         <select
           required
           aria-required="true"
           v-model="de['Local do movimento']"
-          class="validate"
+          class="validate browser-default"
         >
-          <option value="" disabled selected>__Local do movimento:__</option>
-          <option
-            :key="item['Texto']"
-            v-bind:value="item['Texto']"
-            v-for="item in datasets.locaisMovimento(de['Escola'])"
-          >
-            {{ item["Texto"] }}
+          <option value="" disabled selected>
+            __Selecione local do movimento:__
+          </option>
+          <option :key="item" v-bind:value="item" v-for="item in locais_de">
+            {{ item }}
           </option>
         </select>
       </div>
@@ -43,13 +41,13 @@
       <div class="input-field">
         <i class="material-icons prefix">keyboard_tab</i>
         <select
-          class="validate"
+          class="validate browser-default"
           id="para_escola"
           name="para_escola"
           required
           v-model="para['Escola']"
         >
-          <option value="" disabled selected>Selecione</option>
+          <option value="" disabled selected>__Selecione escola__</option>
           <option
             v-for="item in store.escola.escolas"
             :key="item"
@@ -60,96 +58,96 @@
         </select>
       </div>
 
-      <div class="input-field col s12">
+      <div v-if="para['Escola']" class="input-field">
         <i class="material-icons prefix">card_travel</i>
         <select
           aria-required="true"
-          class="validate"
+          class="validate browser-default"
           required
           v-model="para['Local do movimento']"
         >
-          <option value="" disabled selected>__Local do movimento:__</option>
+          <option value="" disabled selected>__Selecione local__</option>
           <option
-            :key="item['Texto']"
-            v-bind:value="item['Texto']"
-            v-for="item in datasets.locaisMovimento(para['Escola'])"
+            :key="item"
+            v-bind:value="item"
+            v-for="item in ds_para.locais"
           >
-            {{ item["Texto"] }}
+            {{ item }}
           </option>
         </select>
       </div>
     </div>
 
-    <div class="divider"></div>
-    <h5>Transação</h5>
+    <div v-if="de['Local do movimento'] && para['Local do movimento']">
+      <h5>Valor e forma de pagamento</h5>
 
-    <div class="input-field">
-      <i class="material-icons prefix">attach_money</i>
-      <input
-        aria-required="true"
-        autocomplete="off"
-        class="validate"
-        id="valor"
-        pattern="^\d*(,)?\d{1,2}"
-        placeholder="Valor. Ex: 1000,20"
-        required
-        type="text"
-        v-model="data['Valor']"
-      />
-    </div>
+      <div class="input-field">
+        <i class="material-icons prefix">attach_money</i>
+        <input
+          aria-required="true"
+          autocomplete="off"
+          class="validate"
+          id="valor"
+          pattern="^\d*(,)?\d{1,2}"
+          placeholder="Valor. Ex: 1000,20"
+          required
+          type="text"
+          v-model="data['Valor']"
+        />
+      </div>
 
-    <div class="input-field col s12">
-      <i class="material-icons prefix">keyboard_tab</i>
-      <select
-        aria-required="true"
-        class="validate"
-        required
-        v-model="data['Forma de pagamento']"
-      >
-        <option value="" disabled selected>__Forma de pagamento__</option>
-        <option
-          v-for="item in datasets.formasPagamento(de['Escola'])"
-          :key="item['Texto']"
-          v-bind:value="item['Texto']"
+      <div class="input-field col s12">
+        <i class="material-icons prefix">keyboard_tab</i>
+        <select
+          aria-required="true"
+          class="validate browser-default"
+          required
+          v-model="data['Forma de pagamento']"
         >
-          {{ item["Texto"] }}
-        </option>
-      </select>
-    </div>
+          <option value="" disabled selected>
+            __Selecione forma de pagamento__
+          </option>
+          <option v-for="item in formas_de" :key="item" v-bind:value="item">
+            {{ item }}
+          </option>
+        </select>
+      </div>
 
-    <div class="input-field launch">
-      <i class="material-icons prefix">group</i>
-      <input
-        autocomplete="off"
-        class="obs"
-        id="obs"
-        type="text"
-        v-model="data['Observações']"
-      />
-      <label for="obs"
-        >Observações
-        <small>(Motivo / Agência / Conta / Nº Cheque)</small></label
-      >
-    </div>
-
-    <div class="row">
-      <div class="col s12 m6">
-        <button
-          class="col s12 btn green"
-          name="salvar"
-          type="submit"
-          v-on:click.prevent.stop="save"
+      <div class="input-field launch">
+        <i class="material-icons prefix">group</i>
+        <input
+          autocomplete="off"
+          class="obs"
+          id="obs"
+          type="text"
+          v-model="data['Observações']"
+        />
+        <label for="obs"
+          >Observações
+          <small>(Motivo / Agência / Conta / Nº Cheque)</small></label
         >
-          Salvar
-          <i class="material-icons right">save</i>
-        </button>
+      </div>
+
+      <div class="row">
+        <div class="col s12 m6">
+          <button
+            class="col s12 btn green"
+            name="salvar"
+            type="submit"
+            v-on:click.prevent.stop="save"
+            :disabled="sending"
+          >
+            Salvar
+            <i class="material-icons right">save</i>
+          </button>
+        </div>
       </div>
     </div>
   </form>
 </template>
 
 <script>
-import { inject, reactive, watch, onMounted, ref } from "vue";
+import { inject, reactive, watch, computed, onMounted, ref } from "vue";
 
 const moment = require("moment");
 import event from "../lib/Event";
@@ -163,9 +161,23 @@ export default {
     const store = inject("store");
     const form = ref(null);
 
-    const datasets = reactive(store.datasets);
+    const sending = ref(false);
+
+    const datasets = store.datasets;
+
     const de = reactive(Object.assign({}, Values));
     const para = reactive(Object.assign({}, Values));
+
+    const ds_de = reactive({
+      locais: [],
+      escolas: [],
+    });
+
+    const ds_para = reactive({
+      locais: [],
+      escolas: [],
+    });
+
     const data = reactive({
       Valor: "",
       Observações: "",
@@ -216,6 +228,7 @@ export default {
 
         console.log("Salvar:", [de, para]);
 
+        sending.value = true;
         store.database.saveValues([de, para]);
 
         event.trigger("msg", "Dados enviados com sucesso!");
@@ -223,6 +236,41 @@ export default {
         console.log("Verifique todos os campos!");
       }
     }
+
+    const tipos = computed(() => {
+      return datasets.getValues(
+        store.escola.nome,
+        "Forma de Pagamento",
+        de["ES"]
+      );
+    });
+
+    const formas_de = computed(() => {
+      return datasets.getValues(
+        store.escola.nome,
+        "Forma de Pagamento",
+        "Saída"
+      );
+    });
+
+    const locais_de = computed(() => {
+      return datasets.getValues(
+        store.escola.nome,
+        "Local do movimento",
+        "Saída"
+      );
+    });
+
+    watch(
+      () => para["Escola"],
+      (escola) => {
+        ds_para.locais = datasets.getValues(
+          escola,
+          "Local do movimento",
+          "Entrada"
+        );
+      }
+    );
 
     return {
       data,
@@ -232,6 +280,12 @@ export default {
       save,
       store,
       form,
+      locais_de,
+      formas_de,
+      ds_de,
+      ds_para,
+      tipos,
+      sending,
     };
   },
 };

@@ -45,10 +45,14 @@ export default {
     provide("event", event);
 
     event.on("msg", (text) => {
-      // eslint-disable-next-line no-undef
-      M.toast({ html: text });
-      // eslint-disable-next-line no-undef
-      M.updateTextFields();
+      try {
+        // eslint-disable-next-line no-undef
+        M.toast({ html: text });
+        // eslint-disable-next-line no-undef
+        M.updateTextFields();
+      } catch (e) {
+        console.log(e);
+      }
     });
   },
 };
@@ -214,6 +218,10 @@ nav {
   font-weight: 600;
 }
 
+.desc {
+  background-color: #dc354559;
+}
+
 .shadow {
   box-shadow: 5px 5px 8px -3px rgba(58, 58, 58, 0.44);
 }
@@ -317,5 +325,30 @@ nav {
   background: #ffffff;
   border-radius: 3px;
   box-shadow: inset 0px -11px 12px #f0f0f0;
+}
+select {
+  padding: 6px;
+  padding-left: 40px;
+  font-size: 16px;
+  color: #585858;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #9e9e9e;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  &:invalid {
+    color: var(--red);
+  }
+  [disabled] {
+    color: gray;
+  }
+  option {
+    color: var(--dark);
+  }
+}
+select::-ms-expand {
+  display: none;
 }
 </style>

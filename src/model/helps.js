@@ -42,14 +42,14 @@ export function createInfo(values) {
   const replaces = {
     "{es}": isPay ? "Pagando" : "Recebendo",
     "{tipo__pagamento}":
-      values["Tipo"].toLowerCase() || "<b class='red'>__tipo de entrada__</b>",
+      values["Tipo"].toLowerCase() || "<b class='desc'>__tipo de entrada__</b>",
     "{escola}": values["Escola"] || "<b class='red'>__Escola__</b>",
     "{valor}": format.toReal(values["Valor"]),
     "{local__movimento}":
-      values["Local do movimento"] || "<b class='red'>__local movimento__</b>",
+      values["Local do movimento"] || "<b class='desc'>__local movimento__</b>",
     "{forma__pagamento}":
-      values["Forma de pagamento"] || "<b class='red'>__forma pagamento__</b>",
-    "{titular}": values["Titularidade"] || "<b class='red'>__titular__</b>",
+      values["Forma de pagamento"] || "<b class='desc'>__forma pagamento__</b>",
+    "{titular}": values["Titularidade"] || "<b class='desc'>__titular__</b>",
   };
   let template = isPay
     ? "{es} {tipo__pagamento} no valor de {valor} para {titular} com {forma__pagamento} / {local__movimento} / {escola}."

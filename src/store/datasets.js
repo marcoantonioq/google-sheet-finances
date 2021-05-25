@@ -1,32 +1,35 @@
 import { Sheet } from "./googlesheet";
 
-import { reactive } from "vue";
+// import { reactive } from "vue";
 
 class DataSets {
-  static #data = reactive({
-    values: [],
-  });
+  static #values = {};
 
   constructor() {
     this.updateDataSetsFromTables();
   }
 
   set values(values) {
-    DataSets.#data.values = values;
+    DataSets.#values = values;
   }
   get values() {
-    return DataSets.#data.values;
+    return DataSets.#values;
   }
   get count() {
-    return DataSets.#data.values.length;
+    return this.values.length;
+  }
+
+  getValues(escola, campo, es) {
+    return this.values[escola][campo][es];
   }
 
   async updateDataSetsFromTables() {
+    let ds = this;
     Sheet.onGetDataSets((el) => {
       const { data, msg, status } = JSON.parse(el);
       console.log("Mensagem do datasets: ", msg);
       console.log("Status: ", status);
-      DataSets.#data.values = data;
+      ds.values = data;
     });
   }
 }

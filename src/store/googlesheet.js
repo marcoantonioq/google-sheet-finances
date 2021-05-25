@@ -19,18 +19,19 @@ class Google {
     try {
       let sendData = JSON.stringify({ data: values, table: "Banco de dados" });
       console.log("onSaveValues em GoogleSheet.js recebeu: ", sendData, call);
-      // eslint-disable-next-line no-undef
-      google.script.run
-        .withSuccessHandler(call)
-        .withFailureHandler(fail)
-        .save(sendData);
-      return true;
+      return new Promise(() => {
+        // eslint-disable-next-line no-undef
+        google.script.run
+          .withSuccessHandler(call)
+          .withFailureHandler(fail)
+          .save(sendData);
+      });
     } catch (e) {
       console.groupCollapsed("Erro ao salvar no Google: More...");
       console.warn("Erro:", e);
       console.groupEnd();
       fail();
-      return false;
+      return Promise.reject(e);
     }
   }
 

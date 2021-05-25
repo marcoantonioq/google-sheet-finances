@@ -54,6 +54,7 @@ class DataBase {
         // router.go(-1);
         event.trigger("msg", "Dados salvo com sucesso! :)");
       } else {
+        database.status.load = false;
         event.trigger("msg", "Erro ao salvar no banco de dados! :(");
         event.trigger("msg", msg);
       }
@@ -65,9 +66,7 @@ class DataBase {
       database.status.load = false;
     };
 
-    Sheet.onSaveValues(values, call, fail);
-
-    return true;
+    return Sheet.onSaveValues(values, call, fail);
   }
 
   updateValuesFromTables() {

@@ -37,22 +37,15 @@
         <select
           :required="!navegation.updating"
           :disabled="navegation.updating"
-          class="validate"
+          class="validate browser-default"
           v-model="value['Tipo']"
           name="Tipo"
         >
           <option value="" disabled selected>
             __Tipo de {{ value["ES"] }}__
           </option>
-          <option
-            v-for="item in datasets.tiposMovimento(
-              value['Escola'],
-              value['ES']
-            )"
-            :key="item['Texto']"
-            v-bind:value="item['Texto']"
-          >
-            {{ item["Texto"] }}
+          <option v-for="item in tipos" :key="item" v-bind:value="item">
+            {{ item }}
           </option>
         </select>
         <small v-show="navegation.showhelp" class="help">
@@ -84,15 +77,11 @@
           required
           v-model="value['Local do movimento']"
           name="local_movimento"
-          class="validate"
+          class="validate browser-default"
         >
           <option value="" disabled selected>__Local do movimento:__</option>
-          <option
-            v-for="item in locaisMovimento"
-            :key="item['Texto']"
-            v-bind:value="item['Texto']"
-          >
-            {{ item["Texto"] }}
+          <option v-for="item in locais" :key="item" v-bind:value="item">
+            {{ item }}
           </option>
         </select>
         <small v-show="navegation.showhelp" class="help">
@@ -124,67 +113,60 @@
         <i class="material-icons prefix">card_membership</i>
         <select
           required
-          class="validate"
+          class="validate browser-default"
           v-model="value['Forma de pagamento']"
           name="Forma de pagamento"
         >
           <option value="" disabled selected>__Forma de pagamento__</option>
-          <option
-            v-for="item in datasets.formasPagamento(
-              value['Escola'],
-              value['ES']
-            )"
-            :key="item['Texto']"
-            v-bind:value="item['Texto']"
-          >
-            {{ item["Texto"] }}
+          <option v-for="item in formas" :key="item" v-bind:value="item">
+            {{ item }}
           </option>
         </select>
         <small v-show="navegation.showhelp" class="help">
           {{ navegation.help.get("Forma de pagamento") }}</small
         >
-        <div
-          v-show="
-            value['Forma de pagamento'].toLocaleLowerCase().includes('cheque')
-          "
-          class="row"
-        >
-          <div class="input-field col s12">
-            <i class="material-icons prefix">check</i>
-            <input
-              v-model.trim="value['Titular Cheque']"
-              type="text"
-              autocomplete="off"
-              placeholder="Titular cheque"
-            />
-          </div>
-          <div class="input-field col s12">
-            <i class="material-icons prefix">check</i>
-            <input
-              v-model.trim="value['Agência Cheque']"
-              type="text"
-              autocomplete="off"
-              placeholder="Agência Cheque"
-            />
-          </div>
-          <div class="input-field col s12">
-            <i class="material-icons prefix">check</i>
-            <input
-              v-model.trim="value['Conta Cheque']"
-              type="text"
-              autocomplete="off"
-              placeholder="Conta"
-            />
-          </div>
-          <div class="input-field col s12">
-            <i class="material-icons prefix">check</i>
-            <input
-              v-model.trim="value['N° Cheque']"
-              type="text"
-              autocomplete="off"
-              placeholder="N° Cheque"
-            />
-          </div>
+      </div>
+      <div
+        v-show="
+          value['Forma de pagamento'].toLocaleLowerCase().includes('cheque')
+        "
+        class="row"
+      >
+        <div class="input-field col s12">
+          <i class="material-icons prefix">check</i>
+          <input
+            v-model.trim="value['Titular Cheque']"
+            type="text"
+            autocomplete="off"
+            placeholder="Titular cheque"
+          />
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">check</i>
+          <input
+            v-model.trim="value['Agência Cheque']"
+            type="text"
+            autocomplete="off"
+            placeholder="Agência Cheque"
+          />
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">check</i>
+          <input
+            v-model.trim="value['Conta Cheque']"
+            type="text"
+            autocomplete="off"
+            placeholder="Conta"
+          />
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">check</i>
+          <input
+            v-model.trim="value['N° Cheque']"
+            type="text"
+            autocomplete="off"
+            placeholder="N° Cheque"
+          />
         </div>
       </div>
     </div>
@@ -323,9 +305,11 @@ export default {
     const store = inject("store");
     const route = useRoute();
 
+    const sending = ref(false);
+
     const form = ref(null);
     const value = reactive(Values);
-    const datasets = reactive(store.datasets);
+    const datasets = store.datasets;
 
     const navegation = reactive({
       updating: false,
@@ -344,8 +328,17 @@ export default {
     function salvar() {
       try {
         if (form.value.checkValidity()) {
-          store.database.saveValues(this.parcelas);
-          event.trigger("msg", "Dados enviados com sucesso!");
+          sending.value = true;
+          store.database
+            .saveValues(this.parcelas)
+            .then((data) => {
+              console.log("Restornado:", data);
+              event.trigger("msg", "Dados enviados com sucesso!");
+            })
+            .catch((e) => {
+              sending.value = false;
+              console.log("Erro retornado:", e);
+            });
         } else {
           navegation.showhelp = true;
           throw "Preencha todos os camos!";
@@ -360,13 +353,31 @@ export default {
       return createParcelas(value);
     });
 
-    const locaisMovimento = computed(() => {
-      return datasets.locaisMovimento(value["Escola"], value["ES"]);
-    });
-
     const getInfo = computed(() => {
       return createInfo(value);
     });
+
+    const tipos = computed(() => {
+      return datasets.getValues(store.escola.nome, "Tipo", value["ES"]);
+    });
+
+    const formas = computed(() => {
+      return datasets.getValues(
+        store.escola.nome,
+        "Forma de Pagamento",
+        value["ES"]
+      );
+    });
+
+    const locais = computed(() => {
+      return datasets.getValues(
+        store.escola.nome,
+        "Local do movimento",
+        value["ES"]
+      );
+    });
+
+    console.log("Locais: ", locais);
 
     watch(
       () => value.Vencimento,
@@ -402,7 +413,10 @@ export default {
       salvar,
       store,
       value,
-      locaisMovimento,
+      tipos,
+      formas,
+      locais,
+      sending,
     };
   },
 };

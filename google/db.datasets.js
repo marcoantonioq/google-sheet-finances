@@ -61,6 +61,7 @@ function FieldsDataSets() {
   let campos = getValuesToArray(ds, "Campo");
   let ess = getValuesToArray(ds, "Entrada/Saída");
 
+  // Cria estrutura de dados com Escola > Campo > ES > Texto
   let createObjData = escolas.reduce((acc, escola) => {
     acc[escola] = {};
     campos.forEach((campo) => {
@@ -72,18 +73,15 @@ function FieldsDataSets() {
     return acc;
   }, {});
 
-  console.log(createObjData);
-
+  // Preenche objeto com os valores
   result.data = ds.reduce((acc, o) => {
     const { Escolas, Campo, Texto } = o;
     const ES = o["Entrada/Saída"];
-
     splitValues(Escolas).forEach((escola) => {
       splitValues(ES).forEach((es) => {
         acc[escola][Campo][es].push(Texto);
       });
     });
-
     return acc;
   }, createObjData);
 
