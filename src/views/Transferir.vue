@@ -229,7 +229,16 @@ export default {
         console.log("Salvar:", [de, para]);
 
         sending.value = true;
-        store.database.saveValues([de, para]);
+        store.database
+          .saveValues([de, para])
+          .then((data) => {
+            console.log("Restornado:", data);
+            event.trigger("msg", "Dados enviados com sucesso!");
+          })
+          .catch((e) => {
+            sending.value = false;
+            console.log("Erro retornado:", e);
+          });
 
         event.trigger("msg", "Dados enviados com sucesso!");
       } else {

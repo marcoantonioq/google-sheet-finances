@@ -32,41 +32,40 @@ class DataBase {
   saveValues(values) {
     database.status.load = true;
     console.log("Enviando dados para google salvar!", values);
-    const call = (el) => {
-      const { data, msg, status } = JSON.parse(el);
 
-      console.log("Status do datasets: ", status);
-      if (status) {
-        console.log("Dados atualizados: ", data.updated);
-        console.log("Dados criados: ", data.created);
+    return Sheet.onSaveValues(values)
+      .then((el) => {
+        const { data, msg, status } = JSON.parse(el);
 
-        try {
-          this.values.push(data.created);
-          data.updated.forEach((value) => {
-            let index = this.values.findIndex((obj) => obj.ID == value.ID);
-            this.values[index] = value;
-          });
-        } catch (e) {
-          console.log("Erro sync values!", e);
-        } finally {
+        console.log("Status do datasets: ", status);
+        if (status) {
+          console.log("Dados atualizados: ", data.updated);
+          console.log("Dados criados: ", data.created);
+
+          try {
+            this.values.push(data.created);
+            data.updated.forEach((value) => {
+              let index = this.values.findIndex((obj) => obj.ID == value.ID);
+              this.values[index] = value;
+            });
+          } catch (e) {
+            console.log("Erro sync values!", e);
+          } finally {
+            database.status.load = false;
+          }
+          // router.go(-1);
+          event.trigger("msg", "Dados salvo com sucesso! :)");
+        } else {
           database.status.load = false;
+          event.trigger("msg", "Erro ao salvar no banco de dados! :(");
+          event.trigger("msg", msg);
         }
-        // router.go(-1);
-        event.trigger("msg", "Dados salvo com sucesso! :)");
-      } else {
-        database.status.load = false;
+      })
+      .catch((msg) => {
         event.trigger("msg", "Erro ao salvar no banco de dados! :(");
-        event.trigger("msg", msg);
-      }
-    };
-
-    const fail = (msg) => {
-      event.trigger("msg", "Erro ao salvar no banco de dados! :(");
-      event.trigger("msg", msg);
-      database.status.load = false;
-    };
-
-    return Sheet.onSaveValues(values, call, fail);
+        database.status.load = false;
+        return Promise.reject(msg);
+      });
   }
 
   updateValuesFromTables() {

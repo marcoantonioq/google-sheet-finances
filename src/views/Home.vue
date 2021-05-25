@@ -1,8 +1,6 @@
 <template>
   <div class="home">Pagina home</div>
   <h1>Home</h1>
-
-  <div class="row">v.1.0.1</div>
 </template>
 
 <script>

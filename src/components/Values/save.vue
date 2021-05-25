@@ -41,9 +41,7 @@
           v-model="value['Tipo']"
           name="Tipo"
         >
-          <option value="" disabled selected>
-            __Tipo de {{ value["ES"] }}__
-          </option>
+          <option value="" disabled selected>Tipo de {{ value["ES"] }}</option>
           <option v-for="item in tipos" :key="item" v-bind:value="item">
             {{ item }}
           </option>
@@ -79,7 +77,7 @@
           name="local_movimento"
           class="validate browser-default"
         >
-          <option value="" disabled selected>__Local do movimento:__</option>
+          <option value="" disabled selected>Local do movimento:</option>
           <option v-for="item in locais" :key="item" v-bind:value="item">
             {{ item }}
           </option>
@@ -117,7 +115,7 @@
           v-model="value['Forma de pagamento']"
           name="Forma de pagamento"
         >
-          <option value="" disabled selected>__Forma de pagamento__</option>
+          <option value="" disabled selected>Forma de pagamento</option>
           <option v-for="item in formas" :key="item" v-bind:value="item">
             {{ item }}
           </option>
@@ -265,6 +263,7 @@
           class="col s12 btn green"
           type="submit"
           id="salvar"
+          :disabled="sending"
         >
           Salvar
           <i class="material-icons right">save</i>
