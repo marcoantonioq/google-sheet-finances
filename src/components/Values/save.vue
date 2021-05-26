@@ -307,7 +307,7 @@ export default {
     const sending = ref(false);
 
     const form = ref(null);
-    const value = reactive(Values);
+    var value = reactive(Values);
     const datasets = store.datasets;
 
     const navegation = reactive({
@@ -320,8 +320,8 @@ export default {
       navegation.updating = true;
       Object.assign(value, store.database.getValue(route.params.id_pass));
     } else {
+      Object.entries(value).forEach(([key]) => (value[key] = ""));
       value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
-      console.log("Criar dado!");
     }
 
     function salvar() {

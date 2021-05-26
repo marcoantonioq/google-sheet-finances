@@ -185,7 +185,6 @@ export default {
     });
 
     function setEscola(escola) {
-      console.log("Changed escola:", escola);
       de["Escola"] = escola;
     }
     watch(() => store.escola.nome, setEscola);
@@ -198,8 +197,8 @@ export default {
         de["ES"] = "Saída";
         para["ES"] = "Entrada";
 
-        de["Valor"] = data["Valor"];
-        para["Valor"] = data["Valor"];
+        de["Valor"] = -1 * Number(data["Valor"]);
+        para["Valor"] = Number(data["Valor"]);
 
         de["Titularidade"] = `Escola ${para["Escola"]}`;
         para["Titularidade"] = `Escola ${de["Escola"]}`;

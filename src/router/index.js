@@ -4,10 +4,10 @@ import Home from "../views/Home.vue";
 import Entrada from "../views/Entrada.vue";
 import Saida from "../views/Saida.vue";
 import Transferir from "../views/Transferir.vue";
-// import Cheque from "../views/Cheque.vue";
+import Cheque from "../views/Cheque.vue";
 import save from "../components/Values/save.vue";
 import view from "../components/Values/view.vue";
-import show from "../components/Values/show.vue";
+// import show from "../components/Values/show.vue";
 
 const routes = [
   {
@@ -51,7 +51,7 @@ const routes = [
   {
     path: "/cheque",
     name: "Cheque",
-    component: show,
+    component: Cheque,
   },
 ];
 
