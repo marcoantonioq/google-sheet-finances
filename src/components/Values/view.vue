@@ -71,6 +71,14 @@
       <i class="material-icons left"> arrow_back </i>
       Voltar
     </a>
+    <a
+      style="margin-left: 10px"
+      class="btn blue"
+      v-on:click="edit(value['ID'])"
+    >
+      <i class="material-icons left"> edit </i>
+      Editar
+    </a>
   </div>
 
   <div class="row">
@@ -118,6 +126,9 @@ export default {
     function back() {
       router.go(-1);
     }
+    function edit(id) {
+      router.push({ name: "Edit", params: { id_pass: id } });
+    }
 
     onMounted(() => {
       console.log("Primeiro update view");
@@ -131,6 +142,7 @@ export default {
       back,
       similarBills,
       format,
+      edit,
     };
   },
 };

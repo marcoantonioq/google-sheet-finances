@@ -17,7 +17,7 @@
       <div class="input-field col s12 m6">
         <i class="material-icons prefix">account_circle</i>
         <input
-          :disabled="navegation.updating"
+          :disabled="navegation.updating || navegation.edit"
           id="Titularidade"
           v-model.trim="value.Titularidade"
           type="text"
@@ -216,7 +216,7 @@
       <div class="input-field col s12 m6">
         <span class="prefix">P <sub>x</sub></span>
         <input
-          :disabled="navegation.updating"
+          :disabled="navegation.updating || navegation.edit"
           :required="!navegation.updating"
           id="Parcelas"
           class="validate"
@@ -272,7 +272,10 @@
     </div>
   </form>
 
-  <Parcelas v-if="!navegation.updating" :parcelas="parcelas" />
+  <Parcelas
+    v-if="!navegation.updating || !navegation.edit"
+    :parcelas="parcelas"
+  />
 </template>
 
 <script>
@@ -285,7 +288,7 @@ import { helpsForm, createInfo } from "../../model/helps";
 const moment = require("moment");
 
 import { inject, reactive, ref, computed, watch, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import Values from "../../store/values";
 import event from "../../lib/Event";
@@ -303,34 +306,45 @@ export default {
   setup() {
     const store = inject("store");
     const route = useRoute();
+    const router = useRouter();
 
     const sending = ref(false);
 
     const form = ref(null);
-    var value = reactive(Values);
+    var value = reactive(JSON.parse(JSON.stringify(Values)));
     const datasets = store.datasets;
 
     const navegation = reactive({
       updating: false,
+      edit: false,
       showhelp: false,
       help: helpsForm,
     });
 
-    if (route.params.id_pass) {
+    if (route.path.includes("create")) {
+      value = reactive(JSON.parse(JSON.stringify(Values)));
+      value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
+    } else if (route.path.includes("edit")) {
+      navegation.edit = true;
+      Object.assign(value, store.database.getValue(route.params.id_pass));
+    } else if (route.path.includes("update") && route.params.id_pass) {
       navegation.updating = true;
       Object.assign(value, store.database.getValue(route.params.id_pass));
     } else {
-      console.log(value);
-      // Object.entries(value).forEach(([key]) => (value[key] = ""));
-      value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
+      router.go(-1);
     }
+
+    const parcelas = computed(() => {
+      return createParcelas(value);
+    });
 
     function salvar() {
       try {
         if (form.value.checkValidity()) {
           sending.value = true;
+          let val = navegation.updating || navegation.edit ? [value] : parcelas;
           store.database
-            .saveValues(this.parcelas)
+            .saveValues(val)
             .then((data) => {
               console.log("Restornado:", data);
               event.trigger("msg", "Dados enviados com sucesso!");
@@ -348,10 +362,6 @@ export default {
         event.trigger("msg", "Aglumas informações obrigatárias!");
       }
     }
-
-    const parcelas = computed(() => {
-      return createParcelas(value);
-    });
 
     const getInfo = computed(() => {
       return createInfo(value);
@@ -378,6 +388,15 @@ export default {
     });
 
     console.log("Locais: ", locais);
+
+    watch(
+      () => value.Valor,
+      (val) => {
+        console.log(val);
+        value["Valor"] =
+          value["ES"] === "Saída" && val > 0 ? -1 * Number(val) : val;
+      }
+    );
 
     watch(
       () => value.Vencimento,

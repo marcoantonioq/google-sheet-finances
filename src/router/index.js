@@ -38,6 +38,12 @@ const routes = [
     props: true,
   },
   {
+    path: "/edit/:id_pass",
+    component: save,
+    name: "Edit",
+    props: true,
+  },
+  {
     path: "/view/:id_pass",
     component: view,
     name: "View",
