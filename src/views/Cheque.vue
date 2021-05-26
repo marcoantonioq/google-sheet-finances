@@ -31,16 +31,16 @@
       <dt>Forma de pagamento:</dt>
       <dd>{{ value["Forma de pagamento"] }}&nbsp;</dd>
 
-      <dt v-if="value['Titular Cheque']">Titular Cheque:</dt>
+      <dt>Titular Cheque:</dt>
       <dd>{{ value["Titular Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="value['Conta Cheque']">Conta Cheque:</dt>
+      <dt>Conta Cheque:</dt>
       <dd>{{ value["Conta Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="value['Agência Cheque']">Agência Cheque:</dt>
+      <dt>Agência Cheque:</dt>
       <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
 
-      <dt v-if="value['Nº Cheque']">Nº Cheque</dt>
+      <dt>Nº Cheque</dt>
       <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
 
       <dt>Vencimento:</dt>
