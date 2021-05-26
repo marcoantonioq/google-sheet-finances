@@ -15,13 +15,24 @@
         v-on:click.stop.prevent="view(value.ID)"
         v-for="value in paginate"
         :key="value.ID"
+        :class="[
+          moment() > moment(value['Vencimento']) ? 'red-text' : '',
+          value['Pago em'] ? 'green-text' : '',
+        ]"
       >
         <td>
           {{ moment(value["Vencimento"]).format("DD/MM") }}
         </td>
         <td>{{ value["Titularidade"] }}</td>
         <td>{{ format.toReal(Math.abs(value["Valor"])) }}</td>
-        <td>{{ value["Tipo"] }}</td>
+        <td>
+          {{ value["Tipo"] }}
+          {{
+            value["Outras Observações"]
+              ? `/ ${value["Outras Observações"]}`
+              : ""
+          }}
+        </td>
         <td>
           {{
             value["Pago em"]
