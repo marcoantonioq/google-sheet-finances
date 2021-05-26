@@ -1,5 +1,4 @@
 <template>
-  <div class="home">Pagina cheque</div>
   <div v-for="value in cheques" :key="value['ID']" class="row">
     <dl>
       <dt>ID:</dt>

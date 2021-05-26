@@ -320,7 +320,8 @@ export default {
       navegation.updating = true;
       Object.assign(value, store.database.getValue(route.params.id_pass));
     } else {
-      Object.entries(value).forEach(([key]) => (value[key] = ""));
+      console.log(value);
+      // Object.entries(value).forEach(([key]) => (value[key] = ""));
       value["ES"] = route.params.es_pass == "Entrada" ? "Entrada" : "Saída";
     }
 
