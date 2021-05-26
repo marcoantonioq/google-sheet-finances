@@ -43,7 +43,10 @@
       <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
 
       <dt>Vencimento:</dt>
-      <dd>{{ formatVencimento(value["Vencimento"]) }}&nbsp;</dd>
+      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
+
+      <dt>Situação</dt>
+      <dd v-html="formatVencimento(value['Vencimento'])"></dd>
 
       <dt>Pago em:</dt>
       <dd>
@@ -91,11 +94,9 @@ export default {
       let current_data = moment();
       let vencimento = moment(venc);
       return current_data > vencimento
-        ? `${vencimento.format("DD/MM/YYYY")} | Vencida`
-        : `(${vencimento.format("DD/MM/YYYY")}) | A vencer`;
+        ? `<b class='red-text'>Vencido<b>`
+        : `A vencer`;
     };
-
-    console.log(cheques);
 
     return {
       cheques,
