@@ -7,7 +7,8 @@ export function createParcelas(values) {
     for (let i = 0; i < countParcelas; i++) {
       let obj = Object.assign({}, values);
       obj["Pago em"] = "";
-      obj["Vencimento"] = moment(obj["Vencimento"]).add(i, "months");
+      let vencimento = moment(obj["Vencimento"]).add(i, "months");
+      obj["Vencimento"] = vencimento.format("YYYY/MM/DD");
       obj["Outras Observações"] = `Parcela ${i + 1}/${countParcelas}`;
       parcelas.push(obj);
     }
