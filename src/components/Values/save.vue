@@ -406,7 +406,7 @@ export default {
       (val) => {
         let current_data = moment().format("YYYY-MM-DD");
         value["Pago em"] = moment(val).isSame(current_data)
-          ? moment().format("YYYY-MM-DD")
+          ? moment().format("YYYY-MM-DD HH:MM:SS")
           : "";
       }
     );

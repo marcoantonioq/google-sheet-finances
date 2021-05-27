@@ -14,7 +14,9 @@
 
       <tbody>
         <tr v-for="parcela in parcelas" :key="parcela">
-          <td>{{ moment(parcela["Vencimento"]).format("DD/MM") }}</td>
+          <td>
+            {{ parcela["Vencimento"] }}
+          </td>
           <td>{{ toReal(parcela["Valor"]) }}</td>
           <td>
             {{

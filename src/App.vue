@@ -25,7 +25,9 @@
   <div class="content">
     <div class="row">
       <div class="col s2">Hoje {{ moment().format("DD/MM/YYYY") }}</div>
-      <Escola class="col s10" />
+      <div class="col s10">
+        <Escola />
+      </div>
     </div>
     <router-view />
 
