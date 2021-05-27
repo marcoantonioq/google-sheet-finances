@@ -94,6 +94,9 @@ function select(table, id) {
  **/
 function save(sendData) {
   const { data, table } = JSON.parse(sendData);
+
+  console.log(table, data);
+
   var result = { status: true, data: { created: [], updated: [] }, msg: "" };
 
   if (data) {

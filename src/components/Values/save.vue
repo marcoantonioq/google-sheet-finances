@@ -344,7 +344,8 @@ export default {
       try {
         if (form.value.checkValidity()) {
           sending.value = true;
-          let val = navegation.updating || navegation.edit ? [value] : parcelas;
+          let val =
+            navegation.updating || navegation.edit ? [value] : parcelas.value;
           store.database
             .saveValues(val)
             .then((data) => {

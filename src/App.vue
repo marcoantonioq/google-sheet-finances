@@ -23,8 +23,10 @@
     </router-link>
   </nav>
   <div class="content">
-    <div class="hoje">Hoje {{ moment().format("DD/MM/YYYY") }}</div>
-    <Escola />
+    <div class="row">
+      <div class="col s2">Hoje {{ moment().format("DD/MM/YYYY") }}</div>
+      <Escola class="col s10" />
+    </div>
     <router-view />
 
     <Load />
@@ -228,10 +230,6 @@ h5 {
   border-radius: 50%;
   color: var(--white);
   font-weight: 600;
-}
-
-.hoje {
-  position: fixed;
 }
 
 .desc {
