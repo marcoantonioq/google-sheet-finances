@@ -6,7 +6,6 @@
           <div class="card-content">
             Saldo caixa
             <p>{{ format.toReal(saldo) }}</p>
-            {{ saldo }}
           </div>
         </div>
       </div>
@@ -18,7 +17,6 @@
           <div class="card-content">
             Saldo cofre
             <p>{{ format.toReal(cofre) }}</p>
-            {{ cofre }}
           </div>
         </div>
       </div>
@@ -30,7 +28,6 @@
           <div class="card-content">
             Saída do dia
             <p class="red-text">{{ format.toReal(pago) }}</p>
-            {{ pago }}
           </div>
         </div>
       </div>
@@ -42,7 +39,6 @@
           <div class="card-content">
             Entrada do dia
             <p>{{ format.toReal(recebido) }}</p>
-            {{ recebido }}
           </div>
         </div>
       </div>
@@ -84,6 +80,7 @@ export default {
       return store.database.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Entrada")
+        .filter((obj) => obj["Pago em"] !== "")
         .filter(
           (obj) =>
             moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
@@ -95,6 +92,7 @@ export default {
       return store.database.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Saída")
+        .filter((obj) => obj["Pago em"] !== "")
         .filter(
           (obj) =>
             moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
@@ -103,24 +101,19 @@ export default {
     });
 
     const saldo = computed(() => {
-      let result = 0;
-      try {
-        result = values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .reduce((acc, val) => {
-            console.log("Somado valor: ", val["Valor"]);
-            return acc + parseFloat(val["Valor"]);
-          }, 0);
-      } catch (e) {
-        console.log(e);
-      }
-      return result;
+      return values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((obj) => obj["Pago em"] !== "")
+        .reduce((acc, val) => {
+          return acc + parseFloat(val["Valor"]);
+        }, 0);
     });
 
     const cofre = computed(() => {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["Local do movimento"] === "Cofre")
+        .filter((obj) => obj["Pago em"] !== "")
         .reduce((acc, val) => {
           return acc + parseFloat(val["Valor"]);
         }, 0);
@@ -130,7 +123,7 @@ export default {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Saída")
-        .filter((o) => o["Pago em"] === "")
+        .filter((o) => o["Pago em"] !== "")
         .filter(
           (o) =>
             moment(o["Vencimento"]).format("DD/MM/YYYY") ===
@@ -145,7 +138,7 @@ export default {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Entrada")
-        .filter((o) => o["Pago em"] === "")
+        .filter((o) => o["Pago em"] !== "")
         .filter(
           (o) =>
             moment(o["Vencimento"]).format("DD/MM/YYYY") ===
