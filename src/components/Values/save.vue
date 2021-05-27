@@ -202,7 +202,7 @@
             class="validate"
             id="pago"
             v-model="value['Pago em']"
-            type="date"
+            type="datetime-local"
             autocomplete="off"
           />
           <small v-show="navegation.showhelp" class="help">
@@ -392,12 +392,9 @@ export default {
       );
     });
 
-    console.log("Locais: ", locais);
-
     watch(
       () => value.Valor,
       (val) => {
-        console.log(val);
         value["Valor"] =
           value["ES"] === "Saída" && val > 0 ? -1 * Number(val) : val;
       }
@@ -408,7 +405,7 @@ export default {
       (val) => {
         let current_data = moment().format("YYYY-MM-DD");
         value["Pago em"] = moment(val).isSame(current_data)
-          ? moment().format("YYYY-MM-DD HH:MM:SS")
+          ? moment().format("YYYY-MM-DDTHH:MM:SS")
           : "";
       }
     );
