@@ -132,7 +132,7 @@ export default {
 
     onMounted(() => {
       console.log("Primeiro update view");
-      upView(+route.params.id_pass);
+      upView(route.params.id_pass);
     });
 
     return {
