@@ -67,6 +67,7 @@ function find({ table, filter } = { table: "Banco de dados", filter: null }) {
     result.msg = "Erro ao filtrar informações: " + e;
   }
   console.log(result.msg);
+  console.log(JSON.stringify(result));
   return JSON.stringify(result);
 }
 

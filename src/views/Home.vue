@@ -102,7 +102,7 @@ export default {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .reduce((acc, val) => {
-          return acc + val["Valor"];
+          return acc + parseFloat(val["Valor"]);
         }, 0);
     });
 
@@ -111,7 +111,7 @@ export default {
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["Local do movimento"] === "Cofre")
         .reduce((acc, val) => {
-          return acc + val["Valor"];
+          return acc + parseFloat(val["Valor"]);
         }, 0);
     });
 
@@ -126,7 +126,7 @@ export default {
             current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
-          return acc + val["Valor"];
+          return acc + parseFloat(val["Valor"]);
         }, 0);
     });
 
@@ -141,7 +141,7 @@ export default {
             current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
-          return acc + val["Valor"];
+          return acc + parseFloat(val["Valor"]);
         }, 0);
     });
 
