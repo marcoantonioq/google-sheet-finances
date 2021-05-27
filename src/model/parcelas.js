@@ -12,7 +12,9 @@ export function createParcelas(values) {
       obj["Outras Observações"] = `Parcela ${i + 1}/${countParcelas}`;
       parcelas.push(obj);
     }
-    parcelas[0]["Pago em"] = values["Pago em"];
+    parcelas[0]["Pago em"] = moment(values["Pago em"]).format(
+      "YYYY-MM-DD HH:MM:SS"
+    );
   }
   return parcelas;
 }
