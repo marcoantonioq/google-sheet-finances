@@ -42,17 +42,19 @@ class DataBase {
           console.log("Dados atualizados: ", data.updated);
           console.log("Dados criados: ", data.created);
 
-          try {
-            this.values.push(data.created);
-            data.updated.forEach((value) => {
-              let index = this.values.findIndex((obj) => obj.ID == value.ID);
-              this.values[index] = value;
-            });
-          } catch (e) {
-            console.log("Erro sync values!", e);
-          } finally {
-            database.status.load = false;
-          }
+          this.updateValuesFromTables();
+
+          // try {
+          //   this.values.push(data.created);
+          //   data.updated.forEach((value) => {
+          //     let index = this.values.findIndex((obj) => obj.ID == value.ID);
+          //     this.values[index] = value;
+          //   });
+          // } catch (e) {
+          //   console.log("Erro sync values!", e);
+          // } finally {
+          //   database.status.load = false;
+          // }
           // router.go(-1);
           event.trigger("msg", "Dados salvo com sucesso! :)");
         } else {

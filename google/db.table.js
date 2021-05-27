@@ -106,14 +106,6 @@ function save(sendData) {
       .getValues()
       .map((id) => id[0]);
 
-    // Atualizar colunas
-    const updateValues = (obj) => {
-      if (obj.hasOwnProperty("Atualizado em")) {
-        obj["Atualizado em"] = new Date().getDataHora("en");
-      }
-      return obj;
-    };
-
     // Cria um novo objeto vazio
     let obj_template = getObjTable(table);
     let data_to_save = data.reduce(
@@ -141,7 +133,7 @@ function save(sendData) {
       if (obj.hasOwnProperty("Criado em") && obj["Criado em"] == "") {
         obj["Criado em"] = new Date().getDataHora("en");
       }
-      obj = updateValues(obj);
+      obj["Atualizado em"] = new Date().getDataHora("en");
       let val = Object.values(obj);
       DB.getRange(getRow(obj["ID"]), 1, 1, val.length).setValues([val]);
       return obj;
@@ -152,6 +144,7 @@ function save(sendData) {
       if (obj.hasOwnProperty("Criado em")) {
         obj["Criado em"] = new Date().getDataHora("en");
       }
+      obj["Atualizado em"] = new Date().getDataHora("en");
       let dt = new Date().getTime().toString(36);
       let rd = Math.random().toString(36).slice(2);
       obj["ID"] = `${dt}${rd}`;

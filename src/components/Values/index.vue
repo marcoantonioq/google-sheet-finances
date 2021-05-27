@@ -6,7 +6,7 @@
         <th @click="sort('Titularidade')">Titularidade</th>
         <th @click="sort('Valor')">Valor</th>
         <th @click="sort('Tipo')">Tipo</th>
-        <th @click="sort('Pago')">Pago</th>
+        <th @click="sort('Pago')">Situação</th>
         <th @click="sort('Ações')">Ações</th>
       </tr>
     </thead>

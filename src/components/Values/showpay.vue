@@ -4,7 +4,7 @@
       <tr>
         <th @click="sort('Titularidade')">Titularidade</th>
         <th @click="sort('Tipo')">Tipo</th>
-        <th @click="sort('Pago')">Pago</th>
+        <th @click="sort('Pago')">Situação</th>
         <th @click="sort('Local do movimento')">Local</th>
         <th @click="sort('Valor')">Valor</th>
       </tr>
