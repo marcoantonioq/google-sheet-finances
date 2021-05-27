@@ -6,6 +6,7 @@
           <div class="card-content">
             Saldo caixa
             <p>{{ format.toReal(saldo) }}</p>
+            {{ saldo }}
           </div>
         </div>
       </div>
@@ -17,6 +18,7 @@
           <div class="card-content">
             Saldo cofre
             <p>{{ format.toReal(cofre) }}</p>
+            {{ cofre }}
           </div>
         </div>
       </div>
@@ -28,6 +30,7 @@
           <div class="card-content">
             Saída do dia
             <p class="red-text">{{ format.toReal(pago) }}</p>
+            {{ pago }}
           </div>
         </div>
       </div>
@@ -39,6 +42,7 @@
           <div class="card-content">
             Entrada do dia
             <p>{{ format.toReal(recebido) }}</p>
+            {{ recebido }}
           </div>
         </div>
       </div>
