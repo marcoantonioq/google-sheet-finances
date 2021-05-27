@@ -77,7 +77,7 @@ export default {
     const current_date = moment();
 
     const entradas = computed(() => {
-      return store.database.values
+      return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Entrada")
         .filter((obj) => obj["Pago em"] !== "")
@@ -89,7 +89,7 @@ export default {
     });
 
     const saidas = computed(() => {
-      return store.database.values
+      return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Saída")
         .filter((obj) => obj["Pago em"] !== "")
