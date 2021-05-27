@@ -11,7 +11,7 @@ module.exports = [
     Valor: -50,
     "Forma de pagamento": "Cheque",
     Vencimento: "2021-05-25T03:00:00.000Z",
-    Parcelas: 1,
+    Parcelas: 5,
     Observações: "",
     "Pago em": "",
     "Atualizado em": "2021-05-07T03:31:16.734Z",

@@ -273,7 +273,7 @@
   </form>
 
   <Parcelas
-    v-if="!navegation.updating || !navegation.edit"
+    v-if="!navegation.updating && !navegation.edit"
     :parcelas="parcelas"
   />
 </template>
