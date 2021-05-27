@@ -6,11 +6,15 @@
   Pagar: {{ format.toReal(pagar) }}<br />
   Receber: {{ format.toReal(receber) }}<br />
 
-  <h3>Entradas</h3>
-  <ValuesIndex :values="entradas" />
+  <div v-if="entradas.length > 0">
+    <h3>Entradas</h3>
+    <ValuesIndex :values="entradas" />
+  </div>
 
-  <h3>Saídas</h3>
-  <ValuesIndex :values="saidas" />
+  <div v-if="entradas.length > 0">
+    <h3>Saídas</h3>
+    <ValuesIndex v-if="entradas.length > 0" :values="saidas" />
+  </div>
 </template>
 
 <script>
@@ -33,21 +37,27 @@ export default {
 
     const current_date = moment();
 
-    const entradas = store.database.values
-      .filter((obj) => obj["ES"] === "Entrada")
-      .filter(
-        (obj) =>
-          moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
-          current_date.format("DD/MM/YYYY")
-      );
+    const entradas = computed(() => {
+      return store.database.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((obj) => obj["ES"] === "Entrada")
+        .filter(
+          (obj) =>
+            moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
+            current_date.format("DD/MM/YYYY")
+        );
+    });
 
-    const saidas = store.database.values
-      .filter((obj) => obj["ES"] === "Saída")
-      .filter(
-        (obj) =>
-          moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
-          current_date.format("DD/MM/YYYY")
-      );
+    const saidas = computed(() => {
+      return store.database.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((obj) => obj["ES"] === "Saída")
+        .filter(
+          (obj) =>
+            moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
+            current_date.format("DD/MM/YYYY")
+        );
+    });
 
     const saldo = computed(() => {
       return values
