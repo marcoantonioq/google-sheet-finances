@@ -1,37 +1,56 @@
 <template>
   <div class="row">
-    <div class="col s6">
+    <div class="col s12 m6">
       <div class="card horizontal">
         <div class="card-stacked">
           <div class="card-content">
-            Saldo: <br />
-
-            {{ format.toReal(saldo) }} <br />
+            Saldo caixa
+            <p>{{ format.toReal(saldo) }}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col s6">
+    <div class="col s12 m6">
       <div class="card horizontal">
         <div class="card-stacked">
           <div class="card-content">
-            Cofre: {{ format.toReal(cofre) }}<br />
+            Saldo cofre
+            <p>{{ format.toReal(cofre) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 m6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Saída do dia
+            <p class="red-text">{{ format.toReal(pago) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 m6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Entrada do dia
+            <p>{{ format.toReal(recebido) }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  Saída do dia: {{ format.toReal(pago) }}<br />
-  Entrada do dia: {{ format.toReal(recebido) }}<br />
-
-  <div v-if="entradas.length > 0">
+  <div class="double-margin-top" v-if="entradas.length > 0">
     <h5>Entradas</h5>
     <ValuesIndex :values="entradas" />
   </div>
 
-  <div v-if="saidas.length > 0">
+  <div class="double-margin-top" v-if="saidas.length > 0">
     <h5>Saídas</h5>
     <ValuesIndex v-if="saidas.length > 0" :values="saidas" />
   </div>
@@ -149,5 +168,17 @@ th {
 
 th {
   cursor: pointer;
+}
+.card-content {
+  color: var(--blue);
+  font-size: 1.2rem;
+  font-weight: 400;
+  p {
+    font-size: 1.4rem;
+    color: var(--green);
+  }
+}
+.double-margin-top {
+  margin-top: 3rem;
 }
 </style>

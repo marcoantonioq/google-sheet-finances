@@ -23,7 +23,7 @@
     </router-link>
   </nav>
   <div class="content">
-    <div class="hoje">Hoje {{ moment.format("DD/MM/YYYY") }}</div>
+    <div class="hoje">Hoje {{ moment().format("DD/MM/YYYY") }}</div>
     <Escola />
     <router-view />
 
@@ -67,7 +67,7 @@ export default {
 
 <style lang="scss">
 :root {
-  --blue: #007bff;
+  --blue: #005483;
   --cyan: #17a2b8;
   --danger: #dc3545;
   --dark: #343a40;
@@ -240,6 +240,11 @@ h5 {
 
 .shadow {
   box-shadow: 5px 5px 8px -3px rgba(58, 58, 58, 0.44);
+}
+
+// Cores
+.red-text {
+  color: var(--red-dark) !important;
 }
 
 @media (max-height: 400px) {
