@@ -108,6 +108,7 @@ export default {
         result = values
           .filter((o) => o["Escola"] === store.escola.nome)
           .reduce((acc, val) => {
+            console.log("Somado valor: ", val["Valor"]);
             return acc + parseFloat(val["Valor"]);
           }, 0);
       } catch (e) {

@@ -395,7 +395,7 @@ module.exports = [
     Tipo: "Mensalidades",
     Discriminação: "3° mensalidade",
     "Local do movimento": "Banco do Brasil",
-    Valor: 304,
+    Valor: "304,10",
     "Forma de pagamento": "Transferência bancária",
     Vencimento: "2020-05-08T03:00:00.000Z",
     Parcelas: 1,
