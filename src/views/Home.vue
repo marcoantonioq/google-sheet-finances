@@ -141,7 +141,7 @@ export default {
             current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
-          return acc + parseFloat(val["Valor"]);
+          return acc + parseFloat(String(val["Valor"]).replace(",", "."));
         }, 0);
     });
 
