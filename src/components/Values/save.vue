@@ -352,6 +352,7 @@ export default {
               console.log("Restornado:", data);
               event.trigger("msg", "Dados enviados com sucesso!");
               router.go(-1);
+              // sending.value = false;
             })
             .catch((e) => {
               sending.value = false;
