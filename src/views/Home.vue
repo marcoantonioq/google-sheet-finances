@@ -103,11 +103,17 @@ export default {
     });
 
     const saldo = computed(() => {
-      return values
-        .filter((o) => o["Escola"] === store.escola.nome)
-        .reduce((acc, val) => {
-          return acc + parseFloat(val["Valor"]);
-        }, 0);
+      let result = 0;
+      try {
+        result = values
+          .filter((o) => o["Escola"] === store.escola.nome)
+          .reduce((acc, val) => {
+            return acc + parseFloat(val["Valor"]);
+          }, 0);
+      } catch (e) {
+        console.log(e);
+      }
+      return result;
     });
 
     const cofre = computed(() => {
