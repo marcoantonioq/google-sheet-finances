@@ -1,16 +1,17 @@
 <template>
   <div class="home">Pagina home</div>
   <h1>Home</h1>
-  Saldo: {{ saldo }} <br />
-  Cofre: {{ cofre }}<br />
-  Pagar: {{ pagar }}<br />
-  Receber: {{ receber }}<br />
+  Saldo: {{ format.toReal(saldo) }} <br />
+  Cofre: {{ format.toReal(cofre) }}<br />
+  Pagar: {{ format.toReal(pagar) }}<br />
+  Receber: {{ format.toReal(receber) }}<br />
 </template>
 
 <script>
 import { inject, computed, reactive } from "vue";
 
 const moment = require("moment");
+import { format } from "../helpers/utility";
 
 export default {
   name: "Home",
@@ -74,6 +75,7 @@ export default {
       cofre,
       pagar,
       receber,
+      format,
     };
   },
 };
