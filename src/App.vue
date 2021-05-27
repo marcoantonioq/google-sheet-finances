@@ -23,6 +23,7 @@
     </router-link>
   </nav>
   <div class="content">
+    <div class="hoje">Hoje {{ moment.format("DD/MM/YYYY") }}</div>
     <Escola />
     <router-view />
 
@@ -37,6 +38,8 @@ import event from "./lib/Event";
 
 import Escola from "./components/Escola.vue";
 import Load from "./components/Load";
+
+const moment = require("moment");
 
 export default {
   components: { Escola, Load },
@@ -54,6 +57,10 @@ export default {
         console.log(e);
       }
     });
+
+    return {
+      moment,
+    };
   },
 };
 </script>
@@ -161,6 +168,11 @@ nav {
   }
 }
 
+h5 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .flex {
   display: flex;
   align-content: center;
@@ -216,6 +228,10 @@ nav {
   border-radius: 50%;
   color: var(--white);
   font-weight: 600;
+}
+
+.hoje {
+  position: fixed;
 }
 
 .desc {
@@ -302,6 +318,17 @@ nav {
   }
 }
 
+@media print {
+  nav,
+  div,
+  button {
+    display: none;
+  }
+  table {
+    display: block;
+  }
+}
+
 .preloader-wrapper {
   width: 35px;
   height: 35px;
@@ -325,6 +352,12 @@ nav {
   background: #ffffff;
   border-radius: 3px;
   box-shadow: inset 0px -11px 12px #f0f0f0;
+}
+
+input {
+  &:invalid {
+    color: var(--red);
+  }
 }
 select {
   padding: 6px;

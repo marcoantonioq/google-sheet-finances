@@ -2,12 +2,11 @@
   <table class="highlight">
     <thead>
       <tr>
-        <th @click="sort('Vencimento')">Vencimento</th>
         <th @click="sort('Titularidade')">Titularidade</th>
-        <th @click="sort('Valor')">Valor</th>
         <th @click="sort('Tipo')">Tipo</th>
         <th @click="sort('Pago')">Pago</th>
-        <th @click="sort('Ações')">Ações</th>
+        <th @click="sort('Local do movimento')">Local</th>
+        <th @click="sort('Valor')">Valor</th>
       </tr>
     </thead>
     <tbody>
@@ -20,11 +19,7 @@
           value['Pago em'] ? 'green-text' : '',
         ]"
       >
-        <td>
-          {{ moment(value["Vencimento"]).format("DD/MM") }}
-        </td>
         <td>{{ value["Titularidade"] }}</td>
-        <td>{{ format.toReal(Math.abs(value["Valor"])) }}</td>
         <td>
           {{ value["Tipo"] }}
           {{
@@ -42,22 +37,8 @@
               : "Vencido"
           }}
         </td>
-        <td>
-          <i
-            v-on:click.stop.prevent="pay(value.ID)"
-            v-if="!value['Pago em']"
-            class="green-text cursor material-icons"
-          >
-            input
-          </i>
-          <i
-            v-on:click.stop.prevent="view(value.ID)"
-            v-if="value['Pago em']"
-            class="cursor material-icons"
-          >
-            view_headline
-          </i>
-        </td>
+        <td>{{ value["Local do movimento"] }}</td>
+        <td>{{ format.toReal(Math.abs(value["Valor"])) }}</td>
       </tr>
     </tbody>
   </table>
@@ -211,16 +192,16 @@ table {
   }
 
   thead {
+    border-bottom: 1px solid var(--gray);
     th {
       font-weight: 1000;
     }
-    th:nth-child(2) {
+    th:nth-child(1) {
       min-width: 150px;
     }
-    th:nth-child(3) {
+    th:nth-child(4) {
       min-width: 100px;
     }
-    border-bottom: 1px solid var(--gray);
   }
 
   tbody {

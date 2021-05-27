@@ -333,6 +333,8 @@ export default {
     } else {
       router.go(-1);
     }
+    // Convert Number to String
+    value["Valor"] = String(value["Valor"]).replace(".", ",");
 
     const parcelas = computed(() => {
       return createParcelas(value);

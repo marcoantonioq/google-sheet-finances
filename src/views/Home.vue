@@ -1,24 +1,44 @@
 <template>
-  <div class="home">Pagina home</div>
-  <h1>Home</h1>
-  Saldo: {{ format.toReal(saldo) }} <br />
-  Cofre: {{ format.toReal(cofre) }}<br />
-  Pagar: {{ format.toReal(pagar) }}<br />
-  Receber: {{ format.toReal(receber) }}<br />
+  <div class="row">
+    <div class="col s6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Saldo: <br />
+
+            {{ format.toReal(saldo) }} <br />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Cofre: {{ format.toReal(cofre) }}<br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  Saída do dia: {{ format.toReal(pago) }}<br />
+  Entrada do dia: {{ format.toReal(recebido) }}<br />
 
   <div v-if="entradas.length > 0">
-    <h3>Entradas</h3>
+    <h5>Entradas</h5>
     <ValuesIndex :values="entradas" />
   </div>
 
-  <div v-if="entradas.length > 0">
-    <h3>Saídas</h3>
-    <ValuesIndex v-if="entradas.length > 0" :values="saidas" />
+  <div v-if="saidas.length > 0">
+    <h5>Saídas</h5>
+    <ValuesIndex v-if="saidas.length > 0" :values="saidas" />
   </div>
 </template>
 
 <script>
-import ValuesIndex from "../components/Values/";
+import ValuesIndex from "../components/Values/showpay";
 
 import { inject, computed, reactive } from "vue";
 
@@ -76,7 +96,7 @@ export default {
         }, 0);
     });
 
-    const pagar = computed(() => {
+    const pago = computed(() => {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Saída")
@@ -84,14 +104,14 @@ export default {
         .filter(
           (o) =>
             moment(o["Vencimento"]).format("DD/MM/YYYY") ===
-            moment().format("DD/MM/YYYY")
+            current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
           return acc + val["Valor"];
         }, 0);
     });
 
-    const receber = computed(() => {
+    const recebido = computed(() => {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Entrada")
@@ -99,7 +119,7 @@ export default {
         .filter(
           (o) =>
             moment(o["Vencimento"]).format("DD/MM/YYYY") ===
-            moment().format("DD/MM/YYYY")
+            current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
           return acc + val["Valor"];
@@ -111,8 +131,8 @@ export default {
       values,
       saldo,
       cofre,
-      pagar,
-      receber,
+      pago,
+      recebido,
       format,
       entradas,
       saidas,
