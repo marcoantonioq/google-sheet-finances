@@ -349,10 +349,8 @@ export default {
           store.database
             .saveValues(val)
             .then((data) => {
-              console.log("Restornado:", data);
-              event.trigger("msg", "Dados enviados com sucesso!");
+              console.log("Dados salvo com sucesso: ", data);
               router.go(-1);
-              // sending.value = false;
             })
             .catch((e) => {
               sending.value = false;

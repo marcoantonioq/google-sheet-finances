@@ -1,9 +1,6 @@
 <template>
   <div class="row">
     <dl>
-      <dt>ID:</dt>
-      <dd>{{ value["ID"] }}&nbsp;</dd>
-
       <dt>Titular:</dt>
       <dd>{{ value["Titularidade"] }}&nbsp;</dd>
 

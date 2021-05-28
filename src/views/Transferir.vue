@@ -238,8 +238,6 @@ export default {
             sending.value = false;
             console.log("Erro retornado:", e);
           });
-
-        event.trigger("msg", "Dados enviados com sucesso!");
       } else {
         console.log("Verifique todos os campos!");
       }

@@ -16,6 +16,9 @@ class DataBase {
 
   constructor() {
     this.updateValuesFromTables();
+    setInterval(function () {
+      this.updateValuesFromTables();
+    }, 15 * 60 * 1000);
   }
 
   get values() {
