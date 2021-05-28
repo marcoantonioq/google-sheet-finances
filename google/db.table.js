@@ -1,16 +1,3 @@
-Date.prototype.getData = function (lang = "pt-BR") {
-  let [dd, mm, yyyy] = this.toLocaleDateString().split("/");
-  return lang === "en" ? `${yyyy}-${mm}-${dd}` : `${dd}/${mm}/${yyyy}`;
-};
-
-Date.prototype.getDataHora = function (lang = "pt-BR") {
-  return `${this.getData(lang)} ${this.toLocaleTimeString()}`;
-};
-
-Date.prototype.addMeses = function (meses) {
-  this.setMonth(this.getMonth() + meses);
-};
-
 /**
  * Pega todos os valores de uma tabela
  * @param {string} table Table name

@@ -64,17 +64,25 @@
   </div>
 
   <div class="row">
-    <a class="btn red" v-on:click="back">
+    <a style="margin-top: 5px" class="col s12 m4 btn red" v-on:click="back">
       <i class="material-icons left"> arrow_back </i>
       Voltar
     </a>
     <a
-      style="margin-left: 10px"
-      class="btn blue"
+      style="margin-top: 5px"
+      class="col s12 m4 btn blue"
       v-on:click="edit(value['ID'])"
     >
       <i class="material-icons left"> edit </i>
       Editar
+    </a>
+    <a
+      style="margin-top: 5px"
+      class="col s12 m4 btn green"
+      v-on:click="pay(value['ID'])"
+    >
+      <i class="material-icons left"> payment </i>
+      Pagar
     </a>
   </div>
 
@@ -126,6 +134,9 @@ export default {
     function edit(id) {
       router.push({ name: "Edit", params: { id_pass: id } });
     }
+    function pay(id) {
+      router.push({ name: "Update", params: { id_pass: id } });
+    }
 
     onMounted(() => {
       upView(route.params.id_pass);
@@ -139,6 +150,7 @@ export default {
       similarBills,
       format,
       edit,
+      pay,
     };
   },
 };
