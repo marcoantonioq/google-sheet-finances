@@ -14,10 +14,7 @@
         v-on:click.stop.prevent="view(value.ID)"
         v-for="value in paginate"
         :key="value.ID"
-        :class="[
-          moment() > moment(value['Vencimento']) ? 'red-text' : '',
-          value['Pago em'] ? 'green-text' : '',
-        ]"
+        :class="[value['Pago em'] != '' ? 'green-text' : '']"
       >
         <td>{{ value["Titularidade"] }}</td>
         <td>
