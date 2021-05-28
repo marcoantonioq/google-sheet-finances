@@ -25,14 +25,7 @@ const onEvents = {
 
     var historico = SpreadsheetApp.getActive().getSheetByName("Histórico");
 
-    var values = [
-      new Date().toLocaleString("pt-BR"),
-      getUserEmail(),
-      tabela,
-      linha,
-      coluna,
-      novo,
-    ];
+    var values = [new Date(), getUserEmail(), tabela, linha, coluna, novo];
 
     historico.appendRow(values);
   },
@@ -47,7 +40,7 @@ const onEvents = {
 
     // Adcionar notações
     range.setNote(
-      "Ultima edição por " + user + ": " + new Date().toLocaleString("pt-BR")
+      "Ultima edição por " + user + ": " + new Date()
     );
   },
 };
