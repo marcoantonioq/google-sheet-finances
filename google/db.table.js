@@ -132,9 +132,9 @@ function save(sendData) {
     // Console update
     result.data.updated = data_to_save.update.map((obj) => {
       if (obj.hasOwnProperty("Criado em") && obj["Criado em"] == "") {
-        obj["Criado em"] = new Date().getDataHora("en");
+        obj["Criado em"] = new Date();
       }
-      obj["Atualizado em"] = new Date().getDataHora("en");
+      obj["Atualizado em"] = new Date();
       let val = Object.values(obj);
       DB.getRange(getRow(obj["ID"]), 1, 1, val.length).setValues([val]);
       return obj;
@@ -143,9 +143,9 @@ function save(sendData) {
     // Console create
     result.data.created = data_to_save.create.map((obj) => {
       if (obj.hasOwnProperty("Criado em")) {
-        obj["Criado em"] = new Date().getDataHora("en");
+        obj["Criado em"] = new Date();
       }
-      obj["Atualizado em"] = new Date().getDataHora("en");
+      obj["Atualizado em"] = new Date();
       let dt = new Date().getTime().toString(36);
       let rd = Math.random().toString(36).slice(2);
       obj["ID"] = `${dt}${rd}`;

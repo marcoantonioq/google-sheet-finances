@@ -80,7 +80,6 @@ export default {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Entrada")
-        .filter((obj) => obj["Pago em"] !== "")
         .filter(
           (obj) =>
             moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
@@ -92,7 +91,6 @@ export default {
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Saída")
-        .filter((obj) => obj["Pago em"] !== "")
         .filter(
           (obj) =>
             moment(obj["Atualizado em"]).format("DD/MM/YYYY") ===
