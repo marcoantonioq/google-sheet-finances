@@ -99,12 +99,6 @@ export default {
     });
 
     const saldo = computed(() => {
-      console.log(
-        "Dados computado no saldo:",
-        values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .filter((obj) => obj["Pago em"] !== "")
-      );
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["Pago em"] !== "")
@@ -114,13 +108,6 @@ export default {
     });
 
     const cofre = computed(() => {
-      console.log(
-        "Dados computado no cofre:",
-        values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .filter((o) => o["Local do movimento"] === "Cofre")
-          .filter((obj) => obj["Pago em"] !== "")
-      );
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["Local do movimento"] === "Cofre")
@@ -131,18 +118,6 @@ export default {
     });
 
     const pago = computed(() => {
-      console.log(
-        "Dados computado na Saída do dia:",
-        values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .filter((o) => o["ES"] === "Saída")
-          .filter((o) => o["Pago em"] !== "")
-          .filter(
-            (o) =>
-              moment(o["Pago em"]).format("DD/MM/YYYY") ===
-              current_date.format("DD/MM/YYYY")
-          )
-      );
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Saída")
@@ -158,18 +133,6 @@ export default {
     });
 
     const recebido = computed(() => {
-      console.log(
-        "Dados computado na Entrada do dia:",
-        values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .filter((o) => o["ES"] === "Entrada")
-          .filter((o) => o["Pago em"] !== "")
-          .filter(
-            (o) =>
-              moment(o["Pago em"]).format("DD/MM/YYYY") ===
-              current_date.format("DD/MM/YYYY")
-          )
-      );
       return values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Entrada")
