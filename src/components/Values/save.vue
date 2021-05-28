@@ -340,6 +340,12 @@ export default {
       return createParcelas(value);
     });
 
+    console.log(
+      moment(
+        "Thu May 26 2021 09:09:41 GMT-0300 (Horário Padrão de Brasília)"
+      ).format("DD/MM/YYYY HH:MM:SS")
+    );
+
     function salvar() {
       try {
         if (form.value.checkValidity()) {

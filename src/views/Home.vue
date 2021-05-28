@@ -141,7 +141,7 @@ export default {
           .filter((o) => o["Pago em"] !== "")
           .filter(
             (o) =>
-              moment(o["Vencimento"]).format("DD/MM/YYYY") ===
+              moment(o["Pago em"]).format("DD/MM/YYYY") ===
               current_date.format("DD/MM/YYYY")
           )
       );
@@ -151,7 +151,7 @@ export default {
         .filter((o) => o["Pago em"] !== "")
         .filter(
           (o) =>
-            moment(o["Vencimento"]).format("DD/MM/YYYY") ===
+            moment(o["Pago em"]).format("DD/MM/YYYY") ===
             current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
@@ -168,7 +168,7 @@ export default {
           .filter((o) => o["Pago em"] !== "")
           .filter(
             (o) =>
-              moment(o["Vencimento"]).format("DD/MM/YYYY") ===
+              moment(o["Pago em"]).format("DD/MM/YYYY") ===
               current_date.format("DD/MM/YYYY")
           )
       );
@@ -178,7 +178,7 @@ export default {
         .filter((o) => o["Pago em"] !== "")
         .filter(
           (o) =>
-            moment(o["Vencimento"]).format("DD/MM/YYYY") ===
+            moment(o["Pago em"]).format("DD/MM/YYYY") ===
             current_date.format("DD/MM/YYYY")
         )
         .reduce((acc, val) => {
