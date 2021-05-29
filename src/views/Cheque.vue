@@ -5,7 +5,7 @@
         <div class="card-stacked">
           <div class="card-content">
             Cheques vencidos
-            <p>{{ format.toReal(vencido) }}</p>
+            <p>{{ format.toReal(soma(cheque_by.vencido)) }}</p>
           </div>
         </div>
       </div>
@@ -16,11 +16,23 @@
         <div class="card-stacked">
           <div class="card-content">
             Cheques a vencer
-            <p>{{ format.toReal(avencer) }}</p>
+            <p>{{ format.toReal(soma(cheque_by.avencer)) }}</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="row">
+    Vencido ({{ cheque_by.vencido.length }}):
+    <pre>
+      {{ cheque_by.vencido }}
+    </pre>
+
+    A vencer ({{ cheque_by.avencer.length }}):
+    <pre>
+    {{ cheque_by.avencer }}
+    </pre>
   </div>
   <div v-for="value in cheques" :key="value['ID']" class="row">
     <dl>
@@ -110,51 +122,37 @@ export default {
         .filter((obj) => obj["Pago em"] === "");
     });
 
-    const vencido = computed(() => {
+    const cheque_by = computed(() => {
       return store.database.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Entrada")
         .filter((o) =>
           o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
         )
-        .filter((obj) => obj["Pago em"] !== "")
-        .filter((obj) => new Date(obj["Vencimento"]) < new Date())
-        .map((obj) => {
-          console.log(
-            "Vencido:",
-            new Date(obj["Vencimento"]).toLocaleString(),
-            obj
-          );
-          return obj;
-        })
-        .reduce((acc, val) => {
-          return acc + parseFloat(val["Valor"]);
-        }, 0);
+        .filter((obj) => obj["Pago em"] == "")
+        .reduce(
+          (acc, o) => {
+            let current_moment = moment();
+            let venc_moment = moment(o["Vencimento"]);
+            let status = current_moment > venc_moment ? "vencido" : "avencer";
+            acc[status].push(o);
+            return acc;
+          },
+          { vencido: [], avencer: [] }
+        );
     });
 
-    const avencer = computed(() => {
-      return store.database.values
-        .filter((o) => o["Escola"] === store.escola.nome)
-        .filter((o) => o["ES"] === "Entrada")
-        .filter((o) =>
-          o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
-        )
-        .filter((obj) => obj["Pago em"] !== "")
-        .filter((obj) => new Date(obj["Vencimento"]) >= new Date())
-        .map((obj) => {
-          console.log(
-            "AVencer:",
-            new Date(obj["Vencimento"]).toLocaleString(),
-            obj
-          );
-          return obj;
-        })
-        .reduce((acc, val) => {
+    const soma = function (arr) {
+      let val = 0;
+      try {
+        val = arr.reduce((acc, val) => {
           return acc + parseFloat(val["Valor"]);
         }, 0);
-    });
-
-    console.log(store.database.values);
+      } catch (e) {
+        console.log(e);
+      }
+      return val;
+    };
 
     const formatVencimento = (venc) => {
       let current_data = moment();
@@ -168,8 +166,8 @@ export default {
       cheques,
       moment,
       format,
-      vencido,
-      avencer,
+      cheque_by,
+      soma,
       formatVencimento,
     };
   },
