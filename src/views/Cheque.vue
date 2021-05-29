@@ -129,7 +129,7 @@ export default {
           (acc, o) => {
             let current_moment = moment();
             let venc_moment = moment(o["Vencimento"]);
-            let status = current_moment > venc_moment ? "Vencido" : "A vencer";
+            let status = current_moment > venc_moment ? "Vencidos" : "A vencer";
             acc[status].push(o);
             return acc;
           },
