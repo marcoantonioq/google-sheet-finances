@@ -87,7 +87,7 @@
       </dd>
     </dl>
   </div>
-  {{ value }}
+  <pre>  {{ cheques }}</pre>
 </template>
 
 <script>
@@ -108,7 +108,7 @@ export default {
         .filter((obj) =>
           obj["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
         )
-        .filter((obj) => !obj["Pago em"]);
+        .filter((obj) => obj["Pago em"] === "");
     });
 
     const vencido = computed(() => {
