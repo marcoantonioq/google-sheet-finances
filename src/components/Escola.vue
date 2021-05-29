@@ -16,6 +16,11 @@
         <a v-on:click="setEscola(escola)">{{ escola }}</a>
       </li>
     </ul>
+
+    <router-link class="notifications" to="/notifications">
+      <div class="count">5</div>
+      <i class="material-icons">notifications_none</i>
+    </router-link>
   </div>
 </template>
 
@@ -81,6 +86,27 @@ img.arrow_escola {
   transform: scaleY(-1) scaleX(-1) rotate(22deg);
   animation: shake 0.5s;
   animation-iteration-count: infinite;
+  z-index: 2;
+}
+
+.notifications {
+  cursor: pointer;
+  i.material-icons {
+    font-size: 2.6rem;
+    transform: rotate(10deg);
+  }
+}
+.count {
+  position: relative;
+  top: -10px;
+  left: 37px;
+  background: var(--main-color);
+  border-radius: 50%;
+  color: var(--white);
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  text-align: center;
   z-index: 1;
 }
 </style>

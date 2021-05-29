@@ -215,25 +215,6 @@ h5 {
   text-align: center;
 }
 
-.notifications {
-  right: 0px;
-  top: 20px;
-  i.material-icons {
-    font-size: 3.3rem;
-    transform: rotate(10deg);
-  }
-}
-.count {
-  position: relative;
-  top: -35px;
-  left: -20px;
-  background: var(--main-color);
-  padding: 2px 6px;
-  border-radius: 50%;
-  color: var(--white);
-  font-weight: 600;
-}
-
 .desc {
   background-color: #dc354559;
 }
