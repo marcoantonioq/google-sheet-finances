@@ -11,9 +11,7 @@ class Google {
   /**
    * Salvar dados no banco de dados {ID:1} => update {ID: null} => Insert
    * @param {array} values Valores enviados ao Google Sheets
-   * @param {function} call Função de retorno
-   * @param {function} fail Função de error
-   * @returns boolean
+   * @returns promises
    */
   onSaveValues(values) {
     let sendData = JSON.stringify({ data: values, table: "Banco de dados" });
@@ -37,30 +35,30 @@ class Google {
   /**
    * Pega dados do Banco de Dados
    * @param {*} filter Filtro no formato Ex. {ES: "Entrada"}
-   * @param {function} call Função de retorno
-   * @param {function} fail Função de error
-   * @returns
+   * @returns Promises
    */
-  onGetValues(filter = null, call, fail = this.func) {
-    try {
-      // eslint-disable-next-line no-undef
-      return google.script.run
-        .withSuccessHandler(call)
-        .withFailureHandler(fail)
-        .find({ table: "Banco de dados", filter: filter });
-    } catch (e) {
-      console.groupCollapsed("Erro ao buscar Dados no Google: More...");
-      console.error("Erro:", e);
-      console.info("!!!! Dados Mock !!!!");
-      console.groupEnd();
+  onGetValues(filter) {
+    return new Promise((resolve, reject) => {
+      try {
+        // eslint-disable-next-line no-undef
+        return google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)
+          .find({ table: "Banco de dados", filter: filter });
+      } catch (e) {
+        console.groupCollapsed("Erro ao buscar Dados no Google: More...");
+        console.error("Erro:", e);
+        console.info("!!!! Dados Mock !!!!");
+        console.groupEnd();
 
-      // Mock values
-      setTimeout(() => {
-        call(
-          JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB })
-        );
-      }, 500);
-    }
+        // Mock values
+        setTimeout(() => {
+          resolve(
+            JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB })
+          );
+        }, 500);
+      }
+    });
   }
 
   /**

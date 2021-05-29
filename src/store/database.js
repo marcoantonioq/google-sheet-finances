@@ -84,21 +84,18 @@ class DataBase {
       }
     }, 10000);
 
-    Sheet.onGetValues(
-      null,
-      (el) => {
+    return Sheet.onGetValues(null)
+      .then((el) => {
         const { data, msg, status } = JSON.parse(el);
         console.log("Mensagem do banco: ", msg);
         console.log("Status: ", status);
         this.values = data;
         database.status.load = false;
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Erro ao carregar dados: ", error);
         database.status.load = false;
-      }
-    );
-    return true;
+      });
   }
 
   find(filter) {

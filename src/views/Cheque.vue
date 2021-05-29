@@ -154,6 +154,8 @@ export default {
         }, 0);
     });
 
+    console.log(store.database.values);
+
     const formatVencimento = (venc) => {
       let current_data = moment();
       let vencimento = moment(venc);
