@@ -401,10 +401,13 @@ export default {
     watch(
       () => value.Vencimento,
       (val) => {
-        let current_data = moment().format("YYYY-MM-DD");
+        let current_data = moment();
+        let vencimento_data = moment(val);
+        console.log("Vecimento:", vencimento_data.format("YYYY-MM-DD"));
         value["Pago em"] =
-          moment(val).format("YYYY-MM-DD") == current_data
-            ? moment().format("YYYY-MM-DDTHH:MM:SS")
+          vencimento_data.format("YYYY-MM-DD") ==
+          current_data.format("YYYY-MM-DD")
+            ? current_data.format("YYYY-MM-DDTh:mm:ss") || ""
             : "";
       }
     );
