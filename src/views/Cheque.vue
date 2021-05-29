@@ -5,7 +5,7 @@
         <div class="card-stacked">
           <div class="card-content">
             Cheques vencidos
-            <p>{{ format.toReal(soma(cheque_by.vencido)) }}</p>
+            <p>{{ format.toReal(soma(cheque_by["Vencidos"])) }}</p>
           </div>
         </div>
       </div>
@@ -16,79 +16,92 @@
         <div class="card-stacked">
           <div class="card-content">
             Cheques a vencer
-            <p>{{ format.toReal(soma(cheque_by.avencer)) }}</p>
+            <p>{{ format.toReal(soma(cheque_by["A vencer"])) }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div v-for="value in cheques" :key="value['ID']" class="row">
-    <dl>
-      <dt>Titular:</dt>
-      <dd>{{ value["Titularidade"] }}&nbsp;</dd>
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li
+          v-for="(cheques, title) in cheque_by"
+          :key="title"
+          class="tab col s4"
+        >
+          <a :href="`#${title.replace(' ', '')}`">{{ title }}</a>
+        </li>
+      </ul>
+    </div>
+    <div
+      v-for="(cheques, title) in cheque_by"
+      :key="title"
+      :id="title.replace(' ', '')"
+      class="col s12"
+    >
+      <dl v-for="value in cheques" :key="value['ID']" class="row">
+        <dt>Titular:</dt>
+        <dd>{{ value["Titularidade"] }}&nbsp;</dd>
 
-      <dt>Escola:</dt>
-      <dd>{{ value["Escola"] }}&nbsp;</dd>
+        <dt>Escola:</dt>
+        <dd>{{ value["Escola"] }}&nbsp;</dd>
 
-      <dt>Tipo:</dt>
-      <dd>{{ value["ES"] }} / {{ value["Tipo"] }}&nbsp;</dd>
+        <dt>Tipo:</dt>
+        <dd>{{ value["ES"] }} / {{ value["Tipo"] }}&nbsp;</dd>
 
-      <dt>Discriminação:</dt>
-      <dd>
-        {{ value["Discriminação"] }}
-        {{ value["Outras Observações"] }}&nbsp;
-      </dd>
+        <dt>Discriminação:</dt>
+        <dd>
+          {{ value["Discriminação"] }}
+          {{ value["Outras Observações"] }}&nbsp;
+        </dd>
 
-      <dt>Local do movimento:</dt>
-      <dd>{{ value["Local do movimento"] }}&nbsp;</dd>
+        <dt>Local do movimento:</dt>
+        <dd>{{ value["Local do movimento"] }}&nbsp;</dd>
 
-      <dt>Valor:</dt>
-      <dd :class="[value['Valor'] > 0 ? 'green-text' : 'red-text']">
-        {{ format.toReal(Math.abs(value["Valor"])) }} &nbsp;
-      </dd>
+        <dt>Valor:</dt>
+        <dd :class="[value['Valor'] > 0 ? 'green-text' : 'red-text']">
+          {{ format.toReal(Math.abs(value["Valor"])) }} &nbsp;
+        </dd>
 
-      <dt>Forma de pagamento:</dt>
-      <dd>{{ value["Forma de pagamento"] }}&nbsp;</dd>
+        <dt>Forma de pagamento:</dt>
+        <dd>{{ value["Forma de pagamento"] }}&nbsp;</dd>
 
-      <dt>Titular Cheque:</dt>
-      <dd>{{ value["Titular Cheque"] }}&nbsp;</dd>
+        <dt>Titular Cheque:</dt>
+        <dd>{{ value["Titular Cheque"] }}&nbsp;</dd>
 
-      <dt>Conta Cheque:</dt>
-      <dd>{{ value["Conta Cheque"] }}&nbsp;</dd>
+        <dt>Conta Cheque:</dt>
+        <dd>{{ value["Conta Cheque"] }}&nbsp;</dd>
 
-      <dt>Agência Cheque:</dt>
-      <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
+        <dt>Agência Cheque:</dt>
+        <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
 
-      <dt>Nº Cheque</dt>
-      <dd>{{ value["N° Cheque"] }}&nbsp;</dd>
+        <dt>Nº Cheque</dt>
+        <dd>{{ value["N° Cheque"] }}&nbsp;</dd>
 
-      <dt>Vencimento:</dt>
-      <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
+        <dt>Vencimento:</dt>
+        <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
 
-      <dt>Situação</dt>
-      <dd v-html="formatVencimento(value['Vencimento']) || '&nbsp;'"></dd>
+        <dt>Situação</dt>
+        <dd v-html="formatVencimento(value['Vencimento']) || '&nbsp;'"></dd>
 
-      <dt>Pago em:</dt>
-      <dd>
-        {{
-          value["Pago em"]
-            ? moment(value["Pago em"]).format("DD/MM/YYYY HH:MM")
-            : "Não pago"
-        }}&nbsp;
-      </dd>
+        <dt>Pago em:</dt>
+        <dd>
+          {{
+            value["Pago em"]
+              ? moment(value["Pago em"]).format("DD/MM/YYYY HH:MM")
+              : "Não pago"
+          }}&nbsp;
+        </dd>
 
-      <dt>Observações:</dt>
-      <dd>
-        {{ value["Observações"] }}
-        &nbsp;
-      </dd>
-      <dt></dt>
-      <dd>
-        {{ value["Outras Observações"] }}
-        &nbsp;
-      </dd>
-    </dl>
+        <dt>Observações:</dt>
+        <dd>
+          {{ value["Observações"] }} | {{ value["Outras Observações"] }}
+          &nbsp;
+        </dd>
+      </dl>
+    </div>
   </div>
 </template>
 
@@ -104,15 +117,6 @@ export default {
   setup() {
     const store = inject("store");
 
-    const cheques = computed(() => {
-      return store.database.values
-        .filter((obj) => obj["Escola"] === store.escola.nome)
-        .filter((obj) =>
-          obj["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
-        )
-        .filter((obj) => obj["Pago em"] == "");
-    });
-
     const cheque_by = computed(() => {
       return store.database.values
         .filter((o) => o["Escola"] === store.escola.nome)
@@ -125,11 +129,11 @@ export default {
           (acc, o) => {
             let current_moment = moment();
             let venc_moment = moment(o["Vencimento"]);
-            let status = current_moment > venc_moment ? "vencido" : "avencer";
+            let status = current_moment > venc_moment ? "Vencido" : "A vencer";
             acc[status].push(o);
             return acc;
           },
-          { vencido: [], avencer: [] }
+          { Vencidos: [], "A vencer": [] }
         );
     });
 
@@ -146,15 +150,13 @@ export default {
     };
 
     const formatVencimento = (venc) => {
-      let current_data = moment();
       let vencimento = moment(venc);
-      return current_data > vencimento
+      return moment().isAfter(vencimento)
         ? `<b class='red-text'>Vencido<b>`
         : `A vencer`;
     };
 
     return {
-      cheques,
       moment,
       format,
       cheque_by,
