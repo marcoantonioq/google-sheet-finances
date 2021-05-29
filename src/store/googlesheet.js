@@ -55,7 +55,11 @@ class Google {
       console.groupEnd();
 
       // Mock values
-      call(JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB }));
+      setTimeout(() => {
+        call(
+          JSON.stringify({ status: false, msg: "Dados Mock", data: mockDB })
+        );
+      }, 500);
     }
   }
 
@@ -79,9 +83,11 @@ class Google {
       console.groupEnd();
 
       // Mock values
-      call(
-        JSON.stringify({ status: false, msg: "Datasets Mock", data: mockDS })
-      );
+      setTimeout(() => {
+        call(
+          JSON.stringify({ status: false, msg: "Datasets Mock", data: mockDS })
+        );
+      }, 500);
     }
   }
 }

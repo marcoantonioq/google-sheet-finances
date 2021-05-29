@@ -72,12 +72,12 @@ export default {
   setup() {
     const store = inject("store");
 
-    const values = reactive(store.database.values);
+    const db = reactive(store.database);
 
     const current_date = moment();
 
     const entradas = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Entrada")
         .filter(
@@ -88,7 +88,7 @@ export default {
     });
 
     const saidas = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["ES"] === "Saída")
         .filter(
@@ -99,7 +99,7 @@ export default {
     });
 
     const saldo = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((obj) => obj["Pago em"] !== "")
         .reduce((acc, val) => {
@@ -108,7 +108,7 @@ export default {
     });
 
     const cofre = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["Local do movimento"] === "Cofre")
         .filter((obj) => obj["Pago em"] !== "")
@@ -118,7 +118,7 @@ export default {
     });
 
     const pago = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Saída")
         .filter((o) => o["Pago em"] !== "")
@@ -133,7 +133,7 @@ export default {
     });
 
     const recebido = computed(() => {
-      return values
+      return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["ES"] === "Entrada")
         .filter((o) => o["Pago em"] !== "")
@@ -149,7 +149,6 @@ export default {
 
     return {
       store,
-      values,
       saldo,
       cofre,
       pago,
