@@ -87,6 +87,7 @@
       </dd>
     </dl>
   </div>
+  {{ value }}
 </template>
 
 <script>
