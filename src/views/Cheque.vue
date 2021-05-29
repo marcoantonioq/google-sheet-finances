@@ -122,7 +122,8 @@ export default {
         .filter((obj) => {
           console.log(
             moment(obj["Vencimento"]).format("DD/MM/YYYY"),
-            moment().format("DD/MM/YYYY")
+            moment().format("DD/MM/YYYY"),
+            obj
           );
           return moment(obj["Vencimento"]) < moment();
         })
