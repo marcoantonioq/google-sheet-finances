@@ -140,7 +140,7 @@ export default {
           o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
         )
         .filter((obj) => obj["Pago em"] !== "")
-        .filter((obj) => moment(obj["Vencimento"]) >= moment())
+        .filter((obj) => new Date(obj["Vencimento"]) >= new Date())
         .map((obj) => {
           console.log(
             "AVencer:",
