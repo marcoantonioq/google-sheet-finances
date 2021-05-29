@@ -24,9 +24,6 @@
   </div>
   <div v-for="value in cheques" :key="value['ID']" class="row">
     <dl>
-      <dt>ID:</dt>
-      <dd>{{ value["ID"] }}&nbsp;</dd>
-
       <dt>Titular:</dt>
       <dd>{{ value["Titularidade"] }}&nbsp;</dd>
 
@@ -63,13 +60,13 @@
       <dd>{{ value["Agência Cheque"] }}&nbsp;</dd>
 
       <dt>Nº Cheque</dt>
-      <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
+      <dd>{{ value["N° Cheque"] }}&nbsp;</dd>
 
       <dt>Vencimento:</dt>
       <dd>{{ moment(value["Vencimento"]).format("DD/MM/YYYY") }}&nbsp;</dd>
 
       <dt>Situação</dt>
-      <dd v-html="formatVencimento(value['Vencimento'])"></dd>
+      <dd v-html="formatVencimento(value['Vencimento']) || '&nbsp;'"></dd>
 
       <dt>Pago em:</dt>
       <dd>
