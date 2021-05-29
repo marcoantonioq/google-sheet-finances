@@ -119,7 +119,13 @@ export default {
           o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
         )
         .filter((obj) => obj["Pago em"] !== "")
-        .filter((obj) => moment(obj["Vencimento"]) < moment())
+        .filter((obj) => {
+          console.log(
+            moment(obj["Vencimento"].format("DD/MM/YYYY")),
+            moment().format("DD/MM/YYYY")
+          );
+          return moment(obj["Vencimento"]) < moment();
+        })
         .reduce((acc, val) => {
           return acc + parseFloat(val["Valor"]);
         }, 0);
