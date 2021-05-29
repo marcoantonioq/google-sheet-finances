@@ -23,17 +23,6 @@
     </div>
   </div>
 
-  <div class="row">
-    Vencido ({{ cheque_by.vencido.length }}):
-    <pre>
-      {{ cheque_by.vencido }}
-    </pre>
-
-    A vencer ({{ cheque_by.avencer.length }}):
-    <pre>
-    {{ cheque_by.avencer }}
-    </pre>
-  </div>
   <div v-for="value in cheques" :key="value['ID']" class="row">
     <dl>
       <dt>Titular:</dt>
@@ -119,7 +108,7 @@ export default {
         .filter((obj) =>
           obj["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
         )
-        .filter((obj) => obj["Pago em"] === "");
+        .filter((obj) => obj["Pago em"] == "");
     });
 
     const cheque_by = computed(() => {
