@@ -1,4 +1,27 @@
 <template>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Cheques vencidos
+            <p>{{ format.toReal(vencido) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 m6">
+      <div class="card horizontal">
+        <div class="card-stacked">
+          <div class="card-content">
+            Cheques a vencer
+            <p>{{ format.toReal(avencer) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div v-for="value in cheques" :key="value['ID']" class="row">
     <dl>
       <dt>ID:</dt>
@@ -90,6 +113,34 @@ export default {
         .filter((obj) => !obj["Pago em"]);
     });
 
+    const vencido = computed(() => {
+      return store.database.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((o) => o["ES"] === "Entrada")
+        .filter((o) =>
+          o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
+        )
+        .filter((obj) => obj["Pago em"] !== "")
+        .filter((obj) => moment(obj["Vencimento"]) < moment())
+        .reduce((acc, val) => {
+          return acc + parseFloat(val["Valor"]);
+        }, 0);
+    });
+
+    const avencer = computed(() => {
+      return store.database.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((o) => o["ES"] === "Entrada")
+        .filter((o) =>
+          o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
+        )
+        .filter((obj) => obj["Pago em"] !== "")
+        .filter((obj) => moment(obj["Vencimento"]) >= moment())
+        .reduce((acc, val) => {
+          return acc + parseFloat(val["Valor"]);
+        }, 0);
+    });
+
     const formatVencimento = (venc) => {
       let current_data = moment();
       let vencimento = moment(venc);
@@ -102,6 +153,8 @@ export default {
       cheques,
       moment,
       format,
+      vencido,
+      avencer,
       formatVencimento,
     };
   },
@@ -124,5 +177,18 @@ dl dt {
 dl dd {
   margin: 2px 0;
   padding: 5px 0;
+}
+
+.card-content {
+  color: var(--blue);
+  font-size: 1.2rem;
+  font-weight: 400;
+  p {
+    font-size: 1.4rem;
+    color: var(--green);
+  }
+}
+.double-margin-top {
+  margin-top: 3rem;
 }
 </style>
