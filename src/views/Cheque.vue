@@ -138,6 +138,10 @@ export default {
         )
         .filter((obj) => obj["Pago em"] !== "")
         .filter((obj) => moment(obj["Vencimento"]) >= moment())
+        .map((obj) => {
+          console.log(new Date(obj["Vencimento"]).toLocaleString(), obj);
+          return obj;
+        })
         .reduce((acc, val) => {
           return acc + parseFloat(val["Valor"]);
         }, 0);
