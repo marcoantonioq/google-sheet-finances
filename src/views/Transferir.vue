@@ -27,7 +27,7 @@
           class="validate browser-default"
         >
           <option value="" disabled selected>
-            __Selecione local do movimento:__
+            Selecione local do movimento:
           </option>
           <option :key="item" v-bind:value="item" v-for="item in locais_de">
             {{ item }}
@@ -47,7 +47,7 @@
           required
           v-model="para['Escola']"
         >
-          <option value="" disabled selected>__Selecione escola__</option>
+          <option value="" disabled selected>Selecione escola</option>
           <option
             v-for="item in store.escola.escolas"
             :key="item"
@@ -66,7 +66,7 @@
           required
           v-model="para['Local do movimento']"
         >
-          <option value="" disabled selected>__Selecione local__</option>
+          <option value="" disabled selected>Selecione local</option>
           <option
             :key="item"
             v-bind:value="item"
@@ -105,7 +105,7 @@
           v-model="data['Forma de pagamento']"
         >
           <option value="" disabled selected>
-            __Selecione forma de pagamento__
+            Selecione forma de pagamento
           </option>
           <option v-for="item in formas_de" :key="item" v-bind:value="item">
             {{ item }}
@@ -163,7 +163,7 @@ export default {
 
     const sending = ref(false);
 
-    const datasets = store.datasets;
+    const datasets = reactive(store.datasets);
 
     const de = reactive(Object.assign({}, Values));
     const para = reactive(Object.assign({}, Values));
@@ -244,27 +244,45 @@ export default {
     }
 
     const tipos = computed(() => {
-      return datasets.getValues(
-        store.escola.nome,
-        "Forma de Pagamento",
-        de["ES"]
-      );
+      let values = [];
+      try {
+        values = datasets.getValues(
+          store.escola.nome,
+          "Forma de Pagamento",
+          de["ES"]
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      return values;
     });
 
     const formas_de = computed(() => {
-      return datasets.getValues(
-        store.escola.nome,
-        "Forma de Pagamento",
-        "Saída"
-      );
+      let values = [];
+      try {
+        values = datasets.getValues(
+          store.escola.nome,
+          "Forma de Pagamento",
+          "Saída"
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      return values;
     });
 
     const locais_de = computed(() => {
-      return datasets.getValues(
-        store.escola.nome,
-        "Local do movimento",
-        "Saída"
-      );
+      let values = [];
+      try {
+        values = datasets.getValues(
+          store.escola.nome,
+          "Local do movimento",
+          "Saída"
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      return values;
     });
 
     watch(
