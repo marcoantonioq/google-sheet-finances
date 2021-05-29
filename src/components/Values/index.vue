@@ -26,14 +26,14 @@
           {{ value["Tipo"] }}
           {{
             value["Outras Observações"]
-              ? `/ ${value["Outras Observações"]}`
+              ? `- ${value["Outras Observações"]}`
               : ""
           }}
         </td>
         <td>
           {{
             value["Pago em"]
-              ? `Pago ${moment(value["Pago em"]).format("DD/MM HH:MM")}`
+              ? `Pago ${moment(value["Pago em"]).format("DD/MM HH:MM:SS")}`
               : moment(value["Vencimento"]) > moment()
               ? "A vencer"
               : "Vencido"

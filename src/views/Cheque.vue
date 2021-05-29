@@ -78,12 +78,14 @@
         }}&nbsp;
       </dd>
 
-      <dt>Parcelas:</dt>
-      <dd>{{ value["Parcelas"] }}&nbsp;</dd>
-
       <dt>Observações:</dt>
       <dd>
         {{ value["Observações"] }}
+        &nbsp;
+      </dd>
+      <dt></dt>
+      <dd>
+        {{ value["Outras Observações"] }}
         &nbsp;
       </dd>
     </dl>
