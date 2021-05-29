@@ -121,7 +121,11 @@ export default {
         .filter((obj) => obj["Pago em"] !== "")
         .filter((obj) => new Date(obj["Vencimento"]) < new Date())
         .map((obj) => {
-          console.log(new Date(obj["Vencimento"]).toLocaleString(), obj);
+          console.log(
+            "Vencido:",
+            new Date(obj["Vencimento"]).toLocaleString(),
+            obj
+          );
           return obj;
         })
         .reduce((acc, val) => {
@@ -139,7 +143,11 @@ export default {
         .filter((obj) => obj["Pago em"] !== "")
         .filter((obj) => moment(obj["Vencimento"]) >= moment())
         .map((obj) => {
-          console.log(new Date(obj["Vencimento"]).toLocaleString(), obj);
+          console.log(
+            "AVencer:",
+            new Date(obj["Vencimento"]).toLocaleString(),
+            obj
+          );
           return obj;
         })
         .reduce((acc, val) => {
