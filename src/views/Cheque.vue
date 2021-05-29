@@ -87,7 +87,6 @@
       </dd>
     </dl>
   </div>
-  <pre>  {{ cheques }}</pre>
 </template>
 
 <script>
