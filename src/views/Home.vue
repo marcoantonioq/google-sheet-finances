@@ -101,7 +101,7 @@ export default {
     const saldo = computed(() => {
       return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
-        .filter((o) => o["Local do mocimento"] === "Caixa da escola")
+        .filter((o) => o["Local do movimento"] === "Caixa da escola")
         .filter((obj) => obj["Pago em"] !== "")
         .reduce((acc, val) => {
           return acc + parseFloat(val["Valor"]);
