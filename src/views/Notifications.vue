@@ -31,6 +31,7 @@ export default {
         .filter((o) => o["Escola"] === store.escola.nome)
         .filter((o) => o["Tipo"] == "Mensalidade")
         .filter((o) => o["Pago em"] == "")
+        .filter((o) => moment().isAfter(moment(o["Vencimento"])))
         .map((o) => {
           return {
             ID: o["ID"],

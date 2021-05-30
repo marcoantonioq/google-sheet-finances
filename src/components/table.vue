@@ -17,11 +17,6 @@
       </tr>
     </tbody>
   </table>
-
-  <h1>Valores</h1>
-  <pre>
-    {{ values }}
-  </pre>
 </template>
 
 <script>
@@ -34,7 +29,7 @@ export default {
     settings: { Type: Array },
   },
   setup(props) {
-    const titles = Object.keys(props.values[0]);
+    const titles = Object.keys(props.values[0] || []);
     const vals = reactive(props.values);
     const router = useRouter();
 
