@@ -64,26 +64,32 @@
   </div>
 
   <div class="row">
-    <a style="margin-top: 5px" class="col s12 m4 btn red" v-on:click="back">
-      <i class="material-icons left"> arrow_back </i>
-      Voltar
-    </a>
-    <a
-      style="margin-top: 5px"
-      class="col s12 m4 btn blue"
-      v-on:click="edit(value['ID'])"
-    >
-      <i class="material-icons left"> edit </i>
-      Editar
-    </a>
-    <a
-      style="margin-top: 5px"
-      class="col s12 m4 btn green"
-      v-on:click="pay(value['ID'])"
-    >
-      <i class="material-icons left"> payment </i>
-      Pagar
-    </a>
+    <div class="col s12 m4">
+      <a class="col s12 m12 btn red" v-on:click="back">
+        <i class="material-icons left"> arrow_back </i>
+        Voltar
+      </a>
+    </div>
+    <div class="col m4 s12">
+      <a
+        style="margin-top: 5px"
+        class="col s12 m12 btn blue"
+        v-on:click="edit(value['ID'])"
+      >
+        <i class="material-icons left"> edit </i>
+        Editar
+      </a>
+    </div>
+    <div class="col m4 s12">
+      <a
+        style="margin-top: 5px"
+        class="col s12 m12 btn green"
+        v-on:click="pay(value['ID'])"
+      >
+        <i class="material-icons left"> payment </i>
+        Pagar
+      </a>
+    </div>
   </div>
 
   <div class="row">

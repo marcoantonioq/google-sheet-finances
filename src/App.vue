@@ -306,12 +306,18 @@ h5 {
 
 @media print {
   nav,
-  div,
-  button {
+  button,
+  div {
     display: none;
   }
-  table {
+  div#app {
     display: block;
+    div.content {
+      display: block;
+      .print {
+        display: block;
+      }
+    }
   }
 }
 

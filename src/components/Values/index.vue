@@ -1,5 +1,5 @@
 <template>
-  <table class="highlight">
+  <table class="print highlight">
     <thead>
       <tr>
         <th @click="sort('Vencimento')">Vencimento</th>
