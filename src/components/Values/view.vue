@@ -158,7 +158,7 @@ export default {
     function update() {
       console.log("Update:", value);
       store.database
-        .saveValues(value)
+        .saveValues([value])
         .then((data) => {
           console.log("Dados salvo com sucesso: ", data);
         })
