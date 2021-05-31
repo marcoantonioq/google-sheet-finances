@@ -3,7 +3,10 @@
 
   <div class="row" v-for="(values, item) in data" :key="item">
     <h5>{{ item }}</h5>
-    <Table :settings="{ route: '/view/' }" :values="values" />
+    <Table
+      :settings="{ route: '/view/', editable: ['Outras Observações'] }"
+      :values="values"
+    />
   </div>
 </template>
 
@@ -27,20 +30,22 @@ export default {
     const data = reactive({});
 
     data["Ligar para alunos com mensalidade(s) atrasadas: "] = computed(() => {
-      return db.values
-        .filter((o) => o["Escola"] === store.escola.nome)
-        .filter((o) => o["Tipo"] == "Mensalidade")
-        .filter((o) => o["Pago em"] == "")
-        .filter((o) => moment().isAfter(moment(o["Vencimento"])))
-        .map((o) => {
-          return {
-            ID: o["ID"],
-            Titularidade: o["Titularidade"],
-            Discriminação: o["Discriminação"],
-            Valor: format.toReal(o["Valor"]),
-            Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
-          };
-        });
+      return (
+        db.values
+          .filter((o) => o["Escola"] === store.escola.nome)
+          .filter((o) => o["Tipo"] == "Mensalidade")
+          .filter((o) => o["Pago em"] == "")
+          // .filter((o) => moment().isAfter(moment(o["Vencimento"])))
+          .map((o) => {
+            return {
+              ID: o["ID"],
+              Titularidade: o["Titularidade"],
+              Discriminação: o["Discriminação"],
+              Valor: format.toReal(o["Valor"]),
+              Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
+            };
+          })
+      );
     });
 
     return {

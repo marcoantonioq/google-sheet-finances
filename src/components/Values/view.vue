@@ -42,10 +42,21 @@
       <dt>Parcelas:</dt>
       <dd>{{ value["Parcelas"] }}&nbsp;</dd>
 
-      <dt>Observações:</dt>
+      <dt>Informações:</dt>
       <dd>
-        {{ value["Observações"] }}
+        {{ value["Outras Observações"] }}
         &nbsp;
+      </dd>
+
+      <dt>Observações:</dt>
+      <dd contenteditable="true">
+        {{ value["Observações"] }}
+        <textarea
+          @focusout.stop.prevent="update"
+          v-model="value['Observações']"
+          class="materialize-textarea"
+        >
+        </textarea>
       </dd>
     </dl>
     <dl v-if="value['Titular Cheque']">
@@ -64,7 +75,7 @@
   </div>
 
   <div class="row">
-    <div class="col s12 m4">
+    <div class="col m4 s12">
       <a class="col s12 m12 btn red" v-on:click="back">
         <i class="material-icons left"> arrow_back </i>
         Voltar
@@ -144,6 +155,19 @@ export default {
       router.push({ name: "Update", params: { id_pass: id } });
     }
 
+    function update() {
+      console.log("Update:", value);
+      store.database
+        .saveValues(value)
+        .then((data) => {
+          console.log("Dados salvo com sucesso: ", data);
+        })
+        .catch((e) => {
+          console.log("Erro retornado:", e);
+          router.push({ name: "View", params: { id_pass: value["ID"] } });
+        });
+    }
+
     onMounted(() => {
       upView(route.params.id_pass);
     });
@@ -157,6 +181,7 @@ export default {
       format,
       edit,
       pay,
+      update,
     };
   },
 };

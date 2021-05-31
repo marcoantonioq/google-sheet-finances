@@ -18,7 +18,7 @@
     </ul>
 
     <router-link class="notifications" to="/notifications">
-      <div class="count">5</div>
+      <div class="flex count">15</div>
       <i class="material-icons">notifications_none</i>
     </router-link>
   </div>
@@ -104,6 +104,7 @@ img.arrow_escola {
   border-radius: 50%;
   color: var(--white);
   font-weight: 600;
+  font-size: 0.8rem;
   width: 18px;
   height: 18px;
   text-align: center;

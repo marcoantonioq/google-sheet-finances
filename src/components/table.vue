@@ -9,19 +9,28 @@
     </thead>
     <tbody>
       <tr
+        v-on:click.stop.prevent="view(value.ID)"
         v-for="value in paginate"
         :key="value"
-        v-on:click.stop.prevent="view(value.ID)"
       >
-        <td v-for="item in value" :key="item">{{ item }}</td>
+        <td
+          v-for="(item, key) in value"
+          @keydown.esc.stop.prevent="update"
+          @focusout.stop.prevent="update"
+          :contenteditable="settings.editable.includes(key)"
+          :key="item"
+          :data-id="value['ID']"
+          :data-key="key"
+        >
+          {{ item }}
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import { reactive } from "@vue/reactivity";
-import { computed } from "@vue/runtime-core";
+import { computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 export default {
   props: {
@@ -44,20 +53,17 @@ export default {
     console.log(navegation);
 
     const paginate = computed(() => {
+      let dir = navegation.currentSortDir;
+      let sort = navegation.currentSort;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return vals.sort((a, b) => {
         let modifier = 1;
-        if (navegation.currentSortDir === "desc") modifier = -1;
-        if (a[navegation.currentSort] < b[navegation.currentSort])
-          return -1 * modifier;
-        if (a[navegation.currentSort] > b[navegation.currentSort])
-          return 1 * modifier;
+        if (dir === "desc") modifier = -1;
+        if (a[sort] < b[sort]) return -1 * modifier;
+        if (a[sort] > b[sort]) return 1 * modifier;
         return 0;
       });
     });
-
-    function view(id) {
-      router.push({ name: "View", params: { id_pass: id } });
-    }
 
     function sort(s) {
       console.log("Sort:", s);
@@ -69,12 +75,24 @@ export default {
       navegation.currentSort = s;
     }
 
+    function view(id) {
+      router.push({ name: "View", params: { id_pass: id } });
+    }
+
+    function update(e) {
+      console.log("Update:", e.target.dataset.id);
+      console.log("Update:", e.target.dataset.key);
+      console.log("Update:", e.target.innerText);
+      e.target.blur();
+    }
+
     return {
       titles,
       sort,
       view,
       paginate,
       navegation,
+      update,
     };
   },
 };
