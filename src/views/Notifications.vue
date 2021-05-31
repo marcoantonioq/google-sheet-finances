@@ -29,6 +29,16 @@ export default {
 
     const data = reactive({});
 
+    function sortUpdate(a, b) {
+      if (a["Atualizado em"] < b["Atualizado em"]) {
+        return -1;
+      }
+      if (a["Atualizado em"] > b["Atualizado em"]) {
+        return 1;
+      }
+      return 0;
+    }
+
     data["Ligar para alunos com mensalidade(s) atrasadas: "] = computed(() => {
       return (
         db.values
@@ -36,6 +46,7 @@ export default {
           .filter((o) => o["Tipo"] == "Mensalidade")
           .filter((o) => o["Pago em"] == "")
           // .filter((o) => moment().isAfter(moment(o["Vencimento"])))
+          .sort(sortUpdate)
           .map((o) => {
             return {
               ID: o["ID"],

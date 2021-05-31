@@ -47,17 +47,6 @@
         {{ value["Outras Observações"] }}
         &nbsp;
       </dd>
-
-      <dt>Observações:</dt>
-      <dd contenteditable="true">
-        {{ value["Observações"] }}
-        <textarea
-          @focusout.stop.prevent="update"
-          v-model="value['Observações']"
-          class="materialize-textarea"
-        >
-        </textarea>
-      </dd>
     </dl>
     <dl v-if="value['Titular Cheque']">
       <dt v-if="value['Titular Cheque']">Titular Cheque:</dt>
@@ -71,6 +60,18 @@
 
       <dt v-if="value['Nº Cheque']">Nº Cheque</dt>
       <dd>{{ value["Nº Cheque"] }}&nbsp;</dd>
+    </dl>
+
+    <dl>
+      <dt>Observações:</dt>
+      <dd contenteditable="true">
+        <textarea
+          @focusout.stop.prevent="update"
+          v-model="value['Observações']"
+          class="materialize-textarea"
+        >
+        </textarea>
+      </dd>
     </dl>
   </div>
 
