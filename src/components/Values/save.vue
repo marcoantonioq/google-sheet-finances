@@ -252,7 +252,7 @@
 
     <div class="row">
       <div class="col s12 m6">
-        <a class="btn red" v-on:click="$router.go(-1)">
+        <a class="col s12 m12 btn red" v-on:click="$router.go(-1)">
           <i class="material-icons left"> arrow_back </i>
           Voltar
         </a>
@@ -265,8 +265,8 @@
           id="salvar"
           :disabled="sending"
         >
+          <i class="material-icons left">save</i>
           Salvar
-          <i class="material-icons right">save</i>
         </button>
       </div>
     </div>
@@ -330,6 +330,7 @@ export default {
     } else if (route.path.includes("update") && route.params.id_pass) {
       navegation.updating = true;
       Object.assign(value, store.database.getValue(route.params.id_pass));
+      value["Pago em"] = moment().format("YYYY-MM-DDTH:mm");
     } else {
       router.go(-1);
     }
@@ -407,7 +408,7 @@ export default {
         value["Pago em"] =
           vencimento_data.format("YYYY-MM-DD") ==
           current_data.format("YYYY-MM-DD")
-            ? current_data.format("YYYY-MM-DDTh:mm:ss") || ""
+            ? current_data.format("YYYY-MM-DDTH:mm")
             : "";
       }
     );

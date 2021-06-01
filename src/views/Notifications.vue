@@ -1,8 +1,6 @@
 <template>
   <h4>Notificações</h4>
 
-  Count {{ count }}
-
   <div class="row" v-for="(values, item) in data" :key="item">
     <h5>{{ item }}</h5>
     <Table
@@ -13,7 +11,7 @@
 </template>
 
 <script>
-import { computed, inject, reactive, ref, watch } from "vue";
+import { computed, inject, reactive } from "vue";
 
 import Table from "../components/table";
 
@@ -30,16 +28,6 @@ export default {
     const db = reactive(store.database);
 
     const data = reactive({});
-
-    const count = ref(0);
-    watch(
-      () => data,
-      (val) => {
-        console.log("Data alterado: ", val);
-        count.value = 1;
-        return val;
-      }
-    );
 
     function sortUpdate(a, b) {
       if (a["Atualizado em"] < b["Atualizado em"]) {
@@ -71,9 +59,14 @@ export default {
       );
     });
 
+    db.count = Object.entries(data).reduce((acc, [, v]) => {
+      console.log("Itens:", v);
+      acc = acc + v.length;
+      return acc;
+    }, 0);
+
     return {
       data,
-      count,
     };
   },
 };

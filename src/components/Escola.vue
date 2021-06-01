@@ -18,7 +18,7 @@
     </ul>
 
     <router-link class="notifications" to="/notifications">
-      <div class="flex count">15</div>
+      <div class="flex count">{{ store.database.count.value }}</div>
       <i class="material-icons">notifications_none</i>
     </router-link>
   </div>

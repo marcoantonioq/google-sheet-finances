@@ -1,7 +1,7 @@
 import { Sheet } from "./googlesheet";
 import event from "../lib/Event";
 
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 const moment = require("moment");
 
@@ -15,6 +15,7 @@ class DataBase {
   status = reactive({
     load: false,
   });
+  count = ref(null);
 
   constructor() {
     this.updateValuesFromTables();
@@ -40,10 +41,15 @@ class DataBase {
    * @returns Promises
    */
   saveValues(values) {
-    let colUpdateDate = ["Criado em", "Atualizado em", "Vencimento", "Pago em"];
+    let colUpdateDateTime = [
+      "Criado em",
+      "Atualizado em",
+      "Vencimento",
+      "Pago em",
+    ];
     values.forEach((obj) => {
-      colUpdateDate.forEach((key) => {
-        obj[key] = obj[key]
+      colUpdateDateTime.forEach((key) => {
+        obj[key] = moment().isValid(obj[key])
           ? moment(obj[key]).format("YYYY-MM-DD HH:mm:ss")
           : obj[key];
       });
@@ -75,15 +81,15 @@ class DataBase {
           //   database.status.load = false;
           // }
           // router.go(-1);
-          event.trigger("msg", "Dados salvo com sucesso! :)");
+          event.trigger("msg", "Dados salvo com sucesso!");
         } else {
           database.status.load = false;
-          event.trigger("msg", "Erro ao salvar no banco de dados! :(");
+          event.trigger("msg", "Erro ao salvar no banco de dados!");
           event.trigger("msg", msg);
         }
       })
       .catch((msg) => {
-        event.trigger("msg", "Erro ao salvar no banco de dados! :(");
+        event.trigger("msg", "Erro ao salvar no banco de dados!");
         database.status.load = false;
         return Promise.reject(msg);
       });
