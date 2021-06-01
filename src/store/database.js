@@ -3,6 +3,8 @@ import event from "../lib/Event";
 
 import { reactive } from "vue";
 
+const moment = require("moment");
+
 // import { useRouter } from "vue-router";
 
 // const router = useRouter();
@@ -32,7 +34,21 @@ class DataBase {
     console.log("msg", msg, DataBase.#data);
   }
 
+  /**
+   * Salva lista de objetos
+   * @param {array} values Array de objetos [obj, obj]
+   * @returns Promises
+   */
   saveValues(values) {
+    let colUpdateDate = ["Criado em", "Atualizado em", "Vencimento", "Pago em"];
+    values.forEach((obj) => {
+      colUpdateDate.forEach((key) => {
+        obj[key] = obj[key]
+          ? moment(obj[key]).format("YYYY-MM-DD HH:mm:ss")
+          : obj[key];
+      });
+    });
+
     database.status.load = true;
     console.log("Enviando dados para google salvar!", values);
 
