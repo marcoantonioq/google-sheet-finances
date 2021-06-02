@@ -24,9 +24,11 @@ npm run test:unit
 
 # PrintSC
 
-<p align="center" width="100%">
-    <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/printsc.png"> 
-</p>
+<a href="https://marcoantonioq.github.io/finances/">
+    <p align="center" width="100%">
+        <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/printsc.png"> 
+    </p>
+</a>
 
 <p align="center" width="100%">
     <img src="https://raw.githubusercontent.com/marcoantonioq/google-sheet-finances/main/demo/sheet.png"> 
