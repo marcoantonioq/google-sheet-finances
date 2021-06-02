@@ -199,6 +199,8 @@
           <input
             :disabled="!navegation.updating"
             :required="navegation.updating"
+            :min="`${moment().format('YYYY-MM-DD')}T07:00`"
+            :max="`${moment().format('YYYY-MM-DD')}T22:00`"
             class="validate"
             id="pago"
             v-model="value['Pago em']"
