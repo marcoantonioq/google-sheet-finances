@@ -54,3 +54,5 @@ function doGet(e) {
 - [x] Componente para selecionar escola
 - [ ] Filtrar dados por escola
 - [ ] Fila de processos em segundo plano lib/Queue
+
+## [Demo: https://marcoantonioq.github.io/finances/](https://marcoantonioq.github.io/finances/)
