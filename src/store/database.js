@@ -49,9 +49,11 @@ class DataBase {
     ];
     values.forEach((obj) => {
       colUpdateDateTime.forEach((key) => {
-        obj[key] = moment().isValid(obj[key])
-          ? moment(obj[key]).format("YYYY-MM-DD HH:mm:ss")
-          : obj[key];
+        if (obj[key] && moment().isValid(moment(obj[key]))) {
+          obj[key] = moment(obj[key]).format("YYYY-MM-DD HH:mm:ss");
+        } else {
+          obj[key] = "";
+        }
       });
     });
 
