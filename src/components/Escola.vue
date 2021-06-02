@@ -79,9 +79,9 @@ a {
 }
 
 img.arrow_escola {
+  top: 30px;
+  right: 129px;
   position: fixed;
-  top: 20px;
-  right: 81px;
   width: 20%;
   transform: scaleY(-1) scaleX(-1) rotate(22deg);
   animation: shake 0.5s;
