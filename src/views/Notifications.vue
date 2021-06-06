@@ -39,10 +39,10 @@ export default {
       return 0;
     }
 
-    data["Ligar para alunos com mensalidade(s) atrasadas: "] = computed(() => {
+    data["A receber: "] = computed(() => {
       return db.values
         .filter((o) => o["Escola"] === store.escola.nome)
-        .filter((o) => o["Tipo"] == "Mensalidade")
+        .filter((o) => o["ES"] == "Entrada")
         .filter((o) => o["Pago em"] == "")
         .filter((o) => moment().isAfter(moment(o["Vencimento"])))
         .sort(sortUpdate)
