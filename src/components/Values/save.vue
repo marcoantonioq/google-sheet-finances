@@ -197,10 +197,8 @@
         <div class="input-field">
           <i class="material-icons prefix">date_range</i>
           <input
-            :disabled="!navegation.updating"
+            disabled="disabled"
             :required="navegation.updating"
-            :min="`${moment().format('YYYY-MM-DD')}T07:00`"
-            :max="`${moment().format('YYYY-MM-DD')}T22:00`"
             class="validate"
             id="pago"
             v-model="value['Pago em']"
@@ -332,7 +330,7 @@ export default {
     } else if (route.path.includes("update") && route.params.id_pass) {
       navegation.updating = true;
       Object.assign(value, store.database.getValue(route.params.id_pass));
-      value["Pago em"] = moment().format("YYYY-MM-DDTH:mm");
+      // value["Pago em"] = moment().format("YYYY-MM-DDTH:mm");
     } else {
       router.go(-1);
     }
@@ -352,7 +350,7 @@ export default {
           store.database
             .saveValues(val)
             .then((data) => {
-              console.log("Dados salvo com sucesso: ", data);
+              console.log("Dado salvo com sucesso: ", data);
               router.go(-1);
             })
             .catch((e) => {
@@ -365,7 +363,7 @@ export default {
         }
       } catch (e) {
         console.info(e);
-        event.trigger("msg", "Aglumas informações obrigatárias!");
+        event.trigger("msg", "Informações obrigatárias!");
       }
     }
 
@@ -412,6 +410,10 @@ export default {
           current_data.format("YYYY-MM-DD")
             ? current_data.format("YYYY-MM-DDTH:mm")
             : "";
+
+        if (navegation.updating) {
+          value["Pago em"] = moment().format("YYYY-MM-DDTH:mm");
+        }
       }
     );
     function setEscola(escola) {

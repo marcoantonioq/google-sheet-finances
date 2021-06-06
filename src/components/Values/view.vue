@@ -161,7 +161,7 @@ export default {
       store.database
         .saveValues([value])
         .then((data) => {
-          console.log("Dados salvo com sucesso: ", data);
+          console.log("Dado salvo com sucesso: ", data);
         })
         .catch((e) => {
           console.log("Erro retornado:", e);

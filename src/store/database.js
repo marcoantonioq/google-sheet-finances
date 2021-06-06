@@ -83,7 +83,7 @@ class DataBase {
           //   database.status.load = false;
           // }
           // router.go(-1);
-          event.trigger("msg", "Dados salvo com sucesso!");
+          event.trigger("msg", "Dado salvo com sucesso!");
         } else {
           database.status.load = false;
           event.trigger("msg", "Erro ao salvar no banco de dados!");
