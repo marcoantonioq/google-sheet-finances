@@ -33,7 +33,7 @@
         <td>
           {{
             value["Pago em"]
-              ? `Pago ${moment(value["Pago em"]).format("DD/MM HH:MM:SS")}`
+              ? `Pago ${moment(value["Pago em"]).format("DD/MM H:mm")}`
               : moment(value["Vencimento"]) > moment()
               ? "A vencer"
               : "Vencido"

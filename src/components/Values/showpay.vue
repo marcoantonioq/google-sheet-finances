@@ -28,7 +28,7 @@
         <td>
           {{
             value["Pago em"]
-              ? moment(value["Pago em"]).format("DD/MM HH:MM")
+              ? moment(value["Pago em"]).format("DD/MM H:mm")
               : moment(value["Vencimento"]) > moment()
               ? "A vencer"
               : "Vencido"
