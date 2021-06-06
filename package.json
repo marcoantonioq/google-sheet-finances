@@ -6,6 +6,7 @@
     "gas": "webpack --config webpack.cli.js ",
     "push": "git add . ; git commit -m 'New build' -a; git tag $(date +'0.0.2-%y%m%d%H%M') -m 'NewBuildTeste' ; git push --all -u ; git push --tag ; cd google && npx clasp push",
     "serve": "vue-cli-service serve",
+    "start": "npm run serve",
     "build": "vue-cli-service build --skip-plugins pwa && npm run push",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"

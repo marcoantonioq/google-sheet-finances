@@ -22,6 +22,39 @@ function doGet(e) {
 
 ```js
 /**
+ * Pega todos os valores de uma tabela
+ * @param {string} table Table name
+ * @returns result {status: true, data: [], msg: ""}
+ */
+function getAllDataValues(table) {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var DB = spreadsheet.getSheetByName(table);
+
+  return DB.getRange(1, 1, DB.getMaxRows(), DB.getMaxColumns())
+    .getValues()
+    .filter((el) => el[0]);
+}
+
+/**
+ * Função retorna array de Titulos da tabela
+ * @param {string} table Nome da tabela
+ * return array De titulos
+ */
+function getObjTable(table) {
+  let spreadsheet = SpreadsheetApp.getActive();
+  let DB = spreadsheet.getSheetByName(table);
+
+  let titles = DB.getRange(1, 1, 1, DB.getMaxColumns()).getValues()[0];
+
+  // Gera valores de entrada para objeto template
+  let entries = titles
+    .filter((el) => el.trim() != "")
+    .map((title) => [title, ""]);
+
+  return Object.fromEntries(entries);
+}
+
+/**
  * Find Values / Filter
  * return result {status: true, data: [], msg: ""}
  **/
@@ -44,6 +77,7 @@ function find({ table, filter } = { table: "Banco de dados", filter: null }) {
     result.msg = "Erro ao filtrar informações: " + e;
   }
   console.log(result.msg);
+  console.log(JSON.stringify(result));
   return JSON.stringify(result);
 }
 
@@ -69,8 +103,12 @@ function select(table, id) {
  * Append Value
  * return result {status: true, updated:[], data: [], msg: ""} Onde updated são os valores atualizados
  **/
-function save({ data, table } = { data: false, table: "Banco de dados" }) {
-  var result = { status: true, updated: [], created: [], data: [], msg: "" };
+function save(sendData) {
+  const { data, table } = JSON.parse(sendData);
+
+  console.log(table, data);
+
+  var result = { status: true, data: { created: [], updated: [] }, msg: "" };
 
   if (data) {
     let DB = SpreadsheetApp.getActive().getSheetByName(table);
@@ -78,14 +116,6 @@ function save({ data, table } = { data: false, table: "Banco de dados" }) {
     let IDs = DB.getRange(1, 1, DB.getMaxRows(), 1)
       .getValues()
       .map((id) => id[0]);
-
-    // Atualizar colunas
-    const updateValues = (obj) => {
-      if (obj.hasOwnProperty("Atualizado em")) {
-        obj["Atualizado em"] = new Date().getDataHora("en");
-      }
-      return obj;
-    };
 
     // Cria um novo objeto vazio
     let obj_template = getObjTable(table);
@@ -108,33 +138,56 @@ function save({ data, table } = { data: false, table: "Banco de dados" }) {
     );
 
     const getRow = (num) => IDs.findIndex((id) => id == num) + 1;
+
     // Console update
-    result.updated = data_to_save.update.map((obj) => {
-      obj = updateValues(obj);
+    result.data.updated = data_to_save.update.map((obj) => {
+      if (obj.hasOwnProperty("Criado em") && obj["Criado em"] == "") {
+        obj["Criado em"] = new Date();
+      }
+      obj["Atualizado em"] = new Date();
       let val = Object.values(obj);
       DB.getRange(getRow(obj["ID"]), 1, 1, val.length).setValues([val]);
-      return val;
+      return obj;
     });
 
     // Console create
-    result.created = data_to_save.create.map((obj) => {
+    result.data.created = data_to_save.create.map((obj) => {
       if (obj.hasOwnProperty("Criado em")) {
-        obj["Criado em"] = new Date().getDataHora("en");
+        obj["Criado em"] = new Date();
       }
+      obj["Atualizado em"] = new Date();
       let dt = new Date().getTime().toString(36);
       let rd = Math.random().toString(36).slice(2);
       obj["ID"] = `${dt}${rd}`;
 
       let val = Object.values(obj);
       DB.appendRow(val);
-      return val;
+      return obj;
     });
   } else {
     result.status = false;
     result.msg = "Nenhuma informação para salvar!";
   }
 
-  console.log(result.msg);
+  console.log("Dados atualizados: ", result.data.updated);
+  console.log("Dados atualizados: ", result.data.created);
   return JSON.stringify(result);
+}
+
+/**
+ * Teste Filter
+ * return array
+ **/
+function testeFilter() {
+  console.log(
+    JSON.parse(
+      find({
+        table: "Banco de dados",
+        filter: function (data) {
+          return data["ES"] == "Entrada";
+        },
+      })
+    )
+  );
 }
 ```

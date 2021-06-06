@@ -40,23 +40,60 @@ export default {
     }
 
     data["Ligar para alunos com mensalidade(s) atrasadas: "] = computed(() => {
-      return (
-        db.values
-          .filter((o) => o["Escola"] === store.escola.nome)
-          .filter((o) => o["Tipo"] == "Mensalidade")
-          .filter((o) => o["Pago em"] == "")
-          // .filter((o) => moment().isAfter(moment(o["Vencimento"])))
-          .sort(sortUpdate)
-          .map((o) => {
-            return {
-              ID: o["ID"],
-              Titularidade: o["Titularidade"],
-              Discriminação: o["Discriminação"],
-              Valor: format.toReal(o["Valor"]),
-              Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
-            };
-          })
-      );
+      return db.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((o) => o["Tipo"] == "Mensalidade")
+        .filter((o) => o["Pago em"] == "")
+        .filter((o) => moment().isAfter(moment(o["Vencimento"])))
+        .sort(sortUpdate)
+        .map((o) => {
+          return {
+            ID: o["ID"],
+            Titularidade: o["Titularidade"],
+            Discriminação: o["Discriminação"],
+            Valor: format.toReal(o["Valor"]),
+            Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
+          };
+        });
+    });
+
+    data["A pagar: "] = computed(() => {
+      return db.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((o) => o["ES"] == "Saída")
+        .filter((o) => o["Pago em"] == "")
+        .filter((o) => moment().isAfter(moment(o["Vencimento"])))
+        .sort(sortUpdate)
+        .map((o) => {
+          return {
+            ID: o["ID"],
+            Titularidade: o["Titularidade"],
+            Discriminação: o["Discriminação"],
+            Valor: format.toReal(o["Valor"]),
+            Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
+          };
+        });
+    });
+
+    data["Cheques a depositar: "] = computed(() => {
+      return db.values
+        .filter((o) => o["Escola"] === store.escola.nome)
+        .filter((o) => o["ES"] == "Entrada")
+        .filter((o) =>
+          o["Forma de pagamento"].toLocaleLowerCase().includes("cheque")
+        )
+        .filter((o) => o["Pago em"] == "")
+        .filter((o) => moment().isAfter(moment(o["Vencimento"])))
+        .sort(sortUpdate)
+        .map((o) => {
+          return {
+            ID: o["ID"],
+            Titularidade: o["Titularidade"],
+            Discriminação: o["Discriminação"],
+            Valor: format.toReal(o["Valor"]),
+            Vencimento: moment(o["Vencimento"]).format("DD/MM/YYYY"),
+          };
+        });
     });
 
     db.count = Object.entries(data).reduce((acc, [, v]) => {
